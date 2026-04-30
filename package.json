@@ -1,0 +1,10 @@
+{
+  "name": "walking-explorers",
+  "version": "0.5.0",
+  "private": true,
+  "description": "Walking Explorers — NYC private beta. AI walking discovery + city memory + local promotions.",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "@vercel/kv": "^2.0.0"
+  }
+}
