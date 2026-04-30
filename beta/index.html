@@ -1,99 +1,234 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#1F3864" />
 <title>Walking Explorers — Beta access</title>
-<meta name="description" content="Walking Explorers — NYC beta. Request access.">
+<meta name="description" content="Walking Explorers — NYC private beta. Enter your invite code." />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
-  :root {
-    --navy:#1F3864; --navy-2:#162B4A; --gold:#E0B341; --gold-soft:#F2D67D;
-    --cream:#FAF7F2; --ink:#1A1A1A; --mute:#9CA3AF;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{
-    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,sans-serif;
-    background:linear-gradient(155deg,var(--navy) 0%,#2E75B6 60%,var(--gold) 130%);
-    color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;
-    padding:32px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow:hidden;
-    position:relative;
-  }
-  body::before{content:"";position:absolute;inset:0;background:
-    radial-gradient(circle at 20% 10%,rgba(255,255,255,0.12),transparent 50%),
-    radial-gradient(circle at 80% 90%,rgba(224,179,65,0.20),transparent 60%);pointer-events:none}
-  .skyline{position:absolute;left:0;right:0;bottom:0;height:140px;opacity:0.45;pointer-events:none}
-  .skyline svg{width:100%;height:100%;display:block}
-  .card{position:relative;z-index:2;max-width:560px;width:100%;text-align:left}
-  .eyebrow{font-size:11px;font-weight:700;letter-spacing:0.18em;color:var(--gold-soft);margin-bottom:14px}
-  .accent-bar{display:inline-block;width:48px;height:3px;background:var(--gold);margin-bottom:18px;border-radius:2px}
-  h1{font-size:clamp(38px,6vw,64px);font-weight:800;letter-spacing:-0.025em;line-height:1.05;margin-bottom:18px}
-  h1 .gold{color:var(--gold);display:block}
-  p.lede{font-size:clamp(15px,1.6vw,18px);max-width:54ch;color:rgba(255,255,255,0.92);margin-bottom:32px}
-  .cta-row{display:flex;gap:12px;flex-wrap:wrap}
-  .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 22px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;transition:all 140ms cubic-bezier(.33,1,.68,1);border:0;cursor:pointer}
-  .btn-accent{background:var(--gold);color:var(--navy)}
-  .btn-accent:hover{background:#fff;transform:translateY(-1px)}
-  .btn-ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.4)}
-  .btn-ghost:hover{background:rgba(255,255,255,0.10)}
-  .meta-row{margin-top:42px;display:flex;gap:24px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,0.75)}
-  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-right:8px;vertical-align:middle;
-    box-shadow:0 0 0 0 rgba(224,179,65,0.7);animation:pulse 1.6s infinite}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(224,179,65,0.7)}70%{box-shadow:0 0 0 12px rgba(224,179,65,0)}100%{box-shadow:0 0 0 0 rgba(224,179,65,0)}}
-  .foot{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-size:12px;color:rgba(255,255,255,0.55);z-index:2}
-  .foot a{color:rgba(255,255,255,0.85)}
+:root {
+  --navy:#1F3864; --navy-2:#162B4A; --navy-3:#0E1B30;
+  --blue:#2E75B6; --blue-soft:#5C9FE0;
+  --gold:#E0B341; --gold-soft:#F2D67D; --gold-dark:#B8941F;
+  --cream:#FAF7F2; --ink:#0E1320; --mute:#9CA3AF;
+  --love:#DC2626; --good:#15803D;
+  --r-md:16px; --r-lg:22px;
+  --ease-out:cubic-bezier(.16,1,.3,1);
+}
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+body {
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background:linear-gradient(155deg,var(--navy) 0%,#2E75B6 60%,var(--gold) 130%);
+  color:#fff; min-height:100vh; min-height:100svh; overflow-x:hidden;
+  display:flex; align-items:center; justify-content:center;
+  padding:32px 24px; -webkit-font-smoothing:antialiased; line-height:1.55;
+  letter-spacing:-0.01em; position:relative;
+}
+body::before { content:""; position:absolute; inset:0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255,255,255,0.14), transparent 50%),
+    radial-gradient(circle at 80% 90%, rgba(224,179,65,0.22), transparent 60%);
+  pointer-events:none; }
+.skyline { position:absolute; left:0; right:0; bottom:0; height:200px; opacity:0.45; pointer-events:none; }
+.skyline svg { width:100%; height:100%; display:block; }
+
+.card {
+  position:relative; z-index:2;
+  width:100%; max-width:420px;
+  text-align:left;
+  animation: fadeUp 600ms var(--ease-out);
+}
+@keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+.eyebrow {
+  font-size:11px; font-weight:800; letter-spacing:0.16em;
+  color:var(--gold-soft); text-transform:uppercase;
+}
+.accent-bar { display:inline-block; width:48px; height:3px; background:var(--gold); margin:14px 0 18px; border-radius:2px; }
+h1 { font-size:clamp(34px,6vw,56px); font-weight:800; letter-spacing:-0.025em; line-height:1.05; }
+h1 .gold { color:var(--gold); display:block; }
+p.lede { font-size:15.5px; opacity:0.9; margin:18px 0 30px; max-width:34ch; }
+
+.form { margin-top:24px; }
+.input-wrap {
+  position:relative; margin-bottom:14px;
+}
+.input-wrap label {
+  position:absolute; top:-9px; left:14px;
+  background:var(--navy); padding:0 8px;
+  font-size:11px; font-weight:700; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--gold-soft);
+  border-radius:4px;
+}
+input[type="text"], input[type="password"] {
+  width:100%;
+  padding:18px 18px;
+  border-radius:var(--r-md);
+  border:1.5px solid rgba(255,255,255,0.30);
+  background:rgba(255,255,255,0.10);
+  color:#fff; font:inherit; font-size:15px;
+  letter-spacing:0.04em;
+  font-family:'Inter','SF Mono',Menlo,Consolas,monospace;
+  transition:border-color 150ms, background 150ms;
+  text-align:center;
+}
+input[type="text"]::placeholder, input[type="password"]::placeholder { color:rgba(255,255,255,0.50); letter-spacing:0.1em; }
+input[type="text"]:focus, input[type="password"]:focus { outline:0; border-color:var(--gold); background:rgba(255,255,255,0.15); }
+
+button.primary {
+  width:100%; padding:16px 22px;
+  border-radius:var(--r-md); border:0; cursor:pointer;
+  background:var(--gold); color:var(--navy);
+  font:inherit; font-size:15.5px; font-weight:700; letter-spacing:-0.01em;
+  transition:transform 100ms, background 150ms, box-shadow 200ms;
+  box-shadow:0 6px 14px rgba(224,179,65,0.30);
+}
+button.primary:hover { background:#fff; }
+button.primary:active { transform:scale(0.97); }
+button.primary:disabled { opacity:0.55; cursor:wait; }
+
+.message {
+  margin-top:14px; padding:10px 14px;
+  border-radius:12px; font-size:13.5px;
+  background:rgba(220,38,38,0.18); border:1px solid rgba(220,38,38,0.40);
+  display:none; opacity:0;
+  transition:opacity 200ms;
+}
+.message.show { display:block; opacity:1; }
+.message.ok { background:rgba(21,128,61,0.18); border-color:rgba(21,128,61,0.40); }
+
+.foot {
+  margin-top:38px; display:flex; gap:18px; flex-wrap:wrap;
+  font-size:13px; color:rgba(255,255,255,0.75);
+}
+.foot a { color:var(--gold-soft); text-decoration:none; }
+.foot .dot {
+  display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--gold);
+  margin-right:6px; vertical-align:middle;
+  box-shadow:0 0 0 0 rgba(224,179,65,0.7);
+  animation: pulse 1.6s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow:0 0 0 0 rgba(224,179,65,0.7); }
+  70% { box-shadow:0 0 0 12px rgba(224,179,65,0); }
+  100% { box-shadow:0 0 0 0 rgba(224,179,65,0); }
+}
+.brand { position:absolute; top:24px; left:24px; z-index:3;
+  font-weight:800; letter-spacing:-0.01em; font-size:16px; }
+.brand .dot { color:var(--gold); }
+.request-link { display:block; text-align:center; margin-top:22px; font-size:13px; color:rgba(255,255,255,0.75); text-decoration:none; }
+.request-link u { color:var(--gold-soft); }
 </style>
 </head>
 <body>
-<svg class="skyline" viewBox="0 0 460 140" preserveAspectRatio="xMidYEnd slice" aria-hidden="true">
+
+<div class="brand">walking<span class="dot">.</span>explorers</div>
+
+<svg class="skyline" viewBox="0 0 460 220" preserveAspectRatio="xMidYEnd slice" aria-hidden="true">
   <g opacity="0.65" fill="#091226">
-    <polygon points="20,140 20,40 36,20 50,40 50,140"/>
-    <line x1="35" y1="20" x2="35" y2="5" stroke="#091226" stroke-width="2"/>
-    <rect x="55" y="55" width="16" height="85"/>
-    <rect x="71" y="65" width="14" height="75"/>
-    <rect x="85" y="50" width="16" height="90"/>
-    <rect x="106" y="15" width="14" height="125"/>
-    <rect x="125" y="55" width="32" height="85"/>
-    <rect x="131" y="30" width="20" height="25"/>
-    <rect x="137" y="15" width="8" height="15"/>
-    <rect x="165" y="55" width="22" height="85"/>
-    <polygon points="165,55 176,30 187,55"/>
-    <polygon points="170,30 176,10 182,30"/>
-    <rect x="195" y="40" width="20" height="100"/>
-    <polygon points="220,80 230,80 250,140 220,140"/>
-    <rect x="255" y="45" width="22" height="95"/>
-    <rect x="282" y="65" width="14" height="75"/>
-    <rect x="296" y="50" width="18" height="90"/>
-    <rect x="314" y="60" width="16" height="80"/>
-    <rect x="335" y="25" width="18" height="115"/>
-    <rect x="353" y="40" width="12" height="100"/>
-    <rect x="375" y="75" width="8" height="65"/>
-    <rect x="425" y="75" width="8" height="65"/>
-    <path d="M 379 75 Q 404 105 429 75" stroke="#091226" stroke-width="1.5" fill="none"/>
-    <path d="M 379 75 Q 404 95 429 75" stroke="#091226" stroke-width="1" fill="none"/>
-    <rect x="437" y="55" width="14" height="85"/>
-    <rect x="451" y="70" width="9" height="70"/>
+    <polygon points="20,210 20,100 36,80 50,100 50,210"/><line x1="35" y1="80" x2="35" y2="60" stroke="#091226" stroke-width="2"/>
+    <rect x="55" y="125" width="16" height="95"/><rect x="71" y="135" width="14" height="85"/><rect x="85" y="120" width="16" height="100"/>
+    <rect x="106" y="60" width="14" height="160"/>
+    <rect x="125" y="120" width="32" height="100"/><rect x="131" y="80" width="20" height="40"/><rect x="137" y="60" width="8" height="20"/>
+    <line x1="141" y1="60" x2="141" y2="38" stroke="#091226" stroke-width="2"/>
+    <rect x="165" y="120" width="22" height="100"/><polygon points="165,120 176,80 187,120"/><polygon points="170,80 176,55 182,80"/>
+    <line x1="176" y1="55" x2="176" y2="38" stroke="#091226" stroke-width="2"/>
+    <rect x="195" y="95" width="20" height="125"/>
+    <polygon points="220,140 230,140 250,210 220,210"/>
+    <rect x="255" y="105" width="22" height="115"/><polygon points="255,105 266,90 277,105"/>
+    <rect x="282" y="130" width="14" height="90"/><rect x="296" y="115" width="18" height="105"/><rect x="314" y="125" width="16" height="95"/>
+    <rect x="335" y="80" width="18" height="140"/><rect x="353" y="100" width="12" height="120"/>
+    <rect x="375" y="135" width="8" height="85"/><rect x="425" y="135" width="8" height="85"/>
+    <path d="M 379 135 Q 404 168 429 135" stroke="#091226" stroke-width="1.5" fill="none"/>
+    <path d="M 379 135 Q 404 158 429 135" stroke="#091226" stroke-width="1" fill="none"/>
+    <rect x="437" y="125" width="14" height="95"/><rect x="451" y="140" width="9" height="80"/>
   </g>
   <g fill="#E0B341" opacity="0.85">
-    <rect x="60" y="95" width="2" height="3"/><rect x="78" y="105" width="2" height="3"/><rect x="110" y="50" width="2" height="3"/>
-    <rect x="132" y="90" width="2" height="3"/><rect x="170" y="95" width="2" height="3"/><rect x="200" y="75" width="2" height="3"/>
-    <rect x="262" y="85" width="2" height="3"/><rect x="290" y="95" width="2" height="3"/><rect x="340" y="60" width="2" height="3"/>
+    <rect x="35" y="155" width="2" height="3"/><rect x="78" y="170" width="2" height="3"/>
+    <rect x="113" y="135" width="2" height="3"/><rect x="142" y="175" width="2" height="3"/>
+    <rect x="170" y="160" width="2" height="3"/><rect x="200" y="130" width="2" height="3"/>
+    <rect x="262" y="140" width="2" height="3"/><rect x="290" y="150" width="2" height="3"/>
+    <rect x="340" y="120" width="2" height="3"/>
   </g>
 </svg>
-<div class="card">
-  <div class="eyebrow">Walking Explorers · NYC beta</div>
+
+<main class="card">
+  <div class="eyebrow">Walking Explorers · Private NYC beta</div>
   <span class="accent-bar"></span>
-  <h1>The beta is in private testing.<span class="gold">Want in?</span></h1>
-  <p class="lede">12 hand-curated routes through SoHo, Brooklyn, Williamsburg, and five more NYC neighborhoods. Working today on iOS and Android — we’re onboarding new walkers in waves. Ask Nova for early access.</p>
-  <div class="cta-row">
-    <a class="btn btn-accent" href="mailto:mbkill4ever@gmail.com?subject=Walking%20Explorers%20—%20Beta%20access&body=Hey%20Nova%2C%20I%27d%20love%20to%20try%20the%20Walking%20Explorers%20beta%20in%20NYC.%20%5BAdd%20your%20name%2C%20which%20neighborhood%20you%20live%20in%20or%20visit%20most%2C%20and%20whether%20you%27re%20on%20iOS%20or%20Android.%5D">Request beta access →</a>
-    <a class="btn btn-ghost" href="/">Back to home</a>
-  </div>
-  <div class="meta-row">
+  <h1>Welcome back.<span class="gold">Enter your code.</span></h1>
+  <p class="lede">Beta access is invite-only while we onboard the first NYC walkers in waves.</p>
+
+  <form class="form" id="loginForm" autocomplete="off" novalidate>
+    <div class="input-wrap">
+      <label>Invite code</label>
+      <input type="text" id="code" name="code" placeholder="e.g. d7Tn…fkX3" maxlength="40" required
+             autocapitalize="off" autocorrect="off" spellcheck="false" />
+    </div>
+    <button class="primary" id="submitBtn" type="submit">Enter the beta &rarr;</button>
+    <div class="message" id="msg"></div>
+  </form>
+
+  <a class="request-link" href="mailto:mbkill4ever@gmail.com?subject=Walking%20Explorers%20%E2%80%94%20Beta%20access&body=Hey%20Nova%2C%20I%27d%20love%20to%20try%20Walking%20Explorers%20%E2%80%94%20%5BAdd%20your%20name%2C%20which%20NYC%20neighborhood%20you%27re%20in%20or%20visit%20most%2C%20and%20whether%20you%27re%20on%20iOS%20or%20Android.%5D">No code yet? <u>Request access &rarr;</u></a>
+
+  <div class="foot">
     <span><span class="dot"></span>Beta status: invite-only</span>
     <span>iOS &amp; Android</span>
-    <span>Pilot launching 2026</span>
   </div>
-</div>
-<div class="foot">© 2026 Walking Explorers · <a href="mailto:mbkill4ever@gmail.com">mbkill4ever@gmail.com</a></div>
+</main>
+
+<script>
+(function(){
+  const form = document.getElementById('loginForm');
+  const codeInput = document.getElementById('code');
+  const btn = document.getElementById('submitBtn');
+  const msg = document.getElementById('msg');
+
+  // Auto-redirect if already signed in
+  fetch('/api/auth/me', { credentials: 'same-origin' })
+    .then(r => r.ok ? location.href = '/beta/app' : null).catch(() => {});
+
+  function showMsg(text, kind) {
+    msg.textContent = text;
+    msg.classList.toggle('ok', kind === 'ok');
+    msg.classList.add('show');
+  }
+
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    msg.classList.remove('show');
+    const code = codeInput.value.trim();
+    if (!code) { showMsg('Enter the invite code we sent you.'); return; }
+    btn.disabled = true; btn.textContent = 'Signing you in…';
+    try {
+      const r = await fetch('/api/auth/login', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code })
+      });
+      const data = await r.json().catch(() => ({}));
+      if (r.ok && data.ok) {
+        showMsg('Welcome — redirecting…', 'ok');
+        setTimeout(() => location.href = '/beta/app', 600);
+        return;
+      }
+      showMsg(data.message || 'That code didn’t work. Double-check and try again.');
+    } catch {
+      showMsg('Couldn’t reach the server. Try again in a moment.');
+    } finally {
+      btn.disabled = false; btn.textContent = 'Enter the beta →';
+    }
+  });
+
+  // Cosmetic: uppercase visual style (without altering value casing semantics)
+  codeInput.addEventListener('input', () => {
+    codeInput.value = codeInput.value.replace(/\s/g, '');
+  });
+})();
+</script>
 </body>
 </html>
