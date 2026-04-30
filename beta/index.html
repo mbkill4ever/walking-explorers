@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Walking Explorers — Beta access</title>
+<meta name="description" content="Walking Explorers — NYC beta. Request access.">
+<style>
+  :root {
+    --navy:#1F3864; --navy-2:#162B4A; --gold:#E0B341; --gold-soft:#F2D67D;
+    --cream:#FAF7F2; --ink:#1A1A1A; --mute:#9CA3AF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,sans-serif;
+    background:linear-gradient(155deg,var(--navy) 0%,#2E75B6 60%,var(--gold) 130%);
+    color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;
+    padding:32px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow:hidden;
+    position:relative;
+  }
+  body::before{content:"";position:absolute;inset:0;background:
+    radial-gradient(circle at 20% 10%,rgba(255,255,255,0.12),transparent 50%),
+    radial-gradient(circle at 80% 90%,rgba(224,179,65,0.20),transparent 60%);pointer-events:none}
+  .skyline{position:absolute;left:0;right:0;bottom:0;height:140px;opacity:0.45;pointer-events:none}
+  .skyline svg{width:100%;height:100%;display:block}
+  .card{position:relative;z-index:2;max-width:560px;width:100%;text-align:left}
+  .eyebrow{font-size:11px;font-weight:700;letter-spacing:0.18em;color:var(--gold-soft);margin-bottom:14px}
+  .accent-bar{display:inline-block;width:48px;height:3px;background:var(--gold);margin-bottom:18px;border-radius:2px}
+  h1{font-size:clamp(38px,6vw,64px);font-weight:800;letter-spacing:-0.025em;line-height:1.05;margin-bottom:18px}
+  h1 .gold{color:var(--gold);display:block}
+  p.lede{font-size:clamp(15px,1.6vw,18px);max-width:54ch;color:rgba(255,255,255,0.92);margin-bottom:32px}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 22px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;transition:all 140ms cubic-bezier(.33,1,.68,1);border:0;cursor:pointer}
+  .btn-accent{background:var(--gold);color:var(--navy)}
+  .btn-accent:hover{background:#fff;transform:translateY(-1px)}
+  .btn-ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.4)}
+  .btn-ghost:hover{background:rgba(255,255,255,0.10)}
+  .meta-row{margin-top:42px;display:flex;gap:24px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,0.75)}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-right:8px;vertical-align:middle;
+    box-shadow:0 0 0 0 rgba(224,179,65,0.7);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(224,179,65,0.7)}70%{box-shadow:0 0 0 12px rgba(224,179,65,0)}100%{box-shadow:0 0 0 0 rgba(224,179,65,0)}}
+  .foot{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-size:12px;color:rgba(255,255,255,0.55);z-index:2}
+  .foot a{color:rgba(255,255,255,0.85)}
+</style>
+</head>
+<body>
+<svg class="skyline" viewBox="0 0 460 140" preserveAspectRatio="xMidYEnd slice" aria-hidden="true">
+  <g opacity="0.65" fill="#091226">
+    <polygon points="20,140 20,40 36,20 50,40 50,140"/>
+    <line x1="35" y1="20" x2="35" y2="5" stroke="#091226" stroke-width="2"/>
+    <rect x="55" y="55" width="16" height="85"/>
+    <rect x="71" y="65" width="14" height="75"/>
+    <rect x="85" y="50" width="16" height="90"/>
+    <rect x="106" y="15" width="14" height="125"/>
+    <rect x="125" y="55" width="32" height="85"/>
+    <rect x="131" y="30" width="20" height="25"/>
+    <rect x="137" y="15" width="8" height="15"/>
+    <rect x="165" y="55" width="22" height="85"/>
+    <polygon points="165,55 176,30 187,55"/>
+    <polygon points="170,30 176,10 182,30"/>
+    <rect x="195" y="40" width="20" height="100"/>
+    <polygon points="220,80 230,80 250,140 220,140"/>
+    <rect x="255" y="45" width="22" height="95"/>
+    <rect x="282" y="65" width="14" height="75"/>
+    <rect x="296" y="50" width="18" height="90"/>
+    <rect x="314" y="60" width="16" height="80"/>
+    <rect x="335" y="25" width="18" height="115"/>
+    <rect x="353" y="40" width="12" height="100"/>
+    <rect x="375" y="75" width="8" height="65"/>
+    <rect x="425" y="75" width="8" height="65"/>
+    <path d="M 379 75 Q 404 105 429 75" stroke="#091226" stroke-width="1.5" fill="none"/>
+    <path d="M 379 75 Q 404 95 429 75" stroke="#091226" stroke-width="1" fill="none"/>
+    <rect x="437" y="55" width="14" height="85"/>
+    <rect x="451" y="70" width="9" height="70"/>
+  </g>
+  <g fill="#E0B341" opacity="0.85">
+    <rect x="60" y="95" width="2" height="3"/><rect x="78" y="105" width="2" height="3"/><rect x="110" y="50" width="2" height="3"/>
+    <rect x="132" y="90" width="2" height="3"/><rect x="170" y="95" width="2" height="3"/><rect x="200" y="75" width="2" height="3"/>
+    <rect x="262" y="85" width="2" height="3"/><rect x="290" y="95" width="2" height="3"/><rect x="340" y="60" width="2" height="3"/>
+  </g>
+</svg>
+<div class="card">
+  <div class="eyebrow">Walking Explorers · NYC beta</div>
+  <span class="accent-bar"></span>
+  <h1>The beta is in private testing.<span class="gold">Want in?</span></h1>
+  <p class="lede">12 hand-curated routes through SoHo, Brooklyn, Williamsburg, and five more NYC neighborhoods. Working today on iOS and Android — we’re onboarding new walkers in waves. Ask Nova for early access.</p>
+  <div class="cta-row">
+    <a class="btn btn-accent" href="mailto:mbkill4ever@gmail.com?subject=Walking%20Explorers%20—%20Beta%20access&body=Hey%20Nova%2C%20I%27d%20love%20to%20try%20the%20Walking%20Explorers%20beta%20in%20NYC.%20%5BAdd%20your%20name%2C%20which%20neighborhood%20you%20live%20in%20or%20visit%20most%2C%20and%20whether%20you%27re%20on%20iOS%20or%20Android.%5D">Request beta access →</a>
+    <a class="btn btn-ghost" href="/">Back to home</a>
+  </div>
+  <div class="meta-row">
+    <span><span class="dot"></span>Beta status: invite-only</span>
+    <span>iOS &amp; Android</span>
+    <span>Pilot launching 2026</span>
+  </div>
+</div>
+<div class="foot">© 2026 Walking Explorers · <a href="mailto:mbkill4ever@gmail.com">mbkill4ever@gmail.com</a></div>
+</body>
+</html>
