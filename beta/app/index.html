@@ -1,0 +1,1301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#1F3864" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Walking Explorers — Beta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<style>
+:root {
+  --navy:#1F3864; --navy-2:#162B4A; --navy-3:#0E1B30;
+  --blue:#2E75B6; --blue-soft:#5C9FE0;
+  --gold:#E0B341; --gold-soft:#F2D67D; --gold-dark:#B8941F;
+  --cream:#FAF7F2; --cream-2:#F4EFE6;
+  --ink:#0E1320; --ink-2:#2C3142;
+  --mute:#6B7280; --mute-2:#9CA3AF;
+  --line:#E8E2D6; --line-2:#F1ECDF;
+  --good:#15803D; --love:#DC2626; --warn:#C2410C;
+  --shadow-1:0 1px 2px rgba(14,19,32,0.06);
+  --shadow-2:0 6px 18px rgba(14,19,32,0.10);
+  --shadow-3:0 18px 40px rgba(14,19,32,0.16);
+  --r-sm:10px; --r-md:16px; --r-lg:22px;
+  --ease:cubic-bezier(.33,1,.68,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+}
+* { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body { margin:0; padding:0; height:100%; overscroll-behavior:none; }
+body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background:var(--cream); color:var(--ink);
+  font-size:15.5px; line-height:1.5; letter-spacing:-0.01em;
+  -webkit-font-smoothing:antialiased; }
+
+#app { max-width:460px; margin:0 auto; height:100vh; height:100svh;
+  background:var(--cream); position:relative; overflow:hidden;
+  box-shadow:0 0 60px rgba(14,19,32,0.08); }
+
+.screen { position:absolute; inset:0 0 64px 0; display:none; flex-direction:column;
+  overflow-y:auto; -webkit-overflow-scrolling:touch; background:var(--cream); }
+.screen.active { display:flex; animation:screenIn 320ms var(--ease-out); }
+.screen.no-tab { inset:0; }
+@keyframes screenIn { from { opacity:0; transform:translateX(8px); } to { opacity:1; transform:translateX(0); } }
+
+/* Top bar */
+.topbar { display:flex; align-items:center; gap:14px;
+  padding:18px 20px 14px; background:var(--cream);
+  position:sticky; top:0; z-index:10; flex-shrink:0; }
+.topbar.bordered { border-bottom:1px solid var(--line); background:rgba(250,247,242,0.92); backdrop-filter:blur(10px); }
+.topbar h2 { margin:0; font-size:17px; font-weight:600; flex:1; letter-spacing:-0.02em; }
+.icon-btn { width:40px; height:40px; border-radius:50%;
+  background:white; border:1px solid var(--line);
+  display:grid; place-items:center; cursor:pointer;
+  transition:120ms var(--ease); box-shadow:var(--shadow-1); color:var(--ink-2); }
+.icon-btn:active { transform:scale(0.92); background:var(--cream-2); }
+.icon-btn svg { width:20px; height:20px; stroke-width:2; }
+
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:16px 22px; border-radius:var(--r-md); border:0;
+  font-family:inherit; font-size:15.5px; font-weight:600;
+  cursor:pointer; transition:transform 100ms var(--ease), background 150ms ease;
+  letter-spacing:-0.01em; text-decoration:none; }
+.btn:active { transform:scale(0.97); }
+.btn-primary { background:var(--navy); color:white; box-shadow:var(--shadow-2); }
+.btn-primary:hover { background:var(--navy-2); }
+.btn-accent { background:var(--gold); color:var(--navy); box-shadow:0 6px 14px rgba(224,179,65,0.30); }
+.btn-outline { background:white; color:var(--navy); border:1.5px solid var(--line); }
+.btn-block { width:100%; }
+.btn-sm { padding:10px 16px; font-size:13.5px; border-radius:var(--r-sm); }
+
+/* Greeting / sections */
+.greeting-wrap { padding:22px 22px 8px; }
+.greeting-eyebrow { font-size:12px; font-weight:700; color:var(--gold-dark);
+  letter-spacing:0.08em; text-transform:uppercase; }
+.greeting-h { margin:4px 0 6px; font-size:26px; font-weight:700; letter-spacing:-0.02em; line-height:1.15; }
+.greeting-sub { color:var(--mute); font-size:14px; }
+.section-h { margin:24px 22px 12px; display:flex; align-items:center; justify-content:space-between; }
+.section-h h3 { font-size:17px; font-weight:700; letter-spacing:-0.01em; margin:0; }
+.section-h .more { font-size:13px; color:var(--blue); font-weight:600; cursor:pointer; }
+
+/* Route cards */
+.route-list { padding:4px 18px 24px; display:grid; gap:16px; }
+.route-card { position:relative; background:white; border-radius:var(--r-lg);
+  overflow:hidden; cursor:pointer; box-shadow:var(--shadow-2);
+  transition:200ms var(--ease); }
+.route-card:active { transform:translateY(1px) scale(0.995); }
+.route-cover { position:relative; aspect-ratio:16/9;
+  display:flex; align-items:flex-end; padding:14px; }
+.route-cover .cover-art { position:absolute; inset:0; }
+.route-cover .cover-overlay { position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.55) 100%); }
+.route-cover .badge-ai { position:absolute; top:14px; left:14px; z-index:3;
+  background:var(--gold); color:var(--navy);
+  padding:5px 10px; border-radius:100px;
+  font-size:11px; font-weight:700; letter-spacing:0.04em;
+  text-transform:uppercase; box-shadow:0 4px 10px rgba(224,179,65,0.4); }
+.route-cover .meta-pill { position:relative; z-index:2;
+  display:inline-flex; gap:6px; align-items:center;
+  background:rgba(0,0,0,0.40); backdrop-filter:blur(6px);
+  color:white; padding:6px 12px; border-radius:100px;
+  font-size:12px; font-weight:600; }
+.route-body { padding:16px 18px 18px; }
+.route-body .nbhd-tag { font-size:11.5px; color:var(--gold-dark); font-weight:700;
+  letter-spacing:0.06em; text-transform:uppercase; margin-bottom:4px; }
+.route-body .title { font-size:17px; font-weight:700; letter-spacing:-0.01em; line-height:1.25; }
+.route-body .desc { color:var(--ink-2); font-size:13.5px; margin-top:6px; line-height:1.5; }
+.route-body .meta-row { margin-top:12px; padding-top:12px;
+  border-top:1px dashed var(--line);
+  display:flex; gap:14px; flex-wrap:wrap;
+  font-size:12.5px; color:var(--mute); }
+
+/* Detail */
+.detail-hero { position:relative; aspect-ratio:16/10;
+  display:flex; align-items:flex-end; padding:18px 20px; color:white; }
+.detail-hero .cover-art { position:absolute; inset:0; }
+.detail-hero .cover-overlay { position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.75) 100%); }
+.detail-hero .nav-icons { position:absolute; top:16px; left:16px; right:16px;
+  display:flex; justify-content:space-between; z-index:5; }
+.detail-hero .nav-icons .icon-btn { background:rgba(255,255,255,0.92); border:0; }
+.detail-hero h1 { position:relative; z-index:2; margin:0; font-size:28px;
+  font-weight:800; letter-spacing:-0.02em; line-height:1.10; }
+.detail-hero .nbhd-tag { position:relative; z-index:2; font-size:12px; font-weight:700;
+  letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--gold-soft); margin-bottom:6px; }
+.detail-meta { display:flex; gap:24px; padding:18px 20px;
+  background:white; border-bottom:1px solid var(--line); }
+.detail-meta .stat .n { font-weight:700; font-size:18px; letter-spacing:-0.01em; }
+.detail-meta .stat .l { font-size:11.5px; color:var(--mute); margin-top:2px; text-transform:uppercase; letter-spacing:0.05em; }
+#map, #archiveMap { width:100%; height:220px; }
+.map-section { position:relative; }
+.detail-desc { padding:22px 20px 8px; font-size:14.5px; color:var(--ink-2); line-height:1.6; }
+.stops-list { padding:14px 18px 24px; display:grid; gap:10px; }
+.stop { background:white; border:1px solid var(--line);
+  border-radius:var(--r-md); padding:14px;
+  display:flex; gap:12px; cursor:pointer; transition:120ms var(--ease);
+  box-shadow:var(--shadow-1); }
+.stop .n { width:30px; height:30px; border-radius:50%;
+  background:var(--navy); color:white; font-weight:700; font-size:13px;
+  display:grid; place-items:center; flex-shrink:0; }
+.stop.sponsored .n { background:var(--gold); color:var(--navy); }
+.stop .body h3 { margin:0; font-size:15px; font-weight:600; letter-spacing:-0.01em; }
+.stop .body p { margin:3px 0 0; font-size:13px; color:var(--mute); line-height:1.5; }
+.stop .body .why { margin-top:9px; font-size:12px;
+  background:var(--cream-2); padding:7px 10px; border-radius:8px;
+  color:var(--ink-2); border-left:3px solid var(--gold); }
+.stop .badge { margin-left:auto; align-self:flex-start; flex-shrink:0;
+  font-size:9.5px; padding:3px 7px; border-radius:100px;
+  background:var(--gold); color:var(--navy);
+  text-transform:uppercase; letter-spacing:0.05em; font-weight:800; }
+
+.action-bar { display:grid; grid-template-columns:56px 1fr; gap:10px;
+  padding:12px 18px 22px; border-top:1px solid var(--line);
+  background:rgba(250,247,242,0.95); backdrop-filter:blur(8px);
+  position:sticky; bottom:0; }
+.action-bar .icon-btn { width:56px; height:56px; }
+
+/* Walk mode */
+.walk-screen { display:none; flex-direction:column; height:100%; }
+.walk-screen.active { display:flex; animation:screenIn 320ms var(--ease-out); }
+.walk-header { background:var(--navy); color:white; padding:18px 20px;
+  display:flex; align-items:flex-start; justify-content:space-between;
+  position:relative; }
+.walk-progress { position:absolute; left:0; right:0; bottom:0; height:3px; background:rgba(255,255,255,0.15); }
+.walk-progress .fill { height:100%; background:var(--gold); transition:width 360ms var(--ease-out); }
+.walk-header .stop-counter { font-size:11px; opacity:0.7; letter-spacing:0.1em; text-transform:uppercase; font-weight:700; }
+.walk-header h2 { margin:6px 0 0; font-size:20px; font-weight:700; letter-spacing:-0.02em; max-width:80%; }
+.walk-header .icon-btn { background:rgba(255,255,255,0.12); border:0; color:white; }
+.walk-body { padding:22px 22px 28px; flex:1; }
+.stop-photo-frame { position:relative; aspect-ratio:4/5;
+  border-radius:var(--r-lg); overflow:hidden;
+  margin-bottom:18px; box-shadow:var(--shadow-3); }
+.stop-photo-frame .art { position:absolute; inset:0; }
+.stop-photo-frame .label { position:absolute; left:16px; right:16px; bottom:14px;
+  color:white; font-weight:600; font-size:14px;
+  text-shadow:0 2px 14px rgba(0,0,0,0.5); }
+.stop-photo-frame .sponsored-tag { position:absolute; top:14px; left:14px;
+  background:var(--gold); color:var(--navy);
+  padding:5px 10px; border-radius:100px;
+  font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; }
+.stop-photo-frame .flash { position:absolute; inset:0; background:white; opacity:0; pointer-events:none; transition:opacity 80ms ease-out; }
+.stop-photo-frame .flash.on { opacity:0.85; transition:opacity 220ms ease-in; }
+.walk-body p.story { margin:0 0 14px; font-size:15px; line-height:1.55; }
+.why-card { font-size:13px; background:var(--cream-2);
+  padding:12px 14px; border-radius:var(--r-md);
+  border-left:3px solid var(--gold); color:var(--ink-2); margin-bottom:16px; }
+.walk-foot { display:flex; gap:14px; flex-wrap:wrap; font-size:12.5px; color:var(--mute); }
+.walk-foot span { display:inline-flex; align-items:center; gap:5px;
+  background:var(--cream-2); padding:6px 12px;
+  border-radius:100px; font-weight:500; }
+.walk-foot .sponsored { background:rgba(224,179,65,0.2); color:var(--gold-dark); font-weight:700; }
+.walk-controls { display:flex; gap:10px; padding:14px 20px 22px;
+  border-top:1px solid var(--line); background:white; }
+.walk-controls .btn { flex:1; }
+
+/* Capture modal */
+.modal { position:fixed; inset:0; z-index:200;
+  background:rgba(14,19,32,0.65);
+  display:none; align-items:flex-end; }
+.modal.show { display:flex; animation:modalIn 200ms var(--ease-out); }
+@keyframes modalIn { from { opacity:0; } to { opacity:1; } }
+.modal-card { background:var(--cream); border-radius:24px 24px 0 0;
+  width:100%; max-width:460px; margin:0 auto;
+  padding:22px 22px calc(22px + env(safe-area-inset-bottom, 0));
+  box-shadow:0 -10px 40px rgba(0,0,0,0.2);
+  max-height:85vh; overflow-y:auto;
+  animation:sheetIn 280ms var(--ease-out); }
+@keyframes sheetIn { from { transform:translateY(40px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+.modal-handle { width:40px; height:4px; border-radius:2px; background:var(--mute-2); opacity:0.5; margin:0 auto 16px; }
+.modal-card h2 { margin:4px 0 6px; font-size:22px; font-weight:700; letter-spacing:-0.02em; }
+.modal-card p.sub { color:var(--mute); font-size:14px; margin:0 0 18px; }
+.capture-photo-zone { position:relative; aspect-ratio:4/3;
+  border-radius:var(--r-md); overflow:hidden;
+  background:var(--cream-2); border:1.5px dashed var(--line);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:150ms var(--ease); margin-bottom:14px; }
+.capture-photo-zone:hover { border-color:var(--navy); }
+.capture-photo-zone img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.capture-photo-zone .placeholder { text-align:center; color:var(--mute); padding:16px; }
+.capture-photo-zone .placeholder svg { width:36px; height:36px; margin-bottom:8px; color:var(--navy); }
+.capture-photo-zone input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; z-index:2; }
+.tag-grid { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+.tag { background:white; border:1.5px solid var(--line); padding:8px 13px;
+  border-radius:100px; font-size:12.5px; font-weight:600; color:var(--ink-2);
+  cursor:pointer; transition:140ms var(--ease); user-select:none; }
+.tag.selected { background:var(--navy); color:var(--gold); border-color:var(--navy); }
+.rating-row { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:16px; }
+.rating-pill { text-align:center; padding:10px 6px;
+  background:white; border:1.5px solid var(--line);
+  border-radius:var(--r-md); cursor:pointer;
+  font-size:12px; font-weight:600; transition:140ms var(--ease); }
+.rating-pill .dot { display:block; width:12px; height:12px; border-radius:50%; margin:0 auto 4px; background:var(--mute-2); }
+.rating-pill.selected { color:white; border-color:transparent; }
+.rating-pill.r-low.selected { background:#6B7280; }
+.rating-pill.r-medium.selected { background:var(--blue); }
+.rating-pill.r-high.selected { background:var(--gold-dark); }
+.rating-pill.r-legendary.selected { background:var(--love); }
+.rating-pill.r-legendary.selected .dot { background:white; }
+.notes-input { width:100%; min-height:60px; max-height:160px; resize:vertical;
+  padding:12px 14px; border-radius:var(--r-md);
+  border:1.5px solid var(--line); background:white;
+  font:inherit; font-size:14px; color:var(--ink); margin-bottom:14px; }
+.notes-input:focus { outline:none; border-color:var(--navy); }
+.gps-row { display:flex; align-items:center; gap:8px;
+  font-size:12px; color:var(--mute); margin-bottom:18px;
+  padding:8px 12px; background:var(--cream-2); border-radius:var(--r-sm); }
+.gps-row.locked { color:var(--good); }
+
+/* Archive */
+.archive-empty { padding:60px 28px; text-align:center; }
+.archive-empty .ic { width:72px; height:72px; border-radius:50%;
+  background:var(--cream-2); margin:0 auto 18px;
+  display:grid; place-items:center; color:var(--navy); }
+.archive-empty .ic svg { width:32px; height:32px; }
+.archive-empty h3 { margin:0 0 8px; font-size:19px; font-weight:700; letter-spacing:-0.01em; }
+.archive-empty p { margin:0 0 24px; color:var(--mute); font-size:14px; }
+.view-toggle { display:inline-flex; padding:4px;
+  background:var(--cream-2); border-radius:100px; }
+.view-toggle button { padding:8px 18px; border:0; border-radius:100px;
+  background:transparent; font:inherit; font-size:13px; font-weight:600;
+  color:var(--mute); cursor:pointer; }
+.view-toggle button.on { background:white; color:var(--navy); box-shadow:var(--shadow-1); }
+.spot-list { padding:4px 18px 24px; display:grid; gap:14px; }
+.spot-card { background:white; border-radius:var(--r-lg); overflow:hidden;
+  box-shadow:var(--shadow-2); cursor:pointer; transition:200ms var(--ease);
+  display:grid; grid-template-columns:110px 1fr; }
+.spot-card .photo { position:relative; aspect-ratio:1;
+  background-size:cover; background-position:center;
+  background-color:var(--cream-2); }
+.spot-card .photo .rating-badge { position:absolute; top:8px; left:8px;
+  width:14px; height:14px; border-radius:50%; border:2px solid white; }
+.spot-card .body { padding:12px 14px; min-width:0; }
+.spot-card .body h4 { margin:0; font-size:15px; font-weight:700; letter-spacing:-0.01em;
+  line-height:1.2; overflow:hidden; text-overflow:ellipsis;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+.spot-card .body .nbhd-tag { font-size:10px; font-weight:700; color:var(--gold-dark);
+  letter-spacing:0.06em; text-transform:uppercase; margin-top:4px; }
+.spot-card .body .tag-row { margin-top:6px; display:flex; flex-wrap:wrap; gap:4px; }
+.spot-card .body .tag-row span { font-size:10px; padding:2px 6px; background:var(--cream-2);
+  border-radius:100px; color:var(--ink-2); font-weight:500; }
+.spot-card .body .meta { font-size:11px; color:var(--mute); margin-top:6px;
+  display:flex; gap:8px; flex-wrap:wrap; }
+
+/* Offers */
+.offer-list { padding:4px 18px 24px; display:grid; gap:14px; }
+.offer-card { background:white; border-radius:var(--r-lg);
+  box-shadow:var(--shadow-2); padding:16px;
+  position:relative; overflow:hidden; }
+.offer-card.featured { background:linear-gradient(135deg, #1F3864 0%, #162B4A 100%); color:white; }
+.offer-card .head { display:flex; align-items:flex-start; justify-content:space-between;
+  gap:12px; margin-bottom:8px; }
+.offer-card .name { font-weight:700; font-size:15px; letter-spacing:-0.01em; }
+.offer-card.featured .name { color:white; }
+.offer-card .nbhd-tag { font-size:10px; font-weight:700;
+  color:var(--gold-dark); letter-spacing:0.06em;
+  text-transform:uppercase; margin-top:2px; }
+.offer-card.featured .nbhd-tag { color:var(--gold-soft); }
+.offer-card .price { background:var(--cream-2); color:var(--ink-2);
+  padding:3px 10px; border-radius:100px;
+  font-size:11px; font-weight:700; }
+.offer-card.featured .price { background:rgba(255,255,255,0.15); color:white; }
+.offer-card .offer { font-size:17px; font-weight:700; letter-spacing:-0.01em;
+  margin:8px 0 12px; line-height:1.25;
+  background:linear-gradient(135deg, var(--gold-dark), var(--navy));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.offer-card.featured .offer {
+  background:linear-gradient(135deg, var(--gold-soft), white);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.offer-card .meta { display:flex; gap:12px; flex-wrap:wrap;
+  font-size:12px; color:var(--mute); margin-bottom:12px; }
+.offer-card.featured .meta { color:rgba(255,255,255,0.7); }
+.offer-card .actions { display:grid; grid-template-columns:1fr auto; gap:8px;
+  padding-top:12px; border-top:1px dashed var(--line); }
+.offer-card.featured .actions { border-top-color:rgba(255,255,255,0.2); }
+.offer-card .add-btn { background:var(--navy); color:white;
+  padding:10px 14px; border-radius:var(--r-sm);
+  border:0; font:inherit; font-size:13px; font-weight:600; cursor:pointer; }
+.offer-card.featured .add-btn { background:var(--gold); color:var(--navy); }
+.promo-route-cta { margin:14px 18px 22px;
+  background:linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  border-radius:var(--r-lg); padding:18px;
+  color:var(--navy); position:relative; overflow:hidden;
+  cursor:pointer; box-shadow:0 8px 20px rgba(224,179,65,0.30); }
+.promo-route-cta .eyebrow { font-size:11px; font-weight:800; letter-spacing:0.1em;
+  text-transform:uppercase; color:rgba(31,56,100,0.7); }
+.promo-route-cta h3 { margin:6px 0 4px; font-size:18px; font-weight:800; letter-spacing:-0.01em;
+  line-height:1.2; max-width:22ch; }
+.promo-route-cta p { margin:0; font-size:13px; color:rgba(31,56,100,0.85); line-height:1.4; }
+.promo-route-cta .btn-row { margin-top:12px; display:inline-flex;
+  align-items:center; gap:6px;
+  background:var(--navy); color:var(--gold);
+  padding:8px 14px; border-radius:100px;
+  font-size:13px; font-weight:700; }
+
+/* Feedback / Request Feature / Changelog */
+.tabs-row { display:flex; gap:8px; padding:0 18px 14px; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.tab-pill { background:white; border:1.5px solid var(--line); border-radius:100px;
+  padding:8px 14px; font:inherit; font-size:13px; font-weight:600; color:var(--ink-2);
+  cursor:pointer; white-space:nowrap; transition:140ms var(--ease); }
+.tab-pill.on { background:var(--navy); color:white; border-color:var(--navy); }
+
+.fb-list { padding:4px 18px 24px; display:grid; gap:12px; }
+.fb-card { background:white; border-radius:var(--r-md); padding:16px;
+  box-shadow:var(--shadow-1); border:1px solid var(--line); }
+.fb-card .head { display:flex; gap:10px; align-items:flex-start; }
+.fb-card .vote { display:flex; flex-direction:column; align-items:center;
+  background:var(--cream-2); border-radius:10px; padding:6px 8px;
+  min-width:46px; cursor:pointer; transition:140ms var(--ease); }
+.fb-card .vote:active { transform:scale(0.95); }
+.fb-card .vote.voted { background:rgba(224,179,65,0.18); }
+.fb-card .vote svg { width:14px; height:14px; color:var(--navy); }
+.fb-card .vote .n { font-size:14px; font-weight:800; color:var(--ink); margin-top:2px; }
+.fb-card .body { flex:1; min-width:0; }
+.fb-card .body h4 { margin:0; font-size:15px; font-weight:700; letter-spacing:-0.01em; }
+.fb-card .body p { margin:6px 0 0; font-size:13px; color:var(--ink-2); line-height:1.5; }
+.fb-card .body .meta { margin-top:8px; font-size:11px; color:var(--mute);
+  display:flex; gap:10px; flex-wrap:wrap; }
+.fb-card .body .status { padding:2px 8px; border-radius:100px;
+  background:var(--cream-2); color:var(--ink-2); font-weight:600; }
+.fb-card .body .status.shipped { background:rgba(21,128,61,0.15); color:var(--good); }
+.fb-card .body .status.planned { background:rgba(46,117,182,0.15); color:var(--blue); }
+.fb-card .body .status.reviewing { background:rgba(224,179,65,0.18); color:var(--gold-dark); }
+
+.fb-form { padding:0 18px 24px; }
+.fb-form .input { width:100%; padding:14px 16px;
+  border-radius:var(--r-md); border:1.5px solid var(--line); background:white;
+  font:inherit; font-size:15px; color:var(--ink); margin-bottom:12px; }
+.fb-form textarea { min-height:90px; max-height:280px; resize:vertical; }
+.fb-form .input:focus { outline:none; border-color:var(--navy); }
+.fb-form .row { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+.fb-form select.input { -webkit-appearance:none; appearance:none; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231F3864' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat:no-repeat; background-position:right 14px center; padding-right:40px; }
+
+/* Changelog */
+.changelog { padding:4px 22px 32px; }
+.changelog .release { padding:18px 0; border-bottom:1px solid var(--line); }
+.changelog .release h4 { margin:0; font-size:16px; font-weight:700; }
+.changelog .release time { font-size:11.5px; color:var(--mute); font-weight:600; letter-spacing:0.04em; }
+.changelog .release ul { margin:10px 0 0; padding-left:18px; font-size:14px; line-height:1.6; }
+.changelog .release ul li { margin-bottom:4px; color:var(--ink-2); }
+
+/* Tab bar */
+.tabbar { position:absolute; left:0; right:0; bottom:0; height:64px;
+  background:rgba(255,255,255,0.96); backdrop-filter:blur(20px);
+  border-top:1px solid var(--line);
+  display:grid; grid-template-columns:repeat(5, 1fr);
+  z-index:50; padding-bottom:env(safe-area-inset-bottom, 0); }
+.tabbar.hidden { display:none; }
+.tabbar button { background:transparent; border:0; cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; font:inherit; color:var(--mute); transition:color 140ms; padding:6px 4px; }
+.tabbar button svg { width:22px; height:22px; stroke-width:2; }
+.tabbar button .lbl { font-size:10.5px; font-weight:600; }
+.tabbar button.active, .tabbar button.active .lbl { color:var(--navy); }
+.tabbar button:active { transform:scale(0.9); }
+.tabbar button.has-dot { position:relative; }
+.tabbar button.has-dot::after { content:""; position:absolute; top:8px; right:50%; margin-right:-14px;
+  width:6px; height:6px; border-radius:50%; background:var(--love); }
+
+.toast { position:fixed; left:50%; top:32px; transform:translateX(-50%);
+  background:var(--ink); color:white;
+  padding:12px 18px; border-radius:12px;
+  font-size:13.5px; font-weight:500;
+  box-shadow:var(--shadow-3);
+  z-index:200; max-width:340px;
+  display:flex; align-items:center; gap:10px;
+  opacity:0; pointer-events:none; transition:all 240ms var(--ease-out); }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* Loading splash */
+.boot { position:absolute; inset:0; z-index:100; background:var(--cream);
+  display:flex; align-items:center; justify-content:center; }
+.boot .ring { width:36px; height:36px; border-radius:50%;
+  border:3px solid var(--line-2); border-top-color:var(--navy);
+  animation:spin 800ms linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+.muted { color:var(--mute); }
+.center { text-align:center; }
+.leaflet-container { font-family:inherit; }
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <div class="boot" id="boot"><div class="ring"></div></div>
+
+  <!-- Explore -->
+  <section class="screen" id="explore">
+    <div class="topbar bordered">
+      <h2>Walking Explorers</h2>
+      <button class="icon-btn" onclick="App.signOut()" title="Sign out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+    </div>
+    <div class="greeting-wrap">
+      <div class="greeting-eyebrow">Today in NYC</div>
+      <h1 class="greeting-h" id="greeting">Welcome back, explorer</h1>
+      <p class="greeting-sub" id="greetingSub">Tap any walk to begin</p>
+    </div>
+    <div class="section-h"><h3>NYC routes</h3><span class="more" id="countAll">12 routes</span></div>
+    <div class="route-list" id="allList"></div>
+  </section>
+
+  <!-- Detail -->
+  <section class="screen" id="detail">
+    <div class="detail-hero">
+      <div class="cover-art" id="dHeroArt"></div>
+      <div class="cover-overlay"></div>
+      <div class="nav-icons">
+        <button class="icon-btn" onclick="Nav.switchTab('explore')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+      </div>
+      <div><div class="nbhd-tag" id="dNbhd">NYC</div><h1 id="dTitle">Route</h1></div>
+    </div>
+    <div class="detail-meta">
+      <div class="stat"><div class="n" id="dStops">6</div><div class="l">Stops</div></div>
+      <div class="stat"><div class="n" id="dMins">90 min</div><div class="l">Time</div></div>
+      <div class="stat"><div class="n" id="dMiles">1.7 mi</div><div class="l">Distance</div></div>
+    </div>
+    <div class="map-section"><div id="map"></div></div>
+    <div class="detail-desc" id="dDesc"></div>
+    <div class="stops-list" id="dStopsList"></div>
+    <div class="action-bar">
+      <button class="icon-btn" onclick="Nav.switchTab('explore')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+      <button class="btn btn-primary" onclick="Walk.start()">Start walking</button>
+    </div>
+  </section>
+
+  <!-- Walk -->
+  <section class="screen no-tab walk-screen" id="walk">
+    <div class="walk-header">
+      <div><div class="stop-counter" id="wCounter">Stop 1 of 6</div><h2 id="wTitle">Stop name</h2></div>
+      <button class="icon-btn" onclick="Walk.exit()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      <div class="walk-progress"><div class="fill" id="wProgressFill" style="width:16%"></div></div>
+    </div>
+    <div class="walk-body">
+      <div class="stop-photo-frame">
+        <div class="art" id="wPhoto"></div>
+        <span class="sponsored-tag" id="wSponsoredTag" style="display:none;">Sponsored</span>
+        <div class="label" id="wPhotoLabel">Photo</div>
+        <div class="flash"></div>
+      </div>
+      <p class="story" id="wDesc"></p>
+      <div class="why-card" id="wWhy"></div>
+      <div class="walk-foot">
+        <span>📍 <span id="wDist">0.3 mi</span></span>
+        <span>⏱️ <span id="wTime">12 min</span></span>
+      </div>
+    </div>
+    <div class="walk-controls">
+      <button class="btn btn-outline" onclick="Capture.open()">📸 Save spot</button>
+      <button class="btn btn-primary" id="wNext" onclick="Walk.next()">Next stop →</button>
+    </div>
+  </section>
+
+  <!-- My Spots -->
+  <section class="screen" id="archive">
+    <div class="topbar bordered">
+      <h2>My Spots</h2>
+      <div class="view-toggle" id="archiveToggle" style="display:none;">
+        <button class="on" onclick="Archive.setView('list')">List</button>
+        <button onclick="Archive.setView('map')">Map</button>
+      </div>
+    </div>
+    <div id="archiveContent"></div>
+  </section>
+
+  <!-- Offers -->
+  <section class="screen" id="offers">
+    <div class="topbar bordered"><h2>Promotions Near You</h2></div>
+    <div class="greeting-wrap" style="padding:14px 22px 0;">
+      <div class="greeting-eyebrow">Limited-time · NYC</div>
+      <p class="greeting-sub" style="margin-top:4px;">Local businesses, real offers.</p>
+    </div>
+    <div class="promo-route-cta" onclick="Promotions.generateRoute()">
+      <div class="eyebrow">New · Promo Route</div>
+      <h3>Build a route from nearby offers.</h3>
+      <p>2–4 promo stops + 2 aesthetic exploration stops. Made for today.</p>
+      <span class="btn-row">✨ Generate now →</span>
+    </div>
+    <div class="offer-list" id="offerList"></div>
+  </section>
+
+  <!-- Feedback hub -->
+  <section class="screen" id="feedback">
+    <div class="topbar bordered">
+      <h2>Feedback</h2>
+      <button class="icon-btn" onclick="Nav.switchTab('changelog')" title="Changelog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+    </div>
+    <div class="greeting-wrap" style="padding:14px 22px 8px;">
+      <div class="greeting-eyebrow">Help shape the product</div>
+      <h1 class="greeting-h" style="font-size:22px;">What should we build next?</h1>
+      <p class="greeting-sub">Vote on feature requests, file bugs, request neighborhoods.</p>
+    </div>
+    <div class="tabs-row" id="fbTabs">
+      <button class="tab-pill on" data-fbtab="feature">✨ Feature requests</button>
+      <button class="tab-pill" data-fbtab="bug">🐛 Bug reports</button>
+      <button class="tab-pill" data-fbtab="rating">⭐ Route ratings</button>
+      <button class="tab-pill" data-fbtab="neighborhood">🗺️ Neighborhood requests</button>
+    </div>
+    <div class="fb-form">
+      <input class="input" id="fbTitle" placeholder="Short summary (e.g. Add Astoria neighborhood)" maxlength="140">
+      <textarea class="input" id="fbBody" placeholder="Tell us more (optional). What's the use case?" maxlength="4000"></textarea>
+      <button class="btn btn-primary btn-block" onclick="Feedback.submit()">Submit</button>
+    </div>
+    <div class="section-h"><h3 id="fbBoardTitle">Feature requests</h3><span class="more" id="fbCount">—</span></div>
+    <div class="fb-list" id="fbList"></div>
+  </section>
+
+  <!-- Changelog -->
+  <section class="screen" id="changelog">
+    <div class="topbar bordered">
+      <h2>What's new</h2>
+      <button class="icon-btn" onclick="Nav.switchTab('feedback')" title="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+    </div>
+    <div class="changelog" id="changelogContent"></div>
+  </section>
+
+  <!-- Loop completion -->
+  <section class="screen no-tab" id="loop">
+    <div class="topbar"><button class="icon-btn" onclick="Nav.switchTab('explore')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button><h2>Your Loop</h2></div>
+    <div style="padding:32px 24px 16px;text-align:center;">
+      <span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:0.12em;color:var(--gold-dark);text-transform:uppercase;background:rgba(224,179,65,0.15);padding:5px 12px;border-radius:100px;margin-bottom:12px;">Walk complete</span>
+      <h1 id="loopTitle" style="margin:0;font-size:32px;font-weight:800;letter-spacing:-0.025em;background:linear-gradient(120deg,var(--navy),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Your NYC Loop</h1>
+      <p style="color:var(--mute);margin-top:8px;font-size:14px;" id="loopMeta">Route · 6 stops</p>
+    </div>
+    <div style="padding:0 22px;"><button class="btn btn-primary btn-block" onclick="Nav.switchTab('explore')">Walk another route</button></div>
+  </section>
+
+  <!-- Capture modal -->
+  <div class="modal" id="captureModal">
+    <div class="modal-card">
+      <div class="modal-handle"></div>
+      <h2>Save this spot</h2>
+      <p class="sub" id="captureStopLabel">Capture a moment from this stop.</p>
+      <label class="capture-photo-zone" for="captureFile">
+        <input type="file" id="captureFile" accept="image/*" capture="environment" onchange="Capture.onFile(event)">
+        <img id="capturePreview" alt="" style="display:none;">
+        <div class="placeholder" id="capturePlaceholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <p><b>Tap to capture or upload</b></p>
+        </div>
+      </label>
+      <p class="sub" style="margin-bottom:8px;font-size:13px;">Tags</p>
+      <div class="tag-grid" id="tagGrid"></div>
+      <p class="sub" style="margin-bottom:8px;font-size:13px;">Revisit rating</p>
+      <div class="rating-row" id="ratingRow"></div>
+      <textarea class="notes-input" id="captureNotes" placeholder="Notes (optional). What was the vibe?"></textarea>
+      <div class="gps-row" id="gpsRow">📡 Locating you…</div>
+      <div style="display:grid;gap:10px;">
+        <button class="btn btn-primary btn-block" id="captureSaveBtn" onclick="Capture.save()">Save to my Archive</button>
+        <button class="btn btn-outline btn-block" onclick="Capture.close()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spot detail -->
+  <div class="modal" id="spotModal">
+    <div class="modal-card">
+      <div class="modal-handle"></div>
+      <div id="spotModalContent"></div>
+      <div style="display:grid;gap:10px;margin-top:16px;">
+        <button class="btn btn-outline btn-block" onclick="Archive.closeSpot()">Close</button>
+        <button class="btn btn-outline btn-block" id="spotDeleteBtn" style="color:var(--love);border-color:rgba(220,38,38,0.3);">Delete spot</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab bar -->
+  <nav class="tabbar hidden" id="tabbar">
+    <button data-tab="explore" onclick="Nav.switchTab('explore')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+      <span class="lbl">Explore</span></button>
+    <button data-tab="archive" onclick="Nav.switchTab('archive')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      <span class="lbl">My Spots</span></button>
+    <button data-tab="offers" onclick="Nav.switchTab('offers')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      <span class="lbl">Offers</span></button>
+    <button data-tab="feedback" onclick="Nav.switchTab('feedback')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span class="lbl">Feedback</span></button>
+    <button data-tab="changelog" onclick="Nav.switchTab('changelog')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span class="lbl">What's new</span></button>
+  </nav>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+"use strict";
+
+/* ===== API client (cookie-based; auto-redirect on 401) ===== */
+const API = {
+  async _fetch(path, opts = {}) {
+    opts.credentials = 'same-origin';
+    opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+    const r = await fetch(path, opts);
+    if (r.status === 401) { location.href = '/beta'; throw new Error('unauth'); }
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw Object.assign(new Error(data.error || 'api_error'), { data, status: r.status });
+    return data;
+  },
+  me() { return this._fetch('/api/auth/me'); },
+  signOut() { return this._fetch('/api/auth/logout', { method: 'POST' }); },
+  generateRoute(body) { return this._fetch('/api/routes/generate', { method: 'POST', body: JSON.stringify(body || {}) }); },
+  spotsList() { return this._fetch('/api/spots/list'); },
+  spotsSave(body) { return this._fetch('/api/spots/save', { method: 'POST', body: JSON.stringify(body) }); },
+  spotsDelete(id) { return this._fetch('/api/spots/delete', { method: 'POST', body: JSON.stringify({ id }) }); },
+  loopsSave(body) { return this._fetch('/api/loops/save', { method: 'POST', body: JSON.stringify(body) }); },
+  loopsList() { return this._fetch('/api/loops/list'); },
+  fbSubmit(body) { return this._fetch('/api/feedback/submit', { method: 'POST', body: JSON.stringify(body) }); },
+  fbList(type) { return this._fetch('/api/feedback/list?type=' + encodeURIComponent(type || 'feature')); },
+  fbVote(id) { return this._fetch('/api/feedback/vote', { method: 'POST', body: JSON.stringify({ id }) }); }
+};
+
+/* ===== Static client data ===== */
+const NEIGHBORHOODS = [
+  { id:'soho', name:'SoHo', grad:'linear-gradient(155deg, #C57E5E 0%, #6B3624 60%, #1F1108 100%)' },
+  { id:'ev', name:'East Village', grad:'linear-gradient(155deg, #B85042 0%, #4A1812 60%, #16060A 100%)' },
+  { id:'westvillage', name:'West Village', grad:'linear-gradient(155deg, #9CB585 0%, #3F5532 60%, #0F1A0E 100%)' },
+  { id:'chelsea', name:'Chelsea', grad:'linear-gradient(155deg, #84B59F 0%, #2C5F2D 60%, #0E1F12 100%)' },
+  { id:'williamsburg', name:'Williamsburg', grad:'linear-gradient(155deg, #E0B341 0%, #8C5B00 60%, #271800 100%)' },
+  { id:'dumbo', name:'DUMBO', grad:'linear-gradient(155deg, #6D2E46 0%, #3A1226 60%, #14060D 100%)' },
+  { id:'centralpark', name:'Central Park', grad:'linear-gradient(155deg, #4D7A4F 0%, #1F4521 60%, #0A1A0B 100%)' },
+  { id:'les', name:'Lower East Side', grad:'linear-gradient(155deg, #C84B31 0%, #5C2114 60%, #1B0904 100%)' }
+];
+
+const TAGS = ['Café','Food','Hidden Gem','Work Spot','Date Spot','Viewpoint','Art','Nature','Shop','Revisit'];
+const RATINGS = [
+  { id:'low', label:'Low', color:'#6B7280' },
+  { id:'medium', label:'Medium', color:'#5C9FE0' },
+  { id:'high', label:'High', color:'#E0B341' },
+  { id:'legendary', label:'Legendary', color:'#DC2626' }
+];
+
+const ROUTES = [
+  { id:'soho_aesthetic', title:"SoHo Aesthetic Café Crawl", nbhd:'soho', minutes:90, miles:1.7,
+    desc:"A photo-perfect loop through SoHo's cast-iron streets — cafés, vintage stores, and tucked-away galleries.",
+    stops:[
+      { name:'Joe Coffee — Crosby St', lat:40.7224, lon:-73.9966, why:"Quietest of NYC's prettiest café spots.", desc:'Small, warm café with reclaimed-wood interiors.' },
+      { name:'McNally Jackson Books', lat:40.7232, lon:-73.9979, why:'Independent bookshop that fits your aesthetic.', desc:'Two-floor independent.' },
+      { name:'Lure Fishbar', lat:40.7240, lon:-73.9975, sponsored:true, why:'Sponsored stop — native ad model.', desc:'Stylish underground fish house.' },
+      { name:'INA SoHo', lat:40.7244, lon:-73.9989, why:'Carries Prada / Chanel resale.', desc:'Consignment sweet spot.' },
+      { name:'Donut Plant', lat:40.7200, lon:-73.9943, why:'Mid-walk sweet break.', desc:'NYC institution since 1994.' },
+      { name:'Mercer Street vista', lat:40.7253, lon:-73.9985, why:'Cobblestones + cast-iron + golden hour.', desc:'Most-photographed block.' }
+    ]},
+  { id:'ev_vintage', title:'East Village Vintage & Vinyl', nbhd:'ev', minutes:110, miles:2.0,
+    desc:'Old New York at its weirdest — record stores, leather, downtown cafés.',
+    stops:[
+      { name:'Veselka', lat:40.7286, lon:-73.9891, why:'24-hour Ukrainian diner.', desc:'Pierogis and borscht.' },
+      { name:'Astor Place neon', lat:40.7297, lon:-73.9911, why:'Photogenic neon.', desc:'Three floors of barber chairs.' },
+      { name:'Other Music vinyl', lat:40.7281, lon:-73.9912, why:'Music mood — vinyl, listening booths.', desc:'Spiritual successor.' },
+      { name:'Tompkins Square Park', lat:40.7264, lon:-73.9818, why:'Heart of EV culture.', desc:'Elm trees, chess tables.' },
+      { name:"L'imprimerie", lat:40.7236, lon:-73.9847, sponsored:true, why:'Sponsored — French bakery.', desc:'Croissants out of the oven at 4pm.' },
+      { name:'Russ & Daughters Café', lat:40.7222, lon:-73.9894, why:'Closes the walk on classic LES.', desc:'Spinoff of the 1914 appetizing shop.' }
+    ]},
+  { id:'wv_books', title:'West Village Bookshops & Brownstones', nbhd:'westvillage', minutes:75, miles:1.4,
+    desc:'Bookshops most visitors miss.',
+    stops:[
+      { name:'Three Lives & Company', lat:40.7345, lon:-74.0019, why:'Bookshop you bookmarked.', desc:'Tiny, perfect, since 1968.' },
+      { name:'Bleecker Street walk', lat:40.7340, lon:-74.0035, why:'Brownstone density peak.', desc:'Iconic NYC streetscape.' },
+      { name:'Caffè Reggio', lat:40.7301, lon:-73.9998, why:"Greenwich Village's first cappuccino.", desc:'Same espresso machine since the 1900s.' },
+      { name:'Strand Annex', lat:40.7332, lon:-74.0003, why:'Strand needs no introduction.', desc:'Rare-books section.' },
+      { name:'Magnolia Bakery', lat:40.7351, lon:-74.0061, sponsored:true, why:'Sponsored — banana pudding.', desc:'Banana pudding is the move.' },
+      { name:'Hudson River sunset', lat:40.7363, lon:-74.0094, why:'Best Manhattan-side sunset.', desc:'30–60 min before sunset.' }
+    ]},
+  { id:'highline_galleries', title:'High Line + Chelsea Galleries', nbhd:'chelsea', minutes:130, miles:2.4,
+    desc:'Walk the elevated park, drop down for galleries, end at Little Island.',
+    stops:[
+      { name:'High Line — Gansevoort', lat:40.7396, lon:-74.0087, why:'Best entrance.', desc:'Start the elevated walk here.' },
+      { name:'Whitney Museum patio', lat:40.7396, lon:-74.0089, why:'Free outdoor sculpture terraces.', desc:'Skip the lobby, take the side stairs.' },
+      { name:'Pace Gallery', lat:40.7474, lon:-74.0064, why:"Pace's 540 W 25th flagship is free.", desc:'Multi-floor contemporary.' },
+      { name:'Cookshop', lat:40.7457, lon:-74.0064, sponsored:true, why:'Sponsored — killer brunch.', desc:'Chelsea staple.' },
+      { name:'Little Island', lat:40.7430, lon:-74.0125, why:"Heatherwick's tulip-pier park.", desc:'Free; the amphitheater is worth the climb.' },
+      { name:'Chelsea Market', lat:40.7424, lon:-74.0061, why:'Indoor finish — food, vendors.', desc:'Lobster Place lobster roll.' }
+    ]},
+  { id:'williamsburg', title:'Williamsburg Street Art Walk', nbhd:'williamsburg', minutes:100, miles:1.9,
+    desc:"Brooklyn's mural belt + cafés and vinyl shops.",
+    stops:[
+      { name:'Bedford Ave subway', lat:40.7170, lon:-73.9569, why:'Best people-watching.', desc:'Take the L from Manhattan.' },
+      { name:'Devoción', lat:40.7128, lon:-73.9579, why:'Most-photographed plant wall.', desc:'Order the geisha pour-over.' },
+      { name:'Bushwick Inlet murals', lat:40.7232, lon:-73.9620, why:'Rotating large-format murals.', desc:'Photogenic; afternoon light.' },
+      { name:'Rough Trade NYC', lat:40.7176, lon:-73.9612, why:'Vinyl, listening booths.', desc:'Spend 30 minutes minimum.' },
+      { name:'Five Leaves', lat:40.7234, lon:-73.9540, sponsored:true, why:'Sponsored — brunch.', desc:"Heath Ledger's old hangout." },
+      { name:'Domino Park sunset', lat:40.7141, lon:-73.9686, why:'Wide-frame Manhattan skyline.', desc:'Old sugar-refinery park.' }
+    ]},
+  { id:'dumbo_bridge', title:'DUMBO + Brooklyn Bridge Loop', nbhd:'dumbo', minutes:90, miles:1.8,
+    desc:'Cross the bridge, descend into DUMBO, end at the framed-bridge view.',
+    stops:[
+      { name:'Brooklyn Bridge', lat:40.7058, lon:-73.9966, why:'Walk pedestrian path.', desc:'~25 min to cross.' },
+      { name:'Empire Stores', lat:40.7038, lon:-73.9881, why:'Renovated 1870s warehouse.', desc:'Take the elevator to the roof.' },
+      { name:'Time Out Market', lat:40.7036, lon:-73.9888, why:'Curated Brooklyn-best food.', desc:"Pizza Moto's slice." },
+      { name:'Washington Street view', lat:40.7035, lon:-73.9897, why:'Most-photographed framed-bridge.', desc:'Patience. Worth it.' },
+      { name:"Jane's Carousel", lat:40.7037, lon:-73.9926, sponsored:true, why:'Sponsored — 1922 carousel.', desc:'$2 to ride.' },
+      { name:'Pebble Beach', lat:40.7026, lon:-73.9926, why:'Water-level Manhattan view.', desc:'Skim stones.' }
+    ]},
+  { id:'central_park', title:'Central Park Hidden Corners', nbhd:'centralpark', minutes:120, miles:2.3,
+    desc:'Skip the tourist track. Secret gardens, the rambles.',
+    stops:[
+      { name:'Conservatory Garden', lat:40.7950, lon:-73.9521, why:"Park's only formal garden.", desc:'Best in spring/fall.' },
+      { name:'The Pool', lat:40.7948, lon:-73.9598, why:'Quietest body of water.', desc:'Bring a book.' },
+      { name:'Belvedere Castle', lat:40.7794, lon:-73.9692, why:'Best aerial view.', desc:'Free to enter.' },
+      { name:'Shakespeare Garden', lat:40.7802, lon:-73.9701, why:'Plants only mentioned in Shakespeare.', desc:"You'll be the only one in here." },
+      { name:'Loeb Boathouse', lat:40.7754, lon:-73.9692, sponsored:true, why:'Sponsored — boat for $20.', desc:'Bar service available.' },
+      { name:'Strawberry Fields', lat:40.7757, lon:-73.9745, why:"Lennon's spot.", desc:'Often quiet weekday mornings.' }
+    ]},
+  { id:'les_food', title:'Lower East Side Foodie Crawl', nbhd:'les', minutes:110, miles:1.6,
+    desc:'Old-immigrant New York meets new-immigrant New York.',
+    stops:[
+      { name:'Pickle Guys', lat:40.7156, lon:-73.9923, why:'Last remaining pickle vendor.', desc:'Sour, half-sour, full-sour.' },
+      { name:'Russ & Daughters Café', lat:40.7222, lon:-73.9894, why:'Bagel + lox pilgrimage.', desc:'Sit at the counter.' },
+      { name:'Tenement Museum', lat:40.7188, lon:-73.9904, why:'Preserved 1880s tenement.', desc:'Book a tour.' },
+      { name:"Joe's Shanghai", lat:40.7169, lon:-73.9952, sponsored:true, why:'Sponsored — soup dumplings.', desc:'Order the crab.' },
+      { name:'Economy Candy', lat:40.7180, lon:-73.9892, why:'Vintage candy store.', desc:'Bring cash.' },
+      { name:'Attaboy', lat:40.7178, lon:-73.9915, why:'Hidden bar, no menu.', desc:'Knock on 134 Eldridge.' }
+    ]},
+  { id:'soho_galleries', title:'SoHo Hidden Galleries', nbhd:'soho', minutes:100, miles:1.5,
+    desc:'Galleries, lofts, streets that defined American art.',
+    stops:[
+      { name:'Drawing Center', lat:40.7220, lon:-74.0008, why:'Free; only nonprofit for drawing.', desc:'Tiny but punches above weight.' },
+      { name:'Donald Judd Foundation', lat:40.7256, lon:-73.9981, why:'His preserved studio loft.', desc:'$32. Worth every dollar.' },
+      { name:'The Earth Room', lat:40.7240, lon:-73.9994, sponsored:true, why:'Sponsored — 250 cu yd of dirt.', desc:'141 Wooster.' },
+      { name:'Broken Kilometer', lat:40.7251, lon:-74.0023, why:'Another De Maria piece.', desc:'Cool and meditative.' },
+      { name:'Housing Works Bookstore', lat:40.7232, lon:-74.0012, why:'Charity shop + literary events.', desc:'Proceeds fight HIV.' },
+      { name:'Greene Street cobblestones', lat:40.7240, lon:-74.0003, why:'Most-photographed block.', desc:'Best afternoon light.' }
+    ]},
+  { id:'uws_classic', title:'Upper West Side Classic NY', nbhd:'centralpark', minutes:110, miles:2.0,
+    desc:"Lincoln Center to Zabar's — UWS culture.",
+    stops:[
+      { name:'Lincoln Center plaza', lat:40.7727, lon:-73.9837, why:'Iconic NYC arts plaza.', desc:'Free during the day.' },
+      { name:'Westsider Books', lat:40.7891, lon:-73.9742, why:'Three floors of stacks.', desc:'Cash preferred.' },
+      { name:"Zabar's", lat:40.7886, lon:-73.9788, why:'Only UWS institution that matters.', desc:'Hot babka. Always.' },
+      { name:'Cafe Lalo', lat:40.7837, lon:-73.9777, sponsored:true, why:"Sponsored — You've Got Mail.", desc:'Order the linzer torte.' },
+      { name:'AMNH plaza', lat:40.7813, lon:-73.9740, why:'Architecture lesson.', desc:'Roosevelt + columns.' },
+      { name:'Riverside Park overlook', lat:40.7872, lon:-73.9817, why:'Hudson sunset.', desc:'Bring a coffee.' }
+    ]},
+  { id:'harlem_history', title:'Harlem Renaissance Walk', nbhd:'centralpark', minutes:120, miles:2.2,
+    desc:'The neighborhood that invented modern American culture.',
+    stops:[
+      { name:'Studio Museum in Harlem', lat:40.8085, lon:-73.9466, why:'Premier museum.', desc:'Free Sundays.' },
+      { name:'Apollo Theater', lat:40.8104, lon:-73.9504, why:'Music history.', desc:'Take the photo.' },
+      { name:"Sylvia's", lat:40.8086, lon:-73.9402, sponsored:true, why:'Sponsored — since 1962.', desc:'Sunday gospel brunch.' },
+      { name:"Strivers' Row", lat:40.8169, lon:-73.9437, why:'Most photogenic brownstone block.', desc:'138th & 139th, 7th–8th.' },
+      { name:'Schomburg Center', lat:40.8141, lon:-73.9402, why:'Research library, gorgeous interior.', desc:'Black history archives.' },
+      { name:'Marcus Garvey Park', lat:40.8045, lon:-73.9438, why:'Bell tower for skyline views.', desc:'Free; mid-afternoon.' }
+    ]},
+  { id:'fidi_finance', title:'Financial District Old Manhattan', nbhd:'dumbo', minutes:90, miles:1.7,
+    desc:'Original Manhattan — narrow streets, Dutch grid.',
+    stops:[
+      { name:'Stone Street', lat:40.7038, lon:-74.0117, why:'Cobblestone outdoor dining.', desc:'Lunch crowds 12-2pm.' },
+      { name:'Trinity Church', lat:40.7081, lon:-74.0119, why:'Hamilton, Burr.', desc:'Free, quiet.' },
+      { name:'Charging Bull / Fearless Girl', lat:40.7055, lon:-74.0134, why:'Most-photographed sculptures.', desc:'Aim 7am or evening.' },
+      { name:'Fraunces Tavern', lat:40.7034, lon:-74.0117, sponsored:true, why:"Sponsored — Washington's farewell.", desc:'Tavern + small museum.' },
+      { name:'9/11 Memorial pools', lat:40.7115, lon:-74.0134, why:'Treat with care.', desc:'Free. Allow time.' },
+      { name:'Battery Park sunset', lat:40.7032, lon:-74.0170, why:'Statue of Liberty + harbor.', desc:'Stay for the lights.' }
+    ]}
+];
+
+const PROMOTIONS = [
+  { id:'p1', business:'Joe Coffee — Crosby St', offer:'15% off latte before 6 PM', expires:'Today, 6 PM', priceTier:'$$', nbhd:'soho', distance:'0.3 mi', sponsored:true, lat:40.7224, lon:-73.9966 },
+  { id:'p2', business:'Devoción', offer:'Free pour-over with any pastry, 2-4 PM', expires:'Today, 4 PM', priceTier:'$$', nbhd:'williamsburg', distance:'1.2 mi', sponsored:true, lat:40.7128, lon:-73.9579 },
+  { id:'p3', business:'Five Leaves', offer:'$12 brunch ricotta pancakes', expires:'This weekend', priceTier:'$$$', nbhd:'williamsburg', distance:'1.4 mi', sponsored:true, lat:40.7234, lon:-73.9540 },
+  { id:'p4', business:'Donut Plant', offer:'Buy 3, get 1 free', expires:'All week', priceTier:'$', nbhd:'soho', distance:'0.5 mi', sponsored:false, lat:40.7200, lon:-73.9943 },
+  { id:'p5', business:'INA SoHo (vintage)', offer:'20% off Prada resale this weekend', expires:'Sunday', priceTier:'$$$', nbhd:'soho', distance:'0.4 mi', sponsored:true, lat:40.7244, lon:-73.9989 },
+  { id:'p6', business:'McNally Jackson Books', offer:'Free coffee w/ any book Tues–Thurs', expires:'Ongoing', priceTier:'$$', nbhd:'soho', distance:'0.4 mi', sponsored:false, lat:40.7232, lon:-73.9979 },
+  { id:'p7', business:'Three Lives & Co.', offer:'$5 off staff-pick books', expires:'This month', priceTier:'$$', nbhd:'westvillage', distance:'0.9 mi', sponsored:false, lat:40.7345, lon:-74.0019 },
+  { id:'p8', business:'Russ & Daughters Café', offer:'Half-off bagels & lox before 9 AM', expires:'Weekdays, 9 AM', priceTier:'$$$', nbhd:'les', distance:'0.7 mi', sponsored:true, lat:40.7222, lon:-73.9894 }
+];
+
+/* ===== Helpers ===== */
+function coverArt(seed) {
+  if (typeof seed !== 'string') seed = (seed && seed.id) || 'x';
+  let h = 0; for (let i = 0; i < seed.length; i++) h = (h*31 + seed.charCodeAt(i)) & 0xffffffff;
+  const palettes = [['#1F3864','#5C9FE0','#E0B341'],['#6D2E46','#C84B31','#E0B341'],['#2C5F2D','#84B59F','#F2D67D'],['#0E1B30','#2E75B6','#F2D67D'],['#5B7C5B','#97BC62','#E0B341'],['#B85042','#E0B341','#FAF7F2'],['#1F3864','#B8941F','#FAF7F2'],['#162B4A','#5C9FE0','#E0B341'],['#028090','#E0B341','#F2D67D'],['#36454F','#5C9FE0','#E0B341'],['#6F4E7C','#E0B341','#F2D67D'],['#1A4D2E','#84B59F','#FAF7F2']];
+  const pal = palettes[Math.abs(h) % palettes.length];
+  return 'background:radial-gradient(circle at 20% 20%, '+pal[2]+' 0%, transparent 35%),radial-gradient(circle at 80% 80%, '+pal[1]+' 0%, transparent 45%),linear-gradient(135deg, '+pal[0]+' 0%, '+pal[1]+' 90%);';
+}
+function fmtMins(m) {
+  if (m < 60) return m + ' min';
+  const h = Math.floor(m / 60), rem = m % 60;
+  return rem ? h + 'h ' + rem + 'm' : h + ' hr';
+}
+function routeById(id) { return ROUTES.find(r => r.id === id); }
+
+/* ===== State ===== */
+const State = {
+  user: null, suggested: [], currentRoute: null,
+  walkIdx: 0, walkPhotos: 0,
+  archiveView: 'list', spots: [], loops: [],
+  fbType: 'feature', fbItems: []
+};
+
+/* ===== Toast ===== */
+const Toast = {
+  show(msg, kind) {
+    let el = document.getElementById('toast');
+    if (!el) { el = document.createElement('div'); el.id = 'toast'; el.className = 'toast'; document.getElementById('app').appendChild(el); }
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(window.__t);
+    window.__t = setTimeout(() => el.classList.remove('show'), 2400);
+  }
+};
+
+/* ===== App boot ===== */
+const App = {
+  async init() {
+    try {
+      const me = await API.me();
+      State.user = me.user;
+      document.getElementById('boot').style.display = 'none';
+      Render.exploreFeed();
+      Nav.switchTab('explore');
+    } catch (e) { /* will redirect via API client */ }
+  },
+  async signOut() {
+    try { await API.signOut(); } catch {}
+    location.href = '/beta';
+  }
+};
+
+/* ===== Capture ===== */
+const Capture = {
+  pending: null,
+  open() {
+    const route = State.currentRoute;
+    const stop = route ? route.stops[State.walkIdx] : null;
+    this.pending = {
+      photoData: null, tags: new Set(), rating: null, notes: '',
+      lat: null, lon: null,
+      stopName: stop ? stop.name : 'Quick spot',
+      routeId: route ? route.id : null,
+      neighborhood: route ? route.nbhd : null
+    };
+    document.getElementById('captureStopLabel').textContent = stop ? 'Capturing at ' + stop.name : 'Capture a moment';
+    const preview = document.getElementById('capturePreview');
+    preview.style.display = 'none'; preview.src = '';
+    document.getElementById('capturePlaceholder').style.display = '';
+    document.getElementById('captureFile').value = '';
+    document.getElementById('captureNotes').value = '';
+    Render.captureTags(); Render.captureRatings();
+    const gpsRow = document.getElementById('gpsRow');
+    gpsRow.classList.remove('locked'); gpsRow.textContent = '📡 Locating you…';
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          this.pending.lat = pos.coords.latitude; this.pending.lon = pos.coords.longitude;
+          gpsRow.classList.add('locked');
+          gpsRow.textContent = '📍 GPS locked · ' + pos.coords.latitude.toFixed(4) + ', ' + pos.coords.longitude.toFixed(4);
+        },
+        () => { gpsRow.textContent = '📡 GPS unavailable'; },
+        { timeout: 8000 }
+      );
+    } else { gpsRow.textContent = '📡 GPS unavailable'; }
+    document.getElementById('captureModal').classList.add('show');
+  },
+  close() { document.getElementById('captureModal').classList.remove('show'); this.pending = null; },
+  onFile(ev) {
+    const file = ev.target.files && ev.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const MAX = 640;
+        let w = img.width, h = img.height;
+        if (w > MAX) { h = h * MAX / w; w = MAX; }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        const data = canvas.toDataURL('image/jpeg', 0.7);
+        this.pending.photoData = data;
+        const preview = document.getElementById('capturePreview');
+        preview.src = data; preview.style.display = '';
+        document.getElementById('capturePlaceholder').style.display = 'none';
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  },
+  toggleTag(t) { if (!this.pending) return; this.pending.tags.has(t) ? this.pending.tags.delete(t) : this.pending.tags.add(t); Render.captureTags(); },
+  setRating(r) { if (!this.pending) return; this.pending.rating = r; Render.captureRatings(); },
+  async save() {
+    if (!this.pending) return;
+    if (!this.pending.photoData) return Toast.show('Add a photo first');
+    const btn = document.getElementById('captureSaveBtn');
+    btn.disabled = true; btn.textContent = 'Saving…';
+    try {
+      const body = {
+        stopName: this.pending.stopName,
+        neighborhood: this.pending.neighborhood,
+        routeId: this.pending.routeId,
+        tags: Array.from(this.pending.tags),
+        rating: this.pending.rating,
+        notes: document.getElementById('captureNotes').value.trim(),
+        lat: this.pending.lat, lon: this.pending.lon,
+        photo: this.pending.photoData
+      };
+      await API.spotsSave(body);
+      State.walkPhotos++;
+      this.close();
+      Toast.show('Spot saved to your Archive');
+      State.spots = null; // force reload next archive view
+      Render.tabBadges();
+      const flash = document.querySelector('.stop-photo-frame .flash');
+      if (flash) { flash.classList.add('on'); setTimeout(() => flash.classList.remove('on'), 240); }
+    } catch (e) {
+      Toast.show(e.data && e.data.error === 'photo_too_large' ? 'Photo too large' : 'Failed to save — try again');
+    } finally { btn.disabled = false; btn.textContent = 'Save to my Archive'; }
+  }
+};
+
+/* ===== Archive ===== */
+const Archive = {
+  setView(v) {
+    State.archiveView = v;
+    document.querySelectorAll('#archiveToggle button').forEach(b => b.classList.toggle('on', b.textContent.toLowerCase() === v));
+    Render.archive();
+  },
+  async ensureLoaded(force) {
+    if (State.spots && !force) return;
+    try { const r = await API.spotsList(); State.spots = r.spots || []; }
+    catch { State.spots = []; }
+  },
+  openSpot(id) {
+    const s = (State.spots || []).find(x => x.id === id); if (!s) return;
+    const ratingObj = RATINGS.find(r => r.id === s.rating);
+    const ratingHtml = ratingObj ? '<div style="display:inline-flex;align-items:center;gap:6px;margin-top:6px;font-size:12px;font-weight:600;color:'+ratingObj.color+';"><span style="width:10px;height:10px;border-radius:50%;background:'+ratingObj.color+';"></span>'+ratingObj.label+' revisit</div>' : '';
+    const tags = (s.tags || []).map(t => '<span style="font-size:11px;padding:3px 8px;background:var(--cream-2);border-radius:100px;">'+t+'</span>').join('');
+    const nbhdName = (NEIGHBORHOODS.find(n => n.id === s.neighborhood) || {}).name || 'NYC';
+    const date = new Date(s.savedAt).toLocaleDateString(undefined, { month:'short', day:'numeric', year:'numeric' });
+    const gps = (s.lat != null && s.lon != null) ? '<div class="muted" style="font-size:11px;margin-top:8px;">📍 '+s.lat.toFixed(4)+', '+s.lon.toFixed(4)+'</div>' : '';
+    // We don't load the photo into list view (saves bandwidth) but we keep it in spot detail; fetch via list payload if present
+    const photo = s.photo || '';
+    document.getElementById('spotModalContent').innerHTML =
+      (photo ? '<div style="aspect-ratio:4/3;border-radius:14px;overflow:hidden;margin-bottom:14px;"><img src="'+photo+'" alt="" style="width:100%;height:100%;object-fit:cover;"></div>' : '') +
+      '<h2 style="margin:0 0 4px;font-size:20px;">'+s.stopName+'</h2>' +
+      '<div style="font-size:11px;font-weight:700;color:var(--gold-dark);letter-spacing:0.06em;text-transform:uppercase;">'+nbhdName+' · '+date+'</div>' +
+      ratingHtml +
+      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;">'+tags+'</div>' +
+      (s.notes ? '<div style="margin-top:10px;font-size:14px;line-height:1.5;color:var(--ink-2);">'+s.notes.replace(/</g,'&lt;')+'</div>' : '') +
+      gps;
+    document.getElementById('spotDeleteBtn').onclick = async () => {
+      if (!confirm('Delete this spot from your Archive?')) return;
+      try { await API.spotsDelete(id); State.spots = State.spots.filter(x => x.id !== id); this.closeSpot(); Render.archive(); Render.tabBadges(); Toast.show('Spot deleted'); }
+      catch { Toast.show('Failed to delete'); }
+    };
+    document.getElementById('spotModal').classList.add('show');
+  },
+  closeSpot() { document.getElementById('spotModal').classList.remove('show'); },
+  _map: null,
+  drawMap() {
+    if (this._map) { this._map.remove(); this._map = null; }
+    const spots = (State.spots || []).filter(s => s.lat != null && s.lon != null);
+    setTimeout(() => {
+      const el = document.getElementById('archiveMap'); if (!el) return;
+      const center = spots.length ? [spots[0].lat, spots[0].lon] : [40.7233, -73.9991];
+      this._map = L.map('archiveMap', { zoomControl: true, attributionControl: true }).setView(center, 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap', maxZoom:19 }).addTo(this._map);
+      if (!spots.length) { L.popup().setLatLng(center).setContent('<b>No GPS-tagged spots yet</b>').openOn(this._map); return; }
+      const bounds = [];
+      spots.forEach(s => {
+        const ratingObj = RATINGS.find(r => r.id === s.rating) || { color:'#1F3864' };
+        const photo = s.photo || '';
+        const m = L.marker([s.lat, s.lon], {
+          icon: L.divIcon({
+            className:'',
+            html:'<div style="background:'+ratingObj.color+';width:30px;height:30px;border-radius:50%;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);'+(photo?'background-image:url('+photo+');background-size:cover;background-position:center;':'')+'"></div>',
+            iconSize:[30,30], iconAnchor:[15,15]
+          })
+        }).addTo(this._map);
+        m.bindPopup('<div style="text-align:center;">'+(photo ? '<img src="'+photo+'" style="width:160px;height:120px;object-fit:cover;border-radius:8px;display:block;margin:0 auto 6px;">' : '')+'<b>'+s.stopName+'</b><br><small>'+(s.tags||[]).slice(0,2).join(' · ')+'</small></div>');
+        bounds.push([s.lat, s.lon]);
+      });
+      if (bounds.length > 1) this._map.fitBounds(bounds, { padding:[40,40] });
+    }, 60);
+  }
+};
+
+/* ===== Promotions ===== */
+const Promotions = {
+  list() { return PROMOTIONS; },
+  generateRoute(seed) {
+    const seedArr = seed ? [seed] : [];
+    const pool = PROMOTIONS.filter(p => !seedArr.find(s => s.id === p.id));
+    const promos = seedArr.slice();
+    while (promos.length < 4 && pool.length) promos.push(pool.splice(Math.floor(Math.random()*pool.length), 1)[0]);
+    const allStops = ROUTES.flatMap(r => r.stops.filter(s => !s.sponsored));
+    const aesthetic = [];
+    while (aesthetic.length < 2 && allStops.length) aesthetic.push(allStops.splice(Math.floor(Math.random()*allStops.length), 1)[0]);
+    const stops = promos.map(p => ({ name:p.business, lat:p.lat, lon:p.lon, sponsored:p.sponsored, desc:p.offer, why:'Promo · '+p.offer+' · expires '+p.expires }))
+      .concat(aesthetic.map(s => ({ name:s.name, lat:s.lat, lon:s.lon, desc:s.desc, why:'Curated near your offers — '+s.why })));
+    State.currentRoute = { id:'promo_'+Date.now(), title:'Promo Route · '+(seedArr[0] ? seedArr[0].nbhd.toUpperCase() : 'NYC'), nbhd:(seedArr[0] && seedArr[0].nbhd) || 'soho', minutes:90, miles:2.0, desc:'Built from '+promos.length+' nearby offers + '+aesthetic.length+' aesthetic finds.', stops, isPromoRoute:true };
+    Nav.go('detail');
+  },
+  addToRoute(id) { const p = PROMOTIONS.find(x => x.id === id); if (p) { Toast.show('Adding '+p.business+'…'); setTimeout(() => this.generateRoute(p), 500); } }
+};
+
+/* ===== Walk ===== */
+const Walk = {
+  start() { State.walkIdx = 0; State.walkPhotos = 0; Nav.go('walk'); },
+  renderStop() {
+    const r = State.currentRoute; if (!r) return Nav.switchTab('explore');
+    const s = r.stops[State.walkIdx];
+    document.getElementById('wCounter').textContent = 'Stop '+(State.walkIdx+1)+' of '+r.stops.length;
+    document.getElementById('wTitle').textContent = s.name;
+    document.getElementById('wPhoto').style = coverArt(r.id+'-'+State.walkIdx);
+    document.getElementById('wPhotoLabel').textContent = s.name;
+    document.getElementById('wSponsoredTag').style.display = s.sponsored ? '' : 'none';
+    document.getElementById('wDesc').textContent = s.desc || '';
+    document.getElementById('wWhy').innerHTML = '<b>Why this for you:</b> ' + s.why;
+    document.getElementById('wDist').textContent = (r.miles * (State.walkIdx+1) / r.stops.length).toFixed(1) + ' mi';
+    document.getElementById('wTime').textContent = Math.round(r.minutes * (State.walkIdx+1) / r.stops.length) + ' min';
+    document.getElementById('wNext').textContent = State.walkIdx === r.stops.length - 1 ? 'Finish & save Loop →' : 'Next stop →';
+    document.getElementById('wProgressFill').style.width = (((State.walkIdx + 1) / r.stops.length) * 100) + '%';
+  },
+  async next() {
+    const r = State.currentRoute;
+    if (State.walkIdx === r.stops.length - 1) {
+      try { await API.loopsSave({ routeId:r.id, routeTitle:r.title, nbhd:r.nbhd, stops:r.stops.length, miles:r.miles, minutes:r.minutes, photos:State.walkPhotos }); } catch {}
+      Nav.go('loop');
+      const nbhd = NEIGHBORHOODS.find(n => n.id === r.nbhd);
+      document.getElementById('loopTitle').textContent = 'Your '+(nbhd ? nbhd.name : 'NYC')+' Loop';
+      document.getElementById('loopMeta').textContent = r.title+' · '+r.stops.length+' stops · '+r.miles+' mi';
+    } else { State.walkIdx++; this.renderStop(); }
+  },
+  exit() { if (confirm('Exit this walk?')) Nav.switchTab('explore'); }
+};
+
+/* ===== Feedback ===== */
+const Feedback = {
+  setType(t) {
+    State.fbType = t;
+    document.querySelectorAll('#fbTabs .tab-pill').forEach(b => b.classList.toggle('on', b.dataset.fbtab === t));
+    document.getElementById('fbBoardTitle').textContent = ({ feature:'Feature requests', bug:'Bug reports', rating:'Route ratings', neighborhood:'Neighborhood requests' })[t];
+    Render.fbList();
+  },
+  async submit() {
+    const title = document.getElementById('fbTitle').value.trim();
+    const body = document.getElementById('fbBody').value.trim();
+    if (!title) { Toast.show('Enter a short summary'); return; }
+    try {
+      await API.fbSubmit({ type: State.fbType, title, body });
+      document.getElementById('fbTitle').value = '';
+      document.getElementById('fbBody').value = '';
+      Toast.show('Submitted — thank you');
+      Render.fbList();
+    } catch { Toast.show('Failed to submit'); }
+  },
+  async vote(id, btn) {
+    if (btn.classList.contains('voted')) return;
+    try {
+      const r = await API.fbVote(id);
+      btn.classList.add('voted');
+      btn.querySelector('.n').textContent = r.votes;
+      Toast.show('Vote counted');
+    } catch { Toast.show('Failed to vote'); }
+  }
+};
+
+/* ===== Render ===== */
+const Render = {
+  exploreFeed() {
+    const greet = document.getElementById('greeting');
+    const hour = new Date().getHours();
+    let g = 'Good morning'; if (hour >= 12 && hour < 17) g = 'Good afternoon'; else if (hour >= 17) g = 'Good evening';
+    greet.textContent = g + ', explorer';
+    document.getElementById('greetingSub').textContent = '12 hand-curated NYC routes';
+    const all = document.getElementById('allList'); all.innerHTML = '';
+    ROUTES.forEach(r => all.appendChild(this._routeCard(r)));
+  },
+  _routeCard(r) {
+    const nbhd = NEIGHBORHOODS.find(n => n.id === r.nbhd);
+    const el = document.createElement('div'); el.className = 'route-card';
+    el.innerHTML =
+      '<div class="route-cover">' +
+        '<div class="cover-art" style="'+coverArt(r)+'"></div>' +
+        '<div class="cover-overlay"></div>' +
+        '<span class="badge-ai">NYC pick</span>' +
+        '<div class="meta-pill">📍 '+r.stops.length+' stops</div>' +
+      '</div>' +
+      '<div class="route-body">' +
+        '<div class="nbhd-tag">'+(nbhd ? nbhd.name : 'NYC')+'</div>' +
+        '<div class="title">'+r.title+'</div>' +
+        '<div class="desc">'+r.desc+'</div>' +
+        '<div class="meta-row"><span>⏱️ '+fmtMins(r.minutes)+'</span><span>📏 '+r.miles+' mi</span></div>' +
+      '</div>';
+    el.onclick = () => { State.currentRoute = r; Nav.go('detail'); };
+    return el;
+  },
+  _detailMap: null,
+  detail(route) {
+    const nbhd = NEIGHBORHOODS.find(n => n.id === route.nbhd);
+    document.getElementById('dHeroArt').style = coverArt(route);
+    document.getElementById('dTitle').textContent = route.title;
+    document.getElementById('dNbhd').textContent = nbhd ? nbhd.name : 'NYC';
+    document.getElementById('dStops').textContent = route.stops.length;
+    document.getElementById('dMins').textContent = fmtMins(route.minutes);
+    document.getElementById('dMiles').textContent = route.miles + ' mi';
+    document.getElementById('dDesc').textContent = route.desc;
+    if (this._detailMap) { this._detailMap.remove(); this._detailMap = null; }
+    setTimeout(() => {
+      this._detailMap = L.map('map', { zoomControl: false, attributionControl: true }).setView([route.stops[0].lat, route.stops[0].lon], 15);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap', maxZoom:19 }).addTo(this._detailMap);
+      const path = route.stops.map(s => [s.lat, s.lon]);
+      L.polyline(path, { color:'#1F3864', weight:4, opacity:0.9 }).addTo(this._detailMap);
+      route.stops.forEach((s, i) => {
+        L.marker([s.lat, s.lon], {
+          icon: L.divIcon({
+            className:'',
+            html:'<div style="background:'+(s.sponsored?'#E0B341':'#1F3864')+';color:'+(s.sponsored?'#1F3864':'white')+';width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.30);">'+(i+1)+'</div>',
+            iconSize:[30,30], iconAnchor:[15,15]
+          })
+        }).addTo(this._detailMap).bindPopup('<b>'+s.name+'</b><br><small>'+(s.desc || '')+'</small>');
+      });
+      this._detailMap.fitBounds(path, { padding:[40,40] });
+    }, 60);
+    const list = document.getElementById('dStopsList'); list.innerHTML = '';
+    route.stops.forEach((s, i) => {
+      const el = document.createElement('div'); el.className = 'stop' + (s.sponsored ? ' sponsored' : '');
+      el.innerHTML = '<div class="n">'+(i+1)+'</div><div class="body" style="flex:1;"><h3>'+s.name+'</h3><p>'+(s.desc || '')+'</p><div class="why"><b>Why this for you:</b> '+s.why+'</div></div>'+(s.sponsored ? '<span class="badge">Sponsored</span>' : '');
+      list.appendChild(el);
+    });
+  },
+  async archive() {
+    await Archive.ensureLoaded();
+    const c = document.getElementById('archiveContent');
+    document.getElementById('archiveToggle').style.display = State.spots.length ? '' : 'none';
+    if (!State.spots.length) {
+      c.innerHTML = '<div class="archive-empty"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div><h3>Your city memory starts here.</h3><p>Capture a spot during any walk and it lives here forever.</p><button class="btn btn-primary" onclick="Nav.switchTab(\'explore\')">Pick a route</button></div>';
+      return;
+    }
+    if (State.archiveView === 'map') { c.innerHTML = '<div id="archiveMap"></div>'; Archive.drawMap(); return; }
+    let html = '<div class="spot-list">';
+    State.spots.forEach(s => {
+      const ratingObj = RATINGS.find(r => r.id === s.rating);
+      const nbhdName = (NEIGHBORHOODS.find(n => n.id === s.neighborhood) || {}).name || 'NYC';
+      const date = new Date(s.savedAt).toLocaleDateString(undefined, { month:'short', day:'numeric' });
+      const tags = (s.tags || []).slice(0, 3).map(t => '<span>'+t+'</span>').join('');
+      const rb = ratingObj ? '<div class="rating-badge" style="background:'+ratingObj.color+';"></div>' : '';
+      const photo = s.photo || '';
+      html += '<div class="spot-card" onclick="Archive.openSpot(\'' + s.id + '\')"><div class="photo"' + (photo ? ' style="background-image:url(' + photo + ')"' : '') + '>' + rb + '</div><div class="body"><h4>'+s.stopName+'</h4><div class="nbhd-tag">'+nbhdName+'</div><div class="tag-row">'+tags+'</div><div class="meta"><span>'+date+'</span>'+(s.lat != null ? '<span>📍 GPS</span>' : '')+'</div></div></div>';
+    });
+    html += '</div>'; c.innerHTML = html;
+  },
+  offers() {
+    const list = document.getElementById('offerList'); list.innerHTML = '';
+    PROMOTIONS.forEach((p, i) => {
+      const el = document.createElement('div');
+      el.className = 'offer-card' + (p.sponsored && i < 2 ? ' featured' : '');
+      el.innerHTML = '<div class="head"><div><div class="name">'+p.business+'</div><div class="nbhd-tag">'+((NEIGHBORHOODS.find(n => n.id === p.nbhd) || {}).name || 'NYC')+(p.sponsored ? ' · Sponsored' : '')+'</div></div><div class="price">'+p.priceTier+'</div></div><div class="offer">'+p.offer+'</div><div class="meta"><span>📍 '+p.distance+'</span><span>⏱️ '+p.expires+'</span></div><div class="actions"><button class="add-btn" onclick="Promotions.addToRoute(\'' + p.id + '\')">Add to route →</button></div>';
+      list.appendChild(el);
+    });
+  },
+  async fbList() {
+    try {
+      const r = await API.fbList(State.fbType);
+      State.fbItems = r.items || [];
+      const list = document.getElementById('fbList'); list.innerHTML = '';
+      document.getElementById('fbCount').textContent = State.fbItems.length + (State.fbItems.length === 1 ? ' item' : ' items');
+      if (!State.fbItems.length) {
+        list.innerHTML = '<div style="padding:24px;text-align:center;color:var(--mute);font-size:13.5px;">Nothing here yet. Be the first.</div>';
+        return;
+      }
+      State.fbItems.forEach(it => {
+        const el = document.createElement('div'); el.className = 'fb-card';
+        const showVote = State.fbType === 'feature';
+        el.innerHTML = '<div class="head">' +
+          (showVote ? '<div class="vote" onclick="Feedback.vote(\'' + it.id + '\', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg><span class="n">'+(it.votes || 0)+'</span></div>' : '') +
+          '<div class="body"><h4>'+it.title+'</h4>' +
+          (it.body ? '<p>'+it.body.replace(/</g,'&lt;')+'</p>' : '') +
+          '<div class="meta"><span class="status '+(it.status || 'open')+'">'+(it.status || 'open')+'</span>' +
+          (it.mine ? '<span style="color:var(--gold-dark);">your post</span>' : '') +
+          '</div></div></div>';
+        list.appendChild(el);
+      });
+    } catch { Toast.show('Failed to load'); }
+  },
+  changelog() {
+    const releases = [
+      { v:'v0.5 — Beta platform', date:'April 30, 2026', items:[
+        'Token-gated beta access at walkingexplorers.com/beta',
+        'Server-side route generation, spot saving, loop tracking',
+        'Real photo capture with GPS, tags, ratings, notes',
+        'Feedback hub: bug reports, feature requests with voting, route ratings, neighborhood requests',
+        'Admin panel for token generation, user management, feedback moderation'
+      ]},
+      { v:'v0.4 — City memory + promotions', date:'April 29, 2026', items:[
+        'Explorer Archive (My Spots) with list + map views',
+        'Promotions Near Me + Generate Promo Route',
+        '12 NYC routes · 72 hand-picked stops'
+      ]},
+      { v:'v0.3 — Visual identity', date:'April 28, 2026', items:[
+        'Inter typography, gradient cover art, custom skyline silhouette',
+        'Real NYC landmark photos (Brooklyn Bridge, Washington Sq Arch, etc.)'
+      ]}
+    ];
+    document.getElementById('changelogContent').innerHTML = releases.map(r => '<div class="release"><h4>'+r.v+'</h4><time>'+r.date+'</time><ul>'+r.items.map(i => '<li>'+i+'</li>').join('')+'</ul></div>').join('');
+  },
+  captureTags() {
+    const grid = document.getElementById('tagGrid'); grid.innerHTML = '';
+    TAGS.forEach(t => {
+      const el = document.createElement('div');
+      el.className = 'tag' + (Capture.pending && Capture.pending.tags.has(t) ? ' selected' : '');
+      el.textContent = t; el.onclick = () => Capture.toggleTag(t);
+      grid.appendChild(el);
+    });
+  },
+  captureRatings() {
+    const row = document.getElementById('ratingRow'); row.innerHTML = '';
+    RATINGS.forEach(r => {
+      const el = document.createElement('div');
+      el.className = 'rating-pill r-' + r.id + (Capture.pending && Capture.pending.rating === r.id ? ' selected' : '');
+      el.innerHTML = '<span class="dot" style="background:'+r.color+';"></span>'+r.label;
+      el.onclick = () => Capture.setRating(r.id);
+      row.appendChild(el);
+    });
+  },
+  tabBadges() {
+    const archiveBtn = document.querySelector('.tabbar button[data-tab="archive"]');
+    if (archiveBtn) archiveBtn.classList.toggle('has-dot', State.spots && State.spots.length > 0);
+  }
+};
+
+/* ===== Navigation ===== */
+const Nav = {
+  go(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById(id);
+    if (el) el.classList.add('active');
+    const tabbar = document.getElementById('tabbar');
+    if (el && el.classList.contains('no-tab')) tabbar.classList.add('hidden'); else tabbar.classList.remove('hidden');
+    if (id === 'detail' && State.currentRoute) Render.detail(State.currentRoute);
+    if (id === 'walk') Walk.renderStop();
+    if (id === 'explore') Render.exploreFeed();
+    if (id === 'archive') Render.archive();
+    if (id === 'offers') Render.offers();
+    if (id === 'feedback') { Feedback.setType(State.fbType); }
+    if (id === 'changelog') Render.changelog();
+    Render.tabBadges();
+  },
+  switchTab(tabId) {
+    document.querySelectorAll('.tabbar button').forEach(b => b.classList.toggle('active', b.dataset.tab === tabId));
+    this.go(tabId);
+  }
+};
+
+/* Wire feedback tab clicks */
+document.querySelectorAll('#fbTabs .tab-pill').forEach(b => {
+  b.addEventListener('click', () => Feedback.setType(b.dataset.fbtab));
+});
+
+App.init();
+</script>
+</body>
+</html>
