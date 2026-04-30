@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#0E1B30" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Walking Explorers — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root {
+  --navy:#1F3864; --navy-2:#162B4A; --navy-3:#0E1B30;
+  --gold:#E0B341; --gold-soft:#F2D67D; --gold-dark:#B8941F;
+  --cream:#FAF7F2;
+  --ink:#0E1320; --ink-2:#2C3142;
+  --mute:#6B7280; --mute-2:#9CA3AF;
+  --line:#E8E2D6;
+  --good:#15803D; --love:#DC2626;
+  --shadow-1:0 1px 2px rgba(14,19,32,0.06);
+  --shadow-2:0 6px 18px rgba(14,19,32,0.10);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Inter',system-ui,sans-serif; background:var(--cream); color:var(--ink); -webkit-font-smoothing:antialiased; }
+code, .mono { font-family:'JetBrains Mono', ui-monospace, monospace; }
+
+/* Login screen */
+.login { min-height:100vh; min-height:100svh;
+  display:flex; align-items:center; justify-content:center;
+  padding:32px;
+  background:linear-gradient(155deg, var(--navy) 0%, var(--navy-2) 100%);
+}
+.login-card {
+  width:100%; max-width:400px;
+  color:white;
+}
+.login-card h1 { font-size:32px; font-weight:800; letter-spacing:-0.025em; margin-bottom:6px; }
+.login-card .eyebrow { font-size:11px; font-weight:800; letter-spacing:0.16em; color:var(--gold-soft); text-transform:uppercase; }
+.login-card p.lede { color:rgba(255,255,255,0.7); font-size:14.5px; margin:6px 0 24px; }
+.login-card input { width:100%; padding:16px 18px; border-radius:14px;
+  border:1.5px solid rgba(255,255,255,0.30); background:rgba(255,255,255,0.10);
+  color:#fff; font:inherit; font-size:15px; }
+.login-card input:focus { outline:0; border-color:var(--gold); background:rgba(255,255,255,0.15); }
+.login-card button { width:100%; margin-top:12px; padding:16px;
+  border:0; border-radius:14px; cursor:pointer;
+  background:var(--gold); color:var(--navy); font:inherit; font-size:15.5px; font-weight:700; }
+.login-card button:disabled { opacity:0.55; cursor:wait; }
+.login-card .msg { margin-top:14px; padding:10px 14px; border-radius:10px;
+  background:rgba(220,38,38,0.18); border:1px solid rgba(220,38,38,0.40);
+  font-size:13.5px; display:none; }
+.login-card .msg.show { display:block; }
+
+/* Dashboard */
+.shell { display:none; min-height:100vh; }
+.shell.show { display:flex; }
+.sidebar { width:240px; background:var(--navy-3); color:white;
+  padding:28px 22px; display:flex; flex-direction:column;
+  position:sticky; top:0; height:100vh; }
+.sidebar .brand { font-weight:800; font-size:17px; letter-spacing:-0.01em; margin-bottom:4px; }
+.sidebar .brand .dot { color:var(--gold); }
+.sidebar .label { font-size:10.5px; color:rgba(255,255,255,0.5); letter-spacing:0.14em; text-transform:uppercase; margin-bottom:24px; }
+.sidebar nav { display:grid; gap:4px; }
+.sidebar nav button { background:transparent; border:0; cursor:pointer; color:rgba(255,255,255,0.75);
+  text-align:left; padding:11px 14px; border-radius:10px;
+  font:inherit; font-size:14px; font-weight:500; transition:140ms; }
+.sidebar nav button:hover { background:rgba(255,255,255,0.06); color:#fff; }
+.sidebar nav button.active { background:rgba(224,179,65,0.18); color:var(--gold-soft); }
+.sidebar .foot { margin-top:auto; padding-top:18px; border-top:1px solid rgba(255,255,255,0.10);
+  font-size:12px; color:rgba(255,255,255,0.55); }
+.sidebar .foot button { margin-top:10px; background:transparent; border:1px solid rgba(255,255,255,0.20);
+  color:rgba(255,255,255,0.7); padding:8px 12px; border-radius:8px; font:inherit; font-size:12px; cursor:pointer; }
+.sidebar .foot button:hover { color:#fff; border-color:rgba(255,255,255,0.40); }
+
+.main { flex:1; padding:32px 36px 80px; max-width:1100px; }
+.main h2 { font-size:26px; font-weight:800; letter-spacing:-0.02em; margin-bottom:6px; }
+.main p.sub { color:var(--mute); font-size:14px; margin-bottom:24px; }
+
+.stats { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:14px; margin-bottom:28px; }
+.stat-card { background:white; border:1px solid var(--line); border-radius:14px;
+  padding:18px 20px; box-shadow:var(--shadow-1); }
+.stat-card .lab { font-size:10.5px; color:var(--mute); letter-spacing:0.08em; text-transform:uppercase; font-weight:700; }
+.stat-card .num { font-size:32px; font-weight:800; color:var(--navy); margin-top:4px; letter-spacing:-0.02em; }
+.stat-card .delta { font-size:12px; color:var(--good); font-weight:600; margin-top:2px; }
+
+.section { background:white; border:1px solid var(--line); border-radius:14px;
+  padding:22px; margin-bottom:24px; box-shadow:var(--shadow-1); }
+.section h3 { font-size:17px; font-weight:700; letter-spacing:-0.01em; margin:0 0 4px; }
+.section .sub { font-size:13px; color:var(--mute); margin:0 0 18px; }
+
+.btn { padding:10px 16px; border:0; border-radius:10px; cursor:pointer;
+  font:inherit; font-size:13.5px; font-weight:600; transition:140ms; text-decoration:none; display:inline-flex; align-items:center; gap:6px; }
+.btn:active { transform:scale(0.97); }
+.btn-primary { background:var(--navy); color:white; }
+.btn-accent { background:var(--gold); color:var(--navy); }
+.btn-outline { background:white; color:var(--navy); border:1px solid var(--line); }
+.btn-danger { background:rgba(220,38,38,0.10); color:var(--love); border:1px solid rgba(220,38,38,0.20); }
+
+.input { padding:11px 14px; border-radius:10px; border:1.5px solid var(--line); background:white;
+  font:inherit; font-size:14px; color:var(--ink); }
+.input:focus { outline:0; border-color:var(--navy); }
+
+table { width:100%; border-collapse:collapse; font-size:13.5px; }
+table th { text-align:left; padding:10px 14px; background:var(--cream); color:var(--mute);
+  font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+  border-bottom:1px solid var(--line); }
+table td { padding:12px 14px; border-bottom:1px solid var(--line); vertical-align:top; }
+table tr:last-child td { border-bottom:0; }
+table tr:hover td { background:#FAF7F2; }
+.code-cell { font-family:'JetBrains Mono', monospace; font-size:12px; }
+.pill { padding:3px 9px; border-radius:100px; font-size:11px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; }
+.pill.unused { background:rgba(46,117,182,0.12); color:#1F3864; }
+.pill.claimed { background:rgba(21,128,61,0.12); color:var(--good); }
+.pill.revoked { background:rgba(220,38,38,0.12); color:var(--love); }
+.pill.open { background:var(--cream); color:var(--ink-2); }
+.pill.shipped { background:rgba(21,128,61,0.12); color:var(--good); }
+.pill.planned { background:rgba(46,117,182,0.12); color:var(--navy); }
+.pill.reviewing { background:rgba(224,179,65,0.18); color:var(--gold-dark); }
+
+.tokens-row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:14px; }
+.copy-row { display:flex; gap:8px; align-items:center; }
+.copy-row code { background:var(--cream); padding:4px 8px; border-radius:6px; font-size:12px; }
+.empty { padding:40px 20px; text-align:center; color:var(--mute); font-size:14px; }
+.fb-card-mod { background:var(--cream); border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:10px; }
+.fb-card-mod .head { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:6px; font-size:11px; color:var(--mute); }
+.fb-card-mod .head .type { font-weight:700; color:var(--navy); }
+.fb-card-mod h4 { font-size:14.5px; font-weight:700; margin:2px 0 6px; }
+.fb-card-mod p { font-size:13px; color:var(--ink-2); margin:0 0 10px; line-height:1.45; }
+.fb-card-mod .actions { display:flex; gap:6px; flex-wrap:wrap; }
+.fb-card-mod select { font-size:12px; padding:6px 10px; border-radius:8px; border:1px solid var(--line); background:white; }
+
+@media (max-width: 720px) {
+  .shell { flex-direction:column; }
+  .sidebar { width:100%; height:auto; position:static; flex-direction:row; align-items:center;
+    padding:14px 20px; gap:14px; flex-wrap:wrap; }
+  .sidebar .label, .sidebar .foot { display:none; }
+  .sidebar nav { flex-direction:row; gap:4px; flex-wrap:wrap; }
+  .sidebar nav button { padding:8px 12px; font-size:13px; }
+  .main { padding:20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login" id="loginScreen">
+  <form class="login-card" id="loginForm">
+    <span class="eyebrow">Walking Explorers · Admin</span>
+    <h1>Restricted access.</h1>
+    <p class="lede">Enter the admin password to manage tokens, users, and feedback.</p>
+    <input type="password" id="adminPw" autocomplete="current-password" placeholder="Admin password" />
+    <button id="loginBtn" type="submit">Sign in</button>
+    <div class="msg" id="loginMsg"></div>
+  </form>
+</div>
+
+<!-- DASHBOARD SHELL -->
+<div class="shell" id="shell">
+  <aside class="sidebar">
+    <div class="brand">walking<span class="dot">.</span>explorers</div>
+    <div class="label">Admin</div>
+    <nav id="sideNav">
+      <button class="active" data-page="overview">📊 Overview</button>
+      <button data-page="tokens">🔑 Tokens</button>
+      <button data-page="users">👥 Users</button>
+      <button data-page="feedback">💬 Feedback</button>
+    </nav>
+    <div class="foot">
+      Logged in as admin
+      <br><button onclick="Admin.signOut()">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <!-- Overview -->
+    <section data-page="overview" class="page">
+      <h2>Overview</h2>
+      <p class="sub">High-level stats for the Walking Explorers private beta.</p>
+      <div class="stats" id="statsRow"></div>
+      <div class="section">
+        <h3>Health checks</h3>
+        <p class="sub">Quick sanity checks on the live deployment.</p>
+        <div id="healthList" style="display:grid;gap:8px;font-size:13.5px;"></div>
+      </div>
+    </section>
+
+    <!-- Tokens -->
+    <section data-page="tokens" class="page" hidden>
+      <h2>Invite tokens</h2>
+      <p class="sub">Generate single-use codes. Distribute them to beta candidates.</p>
+      <div class="section">
+        <h3>Generate new tokens</h3>
+        <p class="sub">Each token is a 22-char base64url string, single-use, claims into a unique user.</p>
+        <div class="tokens-row">
+          <input class="input" type="number" id="genCount" value="5" min="1" max="100" style="width:80px;">
+          <select class="input" id="genTier">
+            <option value="beta">beta</option>
+            <option value="early">early</option>
+            <option value="vip">vip</option>
+          </select>
+          <input class="input" type="text" id="genNote" placeholder="Optional note (e.g. Tim Ferriss)" style="flex:1;min-width:160px;">
+          <button class="btn btn-accent" onclick="Admin.generateTokens()">Generate</button>
+        </div>
+        <div id="justGenerated" style="display:none;"></div>
+      </div>
+      <div class="section">
+        <h3>All tokens</h3>
+        <p class="sub" id="tokensSub">—</p>
+        <div style="overflow-x:auto;"><table id="tokensTable"></table></div>
+      </div>
+    </section>
+
+    <!-- Users -->
+    <section data-page="users" class="page" hidden>
+      <h2>Users</h2>
+      <p class="sub">Beta users who have claimed a token.</p>
+      <div class="section">
+        <div style="overflow-x:auto;"><table id="usersTable"></table></div>
+      </div>
+    </section>
+
+    <!-- Feedback -->
+    <section data-page="feedback" class="page" hidden>
+      <h2>Feedback</h2>
+      <p class="sub">Bug reports, feature requests, ratings, and neighborhood requests.</p>
+      <div class="section">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+          <button class="btn btn-outline" data-fbfilter="all">All</button>
+          <button class="btn btn-outline" data-fbfilter="feature">Features</button>
+          <button class="btn btn-outline" data-fbfilter="bug">Bugs</button>
+          <button class="btn btn-outline" data-fbfilter="rating">Ratings</button>
+          <button class="btn btn-outline" data-fbfilter="neighborhood">Neighborhoods</button>
+        </div>
+        <div id="fbModList"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+"use strict";
+
+async function api(path, opts = {}) {
+  opts.credentials = 'same-origin';
+  opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+  const r = await fetch(path, opts);
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw Object.assign(new Error(data.error || 'api_error'), { data, status: r.status });
+  return data;
+}
+
+const Admin = {
+  page: 'overview',
+  fbFilter: 'all',
+  data: { stats:null, tokens:[], users:[], feedback:[] },
+
+  async init() {
+    try {
+      await api('/api/admin/me');
+      this.showShell();
+      this.go('overview');
+    } catch {
+      this.showLogin();
+    }
+  },
+  showLogin() {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('shell').classList.remove('show');
+  },
+  showShell() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('shell').classList.add('show');
+  },
+  async signIn(ev) {
+    ev.preventDefault();
+    const pw = document.getElementById('adminPw').value;
+    const btn = document.getElementById('loginBtn');
+    const msg = document.getElementById('loginMsg');
+    btn.disabled = true; btn.textContent = 'Signing in…';
+    msg.classList.remove('show');
+    try {
+      await api('/api/admin/login', { method:'POST', body: JSON.stringify({ password: pw }) });
+      this.showShell(); this.go('overview');
+    } catch (e) {
+      msg.textContent = e.status === 429 ? 'Too many attempts. Wait a few minutes.' :
+                         e.data?.error === 'admin_not_configured' ? 'ADMIN_PASSWORD env var is not set in Vercel yet.' :
+                         'Wrong password.';
+      msg.classList.add('show');
+    } finally { btn.disabled = false; btn.textContent = 'Sign in'; document.getElementById('adminPw').value = ''; }
+  },
+  async signOut() {
+    try { await api('/api/admin/logout', { method:'POST' }); } catch {}
+    this.showLogin();
+  },
+  go(page) {
+    this.page = page;
+    document.querySelectorAll('#sideNav button').forEach(b => b.classList.toggle('active', b.dataset.page === page));
+    document.querySelectorAll('.page').forEach(s => s.hidden = s.dataset.page !== page);
+    if (page === 'overview') this.loadOverview();
+    if (page === 'tokens') this.loadTokens();
+    if (page === 'users') this.loadUsers();
+    if (page === 'feedback') this.loadFeedback();
+  },
+  async loadOverview() {
+    try {
+      const stats = await api('/api/admin/stats');
+      this.data.stats = stats;
+      const cards = [
+        { lab:'Beta users', num: stats.users.total, delta: stats.users.last24h ? '+' + stats.users.last24h + ' last 24h' : null },
+        { lab:'Tokens claimed', num: stats.tokens.claimed + ' / ' + stats.tokens.total },
+        { lab:'Tokens unused', num: stats.tokens.unused },
+        { lab:'Spots saved', num: stats.activity.spotsTotal || 0 },
+        { lab:'Loops walked', num: stats.activity.loopsTotal || 0 },
+        { lab:'Feature requests', num: stats.activity.features || 0 },
+        { lab:'Bug reports', num: stats.activity.bugs || 0 },
+        { lab:'Neighborhood asks', num: stats.activity.neighborhoodRequests || 0 }
+      ];
+      document.getElementById('statsRow').innerHTML = cards.map(c =>
+        '<div class="stat-card"><div class="lab">'+c.lab+'</div><div class="num">'+c.num+'</div>'+(c.delta?'<div class="delta">'+c.delta+'</div>':'')+'</div>'
+      ).join('');
+      // Health checks
+      const checks = [];
+      checks.push({ ok: true, msg:'Admin session active' });
+      checks.push({ ok: stats.tokens.total > 0, msg: stats.tokens.total > 0 ? 'Tokens exist (✓)' : 'No tokens generated yet — head to Tokens tab' });
+      checks.push({ ok: stats.users.total > 0, msg: stats.users.total > 0 ? 'At least one user has claimed a token' : 'No claimed tokens yet' });
+      document.getElementById('healthList').innerHTML = checks.map(c => '<div style="display:flex;align-items:center;gap:8px;">'+(c.ok?'✅':'⚠️')+' '+c.msg+'</div>').join('');
+    } catch (e) {
+      document.getElementById('statsRow').innerHTML = '<div class="empty">Failed to load stats. ' + (e.data?.error || e.message) + '</div>';
+    }
+  },
+  async loadTokens() {
+    try {
+      const r = await api('/api/admin/tokens');
+      this.data.tokens = r.tokens || [];
+      document.getElementById('tokensSub').textContent = this.data.tokens.length + ' total · ' +
+        this.data.tokens.filter(t => t.status === 'unused').length + ' unused';
+      const rows = this.data.tokens.length === 0
+        ? '<tr><td colspan="5" class="empty">No tokens yet. Use the form above to generate the first batch.</td></tr>'
+        : this.data.tokens.map(t => {
+            const date = new Date(t.createdAt).toLocaleDateString(undefined, { month:'short', day:'numeric' });
+            const claimed = t.claimedAt ? new Date(t.claimedAt).toLocaleDateString(undefined, { month:'short', day:'numeric' }) : '—';
+            return '<tr><td class="code-cell">' + t.code + ' <button class="btn btn-outline" style="padding:4px 8px;font-size:11px;margin-left:6px;" onclick="Admin.copy(\'' + t.code + '\')">Copy</button></td>' +
+              '<td><span class="pill ' + t.status + '">' + t.status + '</span></td>' +
+              '<td>' + (t.tier || 'beta') + '</td>' +
+              '<td>' + date + ' → ' + claimed + '</td>' +
+              '<td><button class="btn btn-danger" onclick="Admin.revokeToken(\'' + t.code + '\')" ' + (t.status !== 'unused' ? 'disabled style="opacity:0.4;"' : '') + '>Revoke</button></td></tr>';
+          }).join('');
+      document.getElementById('tokensTable').innerHTML = '<thead><tr><th>Code</th><th>Status</th><th>Tier</th><th>Created → Claimed</th><th></th></tr></thead><tbody>' + rows + '</tbody>';
+    } catch (e) {
+      document.getElementById('tokensTable').innerHTML = '<tr><td class="empty">Failed to load tokens.</td></tr>';
+    }
+  },
+  async generateTokens() {
+    const count = Number(document.getElementById('genCount').value) || 1;
+    const tier = document.getElementById('genTier').value;
+    const note = document.getElementById('genNote').value.trim();
+    try {
+      const r = await api('/api/admin/tokens', { method:'POST', body: JSON.stringify({ count, tier, note }) });
+      const codes = r.tokens.map(t => t.code);
+      const html = '<div class="section" style="background:rgba(224,179,65,0.10);border-color:rgba(224,179,65,0.30);margin-top:14px;">' +
+        '<h3 style="color:var(--gold-dark);">' + codes.length + ' new token' + (codes.length === 1 ? '' : 's') + ' generated</h3>' +
+        '<p class="sub">Copy these now — they\'re also visible in the table below.</p>' +
+        '<div style="display:grid;gap:6px;font-family:monospace;font-size:12px;">' +
+        codes.map(c => '<div style="display:flex;gap:8px;align-items:center;"><code style="flex:1;background:white;padding:6px 10px;border-radius:6px;">' + c + '</code><button class="btn btn-outline" style="padding:6px 10px;font-size:11px;" onclick="Admin.copy(\'' + c + '\')">Copy</button></div>').join('') +
+        '</div></div>';
+      document.getElementById('justGenerated').innerHTML = html;
+      document.getElementById('justGenerated').style.display = '';
+      document.getElementById('genNote').value = '';
+      this.loadTokens();
+    } catch (e) { alert('Failed: ' + (e.data?.error || e.message)); }
+  },
+  async revokeToken(code) {
+    if (!confirm('Revoke token ' + code.slice(0, 6) + '…? It can no longer be claimed.')) return;
+    try {
+      await api('/api/admin/tokens?code=' + encodeURIComponent(code), { method:'DELETE' });
+      this.loadTokens();
+    } catch (e) { alert('Failed: ' + (e.data?.error || e.message)); }
+  },
+  copy(text) {
+    navigator.clipboard?.writeText(text);
+    // Quick visual feedback
+    const btns = [...document.querySelectorAll('button')].filter(b => b.textContent === 'Copy');
+    btns.forEach(b => { b.textContent = 'Copied'; setTimeout(() => { if (b.textContent === 'Copied') b.textContent = 'Copy'; }, 1200); });
+  },
+  async loadUsers() {
+    try {
+      const r = await api('/api/admin/users');
+      this.data.users = r.users || [];
+      const rows = this.data.users.length === 0
+        ? '<tr><td colspan="3" class="empty">No users yet. Generate tokens first, then share them.</td></tr>'
+        : this.data.users.map(u => {
+            const date = new Date(u.createdAt).toLocaleString();
+            return '<tr><td class="code-cell">' + u.id + '</td><td>' + (u.tier || 'beta') + '</td><td>' + date + '</td></tr>';
+          }).join('');
+      document.getElementById('usersTable').innerHTML = '<thead><tr><th>User ID</th><th>Tier</th><th>Joined</th></tr></thead><tbody>' + rows + '</tbody>';
+    } catch { document.getElementById('usersTable').innerHTML = '<tr><td>Failed to load users.</td></tr>'; }
+  },
+  async loadFeedback() {
+    try {
+      const r = await api('/api/admin/feedback');
+      this.data.feedback = r.items || [];
+      this.renderFeedback();
+    } catch { document.getElementById('fbModList').innerHTML = '<div class="empty">Failed to load feedback.</div>'; }
+  },
+  renderFeedback() {
+    const filtered = this.fbFilter === 'all' ? this.data.feedback : this.data.feedback.filter(i => i.type === this.fbFilter);
+    const list = document.getElementById('fbModList');
+    if (!filtered.length) { list.innerHTML = '<div class="empty">No feedback yet.</div>'; return; }
+    document.querySelectorAll('[data-fbfilter]').forEach(b => b.style.background = b.dataset.fbfilter === this.fbFilter ? 'var(--cream)' : 'white');
+    list.innerHTML = filtered.map(i => {
+      const date = new Date(i.createdAt).toLocaleDateString(undefined, { month:'short', day:'numeric' });
+      const status = i.status || 'open';
+      return '<div class="fb-card-mod">' +
+        '<div class="head"><span class="type">' + i.type + '</span> · ' + date + ' · user ' + (i.userId || '?').slice(0, 8) + ' · <span class="pill ' + status + '">' + status + '</span>' +
+        (i.type === 'feature' ? ' · ' + (i.votes || 0) + ' votes' : '') + '</div>' +
+        '<h4>' + (i.title || '').replace(/</g, '&lt;') + '</h4>' +
+        (i.body ? '<p>' + i.body.replace(/</g, '&lt;') + '</p>' : '') +
+        '<div class="actions"><select onchange="Admin.setFeedbackStatus(\'' + i.id + '\', this.value)">' +
+        ['open','reviewing','planned','shipped','rejected','closed'].map(s => '<option value="' + s + '"' + (s === status ? ' selected' : '') + '>' + s + '</option>').join('') +
+        '</select></div></div>';
+    }).join('');
+  },
+  async setFeedbackStatus(id, status) {
+    try {
+      await api('/api/admin/feedback', { method:'POST', body: JSON.stringify({ id, status }) });
+      const item = this.data.feedback.find(x => x.id === id);
+      if (item) item.status = status;
+      this.renderFeedback();
+    } catch { alert('Failed to update status.'); }
+  }
+};
+
+document.getElementById('loginForm').addEventListener('submit', e => Admin.signIn(e));
+document.getElementById('sideNav').addEventListener('click', e => {
+  const b = e.target.closest('button[data-page]'); if (b) Admin.go(b.dataset.page);
+});
+document.querySelector('[data-fbfilter="all"]')?.parentElement?.addEventListener('click', e => {
+  const b = e.target.closest('button[data-fbfilter]'); if (b) { Admin.fbFilter = b.dataset.fbfilter; Admin.renderFeedback(); }
+});
+
+Admin.init();
+</script>
+</body>
+</html>
