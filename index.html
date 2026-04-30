@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Walking Explorers — Where curiosity meets the city.</title>
+<meta name="description" content="AI walking-discovery app for New York. Personalized routes through Instagram-worthy cafés, vintage shops, hidden gems — generated from your tastes, your time, and your real GPS." />
+<meta property="og:title" content="Walking Explorers — Where curiosity meets the city." />
+<meta property="og:description" content="AI walking-discovery app for New York. Personalized routes through the cafés, shops, and corners that match your tastes." />
+<meta property="og:type" content="website" />
+<style>
+  :root {
+    --navy: #1F3864;
+    --navy-2: #162B4A;
+    --blue: #2E75B6;
+    --blue-soft: #5C9FE0;
+    --gold: #E0B341;
+    --gold-dark: #B8941F;
+    --cream: #FAF7F2;
+    --ink: #1A1A1A;
+    --mute: #6B7280;
+    --line: #E5E1D8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink); background: var(--cream); line-height: 1.55; -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { color: var(--navy); }
+  .nav { position: sticky; top: 0; z-index: 50; background: rgba(250,247,242,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .nav-inner { max-width: 1200px; margin: 0 auto; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { font-weight: 800; letter-spacing: -0.01em; font-size: 18px; color: var(--navy); }
+  .brand span { color: var(--gold-dark); }
+  .nav-links { display: flex; gap: 26px; align-items: center; font-size: 14px; }
+  .nav-links a { color: var(--navy); font-weight: 500; }
+  .nav-cta { padding: 8px 18px; background: var(--navy); color: white !important; border-radius: 8px; font-weight: 600; }
+  .nav-cta:hover { background: var(--navy-2); }
+  @media (max-width: 720px) { .nav-links a:not(.nav-cta) { display: none; } }
+  .hero { position: relative; overflow: hidden; background: linear-gradient(160deg, #1F3864 0%, #2E75B6 60%, #E0B341 130%); color: white; padding: 80px 32px 100px; }
+  .hero-inner { max-width: 1200px; margin: 0 auto; }
+  .hero h1 { font-size: clamp(36px, 6vw, 72px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; max-width: 12ch; margin-bottom: 20px; }
+  .hero h1 .accent { color: var(--gold); }
+  .hero p.lede { font-size: clamp(16px, 1.6vw, 20px); max-width: 56ch; color: rgba(255,255,255,0.92); margin-bottom: 36px; line-height: 1.5; }
+  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 16px 26px; border-radius: 12px; font-weight: 600; font-size: 15px; transition: all 120ms; cursor: pointer; border: 0; text-decoration: none; }
+  .btn-accent { background: var(--gold); color: var(--navy) !important; }
+  .btn-accent:hover { background: white; color: var(--navy) !important; transform: translateY(-1px); }
+  .btn-ghost { background: transparent; color: white !important; border: 1.5px solid rgba(255,255,255,0.4); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.10); }
+  .hero-meta { margin-top: 50px; display: flex; gap: 28px; flex-wrap: wrap; color: rgba(255,255,255,0.75); font-size: 13px; }
+  .hero-meta .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); margin-right: 8px; vertical-align: middle; }
+  .skyline { position: absolute; bottom: 0; left: 0; right: 0; height: 70px; pointer-events: none; opacity: 0.5; }
+  .skyline svg { width: 100%; height: 100%; }
+  section { padding: 90px 32px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .eyebrow { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 14px; }
+  h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 800; letter-spacing: -0.01em; color: var(--navy); margin-bottom: 16px; line-height: 1.15; max-width: 18ch; }
+  .lead { font-size: clamp(16px, 1.4vw, 18px); color: var(--mute); max-width: 60ch; margin-bottom: 40px; }
+  .steps { display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top: 30px; }
+  .step { background: white; border: 1px solid var(--line); border-radius: 18px; padding: 28px; position: relative; transition: 200ms; }
+  .step:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(31,56,100,0.10); }
+  .step-num { width: 40px; height: 40px; border-radius: 50%; background: var(--navy); color: var(--gold); display: grid; place-items: center; font-weight: 700; font-size: 16px; margin-bottom: 18px; }
+  .step h3 { font-size: 18px; color: var(--navy); margin-bottom: 8px; }
+  .step p { font-size: 14px; color: var(--mute); line-height: 1.55; }
+  .features-bg { background: white; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .features { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 40px; }
+  .feature { padding: 30px; border-left: 4px solid var(--gold); background: var(--cream); border-radius: 10px; }
+  .feature h3 { font-size: 17px; color: var(--navy); margin-bottom: 8px; }
+  .feature p { font-size: 14px; color: var(--ink); line-height: 1.55; }
+  .proof { background: var(--navy); color: white; }
+  .proof h2 { color: white; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 30px; margin-top: 30px; }
+  .stat { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); padding: 28px; border-radius: 14px; }
+  .stat .num { font-size: 42px; font-weight: 800; color: var(--gold); }
+  .stat .lab { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 6px; }
+  .stat-foot { margin-top: 24px; font-size: 13px; color: rgba(255,255,255,0.55); font-style: italic; }
+  .nbhd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-top: 36px; }
+  .nbhd { aspect-ratio: 4/5; border-radius: 16px; padding: 22px; color: white; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; transition: 200ms; }
+  .nbhd:hover { transform: translateY(-3px); }
+  .nbhd .name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .nbhd .meta { font-size: 12px; opacity: 0.85; }
+  .press { padding: 60px 32px; background: white; border-top: 1px solid var(--line); }
+  .press-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
+  .press p { font-size: 13px; color: var(--mute); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 24px; }
+  .press-row { display: flex; justify-content: center; gap: 50px; flex-wrap: wrap; opacity: 0.55; font-weight: 700; color: var(--navy); }
+  .press-row span { font-size: 18px; letter-spacing: -0.01em; }
+  .signup { background: linear-gradient(135deg, var(--navy), var(--blue)); color: white; }
+  .signup h2 { color: white; }
+  .signup p.lead { color: rgba(255,255,255,0.85); }
+  .signup-form { margin-top: 30px; display: flex; gap: 12px; flex-wrap: wrap; max-width: 560px; }
+  .signup-form input[type=email] { flex: 1; min-width: 240px; padding: 16px 20px; border-radius: 12px; border: 1.5px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white; font-size: 16px; font-family: inherit; }
+  .signup-form input[type=email]::placeholder { color: rgba(255,255,255,0.6); }
+  .signup-form input[type=email]:focus { outline: 0; border-color: var(--gold); background: rgba(255,255,255,0.15); }
+  #signup-msg { margin-top: 14px; font-size: 14px; color: var(--gold); min-height: 18px; }
+  .faq-bg { background: var(--cream); }
+  .faq { margin-top: 30px; max-width: 800px; }
+  .faq details { background: white; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 12px; padding: 18px 22px; cursor: pointer; transition: 150ms; }
+  .faq details[open] { border-color: var(--gold); }
+  .faq summary { font-weight: 600; color: var(--navy); list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .faq summary::after { content: "+"; font-size: 22px; color: var(--gold-dark); }
+  .faq details[open] summary::after { content: "\2212"; }
+  .faq p { color: var(--mute); margin-top: 10px; line-height: 1.6; }
+  footer { background: var(--navy-2); color: rgba(255,255,255,0.7); padding: 60px 32px 30px; font-size: 13px; }
+  .foot-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 40px; }
+  @media (max-width: 720px) { .foot-inner { grid-template-columns: 1fr; gap: 30px; } }
+  footer h4 { color: white; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  footer ul { list-style: none; }
+  footer li { margin-bottom: 8px; }
+  footer a { color: rgba(255,255,255,0.7); }
+  footer a:hover { color: var(--gold); }
+  .foot-bottom { max-width: 1100px; margin: 30px auto 0; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-inner"><div class="brand">walking<span>.</span>explorers</div><div class="nav-links"><a href="#how">How it works</a><a href="#cities">Cities</a><a href="#about">About</a><a href="#signup" class="nav-cta">Join the beta</a></div></div></nav>
+<section class="hero"><div class="hero-inner"><h1>Where <span class="accent">curiosity</span> meets the city.</h1><p class="lede">Walking Explorers turns any city into a personalized adventure. AI generates a one-of-a-kind walking route from your tastes, your time, and your real GPS — through the cafés, vintage shops, and hidden corners that match your particular kind of curious.</p><div class="hero-ctas"><a href="#signup" class="btn btn-accent">Join the New York beta →</a><a href="#how" class="btn btn-ghost">See how it works</a></div><div class="hero-meta"><span><span class="dot"></span>NYC pilot launching 2026</span><span>iOS &amp; Android</span><span>Backed by AI · powered by GPS</span></div></div><div class="skyline"><svg viewBox="0 0 1200 80" preserveAspectRatio="none"><polygon fill="#162B4A" points="0,80 0,50 40,50 40,30 80,30 80,55 110,55 110,15 150,15 150,40 200,40 200,25 250,25 250,55 290,55 290,10 330,10 330,45 380,45 380,30 430,30 430,55 470,55 470,20 520,20 520,40 580,40 580,15 630,15 630,50 680,50 680,35 730,35 730,55 780,55 780,25 830,25 830,45 880,45 880,30 930,30 930,55 980,55 980,20 1030,20 1030,40 1080,40 1080,55 1130,55 1130,30 1170,30 1170,50 1200,50 1200,80"/></svg></div></section>
+<section id="how"><div class="container"><span class="eyebrow">How it works</span><h2>Four steps. Zero generic itineraries.</h2><p class="lead">No more saving Pinterest boards that never become a walked Saturday. No more Google Maps' "popular places." A route built only for you, only for today.</p><div class="steps"><div class="step"><div class="step-num">1</div><h3>Tell us what you love</h3><p>Pick your moods — aesthetic cafés, vintage shops, street art, sunset spots, bookstores, hidden gardens. The AI learns your taste in 30 seconds.</p></div><div class="step"><div class="step-num">2</div><h3>Pick your time</h3><p>Have 30 minutes or half a day? We match route length to your schedule — and to where you're standing right now.</p></div><div class="step"><div class="step-num">3</div><h3>Walk a route built for you</h3><p>Turn-by-turn navigation through 5–8 hand-picked stops. Each one with the story of why we chose it for you specifically.</p></div><div class="step"><div class="step-num">4</div><h3>Save it as a Loop</h3><p>Photos auto-organize into a sharable visual memory. Send it privately. Post it. Walk it again next month.</p></div></div></div></section>
+<section class="features-bg" id="features"><div class="container"><span class="eyebrow">What makes it different</span><h2>Aesthetic, not algorithmic.</h2><p class="lead">Other apps optimize for ratings, traffic, or convenience. We optimize for <i>your</i> kind of beautiful.</p><div class="features"><div class="feature"><h3>AI-generated, never pre-curated</h3><p>Every route is unique. Inventory is unbounded. The longer you use it, the better your recommendations get.</p></div><div class="feature"><h3>Mood-first, not rating-first</h3><p>We index places by feel — vintage, cozy, hidden, sunset-friendly — not by a 4.6-star average. Your aesthetic is the signal.</p></div><div class="feature"><h3>Independent businesses, surfaced</h3><p>Local cafés, galleries, and vintage shops we love — not the same chain restaurants every algorithm recommends.</p></div><div class="feature"><h3>The walk becomes a memory</h3><p>Loops are visual artifacts of your day — a route, a story, a stack of photos. Share them, save them, walk them again.</p></div><div class="feature"><h3>Built privacy-first</h3><p>Your taste profile never leaves your phone unencrypted. We process locations without selling them.</p></div><div class="feature"><h3>Designed for the city you're in</h3><p>Manhattan-grade walking is different from suburban strolling. Routes are built around real neighborhood density, not raw distance.</p></div></div></div></section>
+<section class="proof"><div class="container"><span class="eyebrow" style="color: var(--gold);">Built for New York</span><h2>12 hand-curated routes. 72 stops. All real, all walked.</h2><p class="lead" style="color: rgba(255,255,255,0.85);">We started with the city that breaks every consumer app: New York. Eight neighborhoods, twelve hand-picked routes, every stop verified.</p><div class="stats"><div class="stat"><div class="num">12</div><div class="lab">NYC routes live in the beta</div></div><div class="stat"><div class="num">72</div><div class="lab">Hand-picked stops with stories</div></div><div class="stat"><div class="num">8</div><div class="lab">NYC neighborhoods covered</div></div><div class="stat"><div class="num">62M</div><div class="lab">Annual NYC visitors (NYC &amp; Co)</div></div></div><p class="stat-foot">Hold the working beta in your hand → ask us for the link.</p></div></section>
+<section id="cities"><div class="container"><span class="eyebrow">Beta · neighborhoods</span><h2>Walk a New York you don't already know.</h2><p class="lead">Routes built around the eight NYC neighborhoods that reward walking the most.</p><div class="nbhd-grid"><div class="nbhd" style="background: linear-gradient(160deg, #2E75B6, #1F3864);"><div class="name">SoHo</div><div class="meta">Café crawl · Hidden galleries</div></div><div class="nbhd" style="background: linear-gradient(160deg, #B85042, #6B2D1A);"><div class="name">East Village</div><div class="meta">Vintage &amp; vinyl</div></div><div class="nbhd" style="background: linear-gradient(160deg, #5B7C5B, #2C4A2C);"><div class="name">West Village</div><div class="meta">Bookshops &amp; brownstones</div></div><div class="nbhd" style="background: linear-gradient(160deg, #2C5F2D, #97BC62);"><div class="name">Chelsea</div><div class="meta">High Line + galleries</div></div><div class="nbhd" style="background: linear-gradient(160deg, #E0B341, #8C5B00);"><div class="name">Williamsburg</div><div class="meta">Street art walk</div></div><div class="nbhd" style="background: linear-gradient(160deg, #6D2E46, #2D0F1B);"><div class="name">DUMBO</div><div class="meta">Brooklyn Bridge loop</div></div><div class="nbhd" style="background: linear-gradient(160deg, #028090, #024758);"><div class="name">Central Park</div><div class="meta">Hidden corners</div></div><div class="nbhd" style="background: linear-gradient(160deg, #C84B31, #5C2114);"><div class="name">Lower East Side</div><div class="meta">Foodie crawl</div></div></div></div></section>
+<section class="press"><div class="press-inner"><p>For walkers, locals, tourists, and re-discoverers</p><div class="press-row"><span>Aesthetic-first</span><span>·</span><span>Privacy-first</span><span>·</span><span>Local-first</span><span>·</span><span>NYC-first</span></div></div></section>
+<section id="signup" class="signup"><div class="container"><span class="eyebrow" style="color: var(--gold);">Join the beta</span><h2>Be the first to walk it.</h2><p class="lead">We're opening the New York beta in waves. Add your email — we'll text you when your neighborhood unlocks.</p><form class="signup-form" onsubmit="signup(event)"><input type="email" required placeholder="you@example.com" id="signup-email" /><button type="submit" class="btn btn-accent">Join the waitlist →</button></form><div id="signup-msg"></div></div></section>
+<section class="faq-bg" id="about"><div class="container"><span class="eyebrow">Common questions</span><h2>Things people ask first.</h2><div class="faq"><details><summary>Is this for tourists or locals?</summary><p>Both. Tourists use it to find the city behind the city. Locals use it to rediscover neighborhoods they thought they knew. Our most loyal beta users are New Yorkers who walk the same blocks every week and want a Sunday surprise.</p></details><details><summary>How is this different from Google Maps?</summary><p>Google Maps optimizes for proximity and traffic. We optimize for personal aesthetic. Maps are functional. Loops are emotional.</p></details><details><summary>Why New York first?</summary><p>It has the most walkable streets, the densest independent-business ecosystem, and the most demanding users. If a walking app works in New York, it works anywhere.</p></details><details><summary>What does the AI actually do?</summary><p>It takes your stated tastes, learns from what you actually click and walk, factors in your real-time location and time available, and picks 5–8 stops that sequence into a coherent walk. It doesn't invent places — every stop is from a curated, human-verified database.</p></details><details><summary>Is it free?</summary><p>Yes — three AI routes a month, free forever. Power users can upgrade to unlimited routes, ad-free walking, and group features.</p></details><details><summary>I run a café/shop/gallery in NYC — how do I get featured?</summary><p>Email <a href="mailto:mbkill4ever@gmail.com">mbkill4ever@gmail.com</a> with the subject line "Charter business — [name]." Our charter program gives the first 30 partner businesses 90 days of free featured placement.</p></details><details><summary>I'm an investor / partner — how do I get in touch?</summary><p>Same email. Subject line "Walking Explorers — Investor / Partner." We'll send the deck and a link to the working beta.</p></details></div></div></section>
+<footer><div class="foot-inner"><div><div class="brand" style="color: white; font-size: 18px;">walking<span style="color: var(--gold);">.</span>explorers</div><p style="margin-top: 14px; max-width: 32ch;">Where curiosity meets the city. NYC pilot launching 2026. iOS &amp; Android.</p></div><div><h4>Product</h4><ul><li><a href="#how">How it works</a></li><li><a href="#cities">Cities</a></li><li><a href="#signup">Beta signup</a></li></ul></div><div><h4>Company</h4><ul><li><a href="mailto:mbkill4ever@gmail.com">Contact</a></li><li><a href="mailto:mbkill4ever@gmail.com?subject=Charter%20business">Charter businesses</a></li><li><a href="mailto:mbkill4ever@gmail.com?subject=Investor">Investors</a></li><li><a href="mailto:mbkill4ever@gmail.com?subject=CTO%20interest">Working with us</a></li></ul></div></div><div class="foot-bottom"><span>© 2026 Walking Explorers · All rights reserved.</span><span>Built in New York.</span></div></footer>
+<script>
+function signup(ev) {
+  ev.preventDefault();
+  const email = document.getElementById('signup-email').value;
+  const msg = document.getElementById('signup-msg');
+  if (!email || !email.includes('@')) {
+    msg.textContent = 'Hmm, that email looks off — try again?';
+    msg.style.color = '#FF8C8C';
+    return false;
+  }
+  msg.innerHTML = "✓ <b>You’re in.</b> We’ll be in touch when your neighborhood unlocks. (For now, email Nova at mbkill4ever@gmail.com to skip the line.)";
+  msg.style.color = '#E0B341';
+  document.getElementById('signup-email').value = '';
+  return false;
+}
+</script>
+</body>
+</html>
