@@ -338,8 +338,8 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif
   font-size:13px; font-weight:700; }
 
 /* Feedback / Request Feature / Changelog */
-.tabs-row { display:flex; gap:8px; padding:0 18px 14px; overflow-x:auto; -webkit-overflow-scrolling:touch; }
-.tab-pill { background:white; border:1.5px solid var(--line); border-radius:100px;
+.tabs-row { display:flex; flex-wrap:wrap; gap:8px; padding:8px 18px 18px; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.tab-pill { flex-shrink:0; background:white; border:1.5px solid var(--line); border-radius:100px;
   padding:8px 14px; font:inherit; font-size:13px; font-weight:600; color:var(--ink-2);
   cursor:pointer; white-space:nowrap; transition:140ms var(--ease); }
 .tab-pill.on { background:var(--navy); color:white; border-color:var(--navy); }
@@ -366,7 +366,7 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif
 .fb-card .body .status.planned { background:rgba(46,117,182,0.15); color:var(--blue); }
 .fb-card .body .status.reviewing { background:rgba(224,179,65,0.18); color:var(--gold-dark); }
 
-.fb-form { padding:0 18px 24px; }
+.fb-form { padding:8px 18px 24px; margin-top:4px; }
 .fb-form .input { width:100%; padding:14px 16px;
   border-radius:var(--r-md); border:1.5px solid var(--line); background:white;
   font:inherit; font-size:15px; color:var(--ink); margin-bottom:12px; }
