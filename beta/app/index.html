@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <meta name="theme-color" content="#1F3864" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -10,6 +10,7 @@
 <title>Walking Explorers — Beta</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -36,6 +37,7 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif
   background:var(--cream); color:var(--ink);
   font-size:15.5px; line-height:1.5; letter-spacing:-0.01em;
   -webkit-font-smoothing:antialiased; }
+body.modal-open { overflow:hidden; }
 
 #app { max-width:460px; margin:0 auto; height:100vh; height:100svh;
   background:var(--cream); position:relative; overflow:hidden;
@@ -59,13 +61,15 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif
   transition:120ms var(--ease); box-shadow:var(--shadow-1); color:var(--ink-2); }
 .icon-btn:active { transform:scale(0.92); background:var(--cream-2); }
 .icon-btn svg { width:20px; height:20px; stroke-width:2; }
+.icon-btn:focus-visible { outline:2px solid var(--navy); outline-offset:2px; }
 
 .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px;
   padding:16px 22px; border-radius:var(--r-md); border:0;
-  font-family:inherit; font-size:15.5px; font-weight:600;
+  font-family:inherit; font-size:16px; font-weight:600;
   cursor:pointer; transition:transform 100ms var(--ease), background 150ms ease;
   letter-spacing:-0.01em; text-decoration:none; }
 .btn:active { transform:scale(0.97); }
+.btn:focus-visible { outline:2px solid var(--navy); outline-offset:2px; }
 .btn-primary { background:var(--navy); color:white; box-shadow:var(--shadow-2); }
 .btn-primary:hover { background:var(--navy-2); }
 .btn-accent { background:var(--gold); color:var(--navy); box-shadow:0 6px 14px rgba(224,179,65,0.30); }
@@ -82,6 +86,21 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif
 .section-h { margin:24px 22px 12px; display:flex; align-items:center; justify-content:space-between; }
 .section-h h3 { font-size:17px; font-weight:700; letter-spacing:-0.01em; margin:0; }
 .section-h .more { font-size:13px; color:var(--blue); font-weight:600; cursor:pointer; }
+
+/* Right Now card */
+.rightnow-card { margin:6px 18px 12px; padding:16px 18px;
+  background:linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+  color:white; border-radius:var(--r-lg); cursor:pointer;
+  position:relative; overflow:hidden; box-shadow:var(--shadow-2);
+  transition:200ms var(--ease); }
+.rightnow-card:active { transform:translateY(1px) scale(0.995); }
+.rightnow-card .eyebrow { font-size:11px; font-weight:800; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--gold-soft); }
+.rightnow-card .ctx { margin-top:6px; font-size:14px; line-height:1.45; color:rgba(255,255,255,0.85); }
+.rightnow-card h3 { margin:8px 0 6px; font-size:18px; font-weight:800; letter-spacing:-0.01em; line-height:1.2; }
+.rightnow-card .cta-pill { display:inline-flex; align-items:center; gap:6px;
+  background:var(--gold); color:var(--navy); padding:7px 13px;
+  border-radius:100px; font-size:12.5px; font-weight:700; margin-top:8px; }
 
 /* Route cards */
 .route-list { padding:4px 18px 24px; display:grid; gap:16px; }
@@ -208,12 +227,13 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif
   width:100%; max-width:460px; margin:0 auto;
   padding:22px 22px calc(22px + env(safe-area-inset-bottom, 0));
   box-shadow:0 -10px 40px rgba(0,0,0,0.2);
-  max-height:85vh; overflow-y:auto;
+  max-height:85vh; max-height:85svh; overflow-y:auto;
   animation:sheetIn 280ms var(--ease-out); }
 @keyframes sheetIn { from { transform:translateY(40px); opacity:0; } to { transform:translateY(0); opacity:1; } }
 .modal-handle { width:40px; height:4px; border-radius:2px; background:var(--mute-2); opacity:0.5; margin:0 auto 16px; }
 .modal-card h2 { margin:4px 0 6px; font-size:22px; font-weight:700; letter-spacing:-0.02em; }
 .modal-card p.sub { color:var(--mute); font-size:14px; margin:0 0 18px; }
+.modal-close-row { display:flex; justify-content:flex-end; margin-bottom:6px; }
 .capture-photo-zone { position:relative; aspect-ratio:4/3;
   border-radius:var(--r-md); overflow:hidden;
   background:var(--cream-2); border:1.5px dashed var(--line);
@@ -244,12 +264,17 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif
 .notes-input { width:100%; min-height:60px; max-height:160px; resize:vertical;
   padding:12px 14px; border-radius:var(--r-md);
   border:1.5px solid var(--line); background:white;
-  font:inherit; font-size:14px; color:var(--ink); margin-bottom:14px; }
+  font:inherit; font-size:16px; color:var(--ink); margin-bottom:14px; }
 .notes-input:focus { outline:none; border-color:var(--navy); }
 .gps-row { display:flex; align-items:center; gap:8px;
   font-size:12px; color:var(--mute); margin-bottom:18px;
   padding:8px 12px; background:var(--cream-2); border-radius:var(--r-sm); }
 .gps-row.locked { color:var(--good); }
+
+/* Visually hidden labels (a11y) */
+.visually-hidden { position:absolute; width:1px; height:1px;
+  padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0);
+  white-space:nowrap; border:0; }
 
 /* Archive */
 .archive-empty { padding:60px 28px; text-align:center; }
@@ -350,7 +375,7 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif
 .fb-card .head { display:flex; gap:10px; align-items:flex-start; }
 .fb-card .vote { display:flex; flex-direction:column; align-items:center;
   background:var(--cream-2); border-radius:10px; padding:6px 8px;
-  min-width:46px; cursor:pointer; transition:140ms var(--ease); }
+  min-width:46px; cursor:pointer; transition:140ms var(--ease); border:0; font:inherit; }
 .fb-card .vote:active { transform:scale(0.95); }
 .fb-card .vote.voted { background:rgba(224,179,65,0.18); }
 .fb-card .vote svg { width:14px; height:14px; color:var(--navy); }
@@ -367,9 +392,11 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif
 .fb-card .body .status.reviewing { background:rgba(224,179,65,0.18); color:var(--gold-dark); }
 
 .fb-form { padding:8px 18px 24px; margin-top:4px; }
+.fb-form label { display:block; font-size:12.5px; font-weight:700; color:var(--ink-2);
+  margin:0 0 6px; letter-spacing:0.01em; }
 .fb-form .input { width:100%; padding:14px 16px;
   border-radius:var(--r-md); border:1.5px solid var(--line); background:white;
-  font:inherit; font-size:15px; color:var(--ink); margin-bottom:12px; }
+  font:inherit; font-size:16px; color:var(--ink); margin-bottom:12px; }
 .fb-form textarea { min-height:90px; max-height:280px; resize:vertical; }
 .fb-form .input:focus { outline:none; border-color:var(--navy); }
 .fb-form .row { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
@@ -379,7 +406,7 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif
 /* Changelog */
 .changelog { padding:4px 22px 32px; }
 .changelog .release { padding:18px 0; border-bottom:1px solid var(--line); }
-.changelog .release h4 { margin:0; font-size:16px; font-weight:700; }
+.changelog .release h2 { margin:0; font-size:16px; font-weight:700; }
 .changelog .release time { font-size:11.5px; color:var(--mute); font-weight:600; letter-spacing:0.04em; }
 .changelog .release ul { margin:10px 0 0; padding-left:18px; font-size:14px; line-height:1.6; }
 .changelog .release ul li { margin-bottom:4px; color:var(--ink-2); }
@@ -429,30 +456,34 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif
 
 <div id="app">
 
-  <div class="boot" id="boot"><div class="ring"></div></div>
+  <div class="boot" id="boot" role="status" aria-label="Loading"><div class="ring"></div></div>
 
   <!-- Explore -->
-  <section class="screen" id="explore">
+  <section class="screen" id="explore" aria-label="Explore">
     <div class="topbar bordered">
-      <h2>Walking Explorers</h2>
-      <button class="icon-btn" onclick="App.signOut()" title="Sign out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+      <h1 style="margin:0;font-size:17px;font-weight:600;flex:1;letter-spacing:-0.02em;">Walking Explorers</h1>
+      <button class="icon-btn" onclick="App.signOut()" title="Sign out" aria-label="Sign out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
     </div>
     <div class="greeting-wrap">
       <div class="greeting-eyebrow">Today in NYC</div>
-      <h1 class="greeting-h" id="greeting">Welcome back, explorer</h1>
+      <p class="greeting-h" id="greeting" style="margin:4px 0 6px;font-size:26px;font-weight:700;letter-spacing:-0.02em;line-height:1.15;">Welcome back, explorer</p>
       <p class="greeting-sub" id="greetingSub">Tap any walk to begin</p>
     </div>
-    <div class="section-h"><h3>NYC routes</h3><span class="more" id="countAll">12 routes</span></div>
+
+    <!-- Right Now contextual card (shown on first app load) -->
+    <div id="rightNowSlot"></div>
+
+    <div class="section-h"><h2 style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin:0;">NYC routes</h2><span class="more" id="countAll">12 routes</span></div>
     <div class="route-list" id="allList"></div>
   </section>
 
   <!-- Detail -->
-  <section class="screen" id="detail">
+  <section class="screen" id="detail" aria-label="Route detail">
     <div class="detail-hero">
       <div class="cover-art" id="dHeroArt"></div>
       <div class="cover-overlay"></div>
       <div class="nav-icons">
-        <button class="icon-btn" onclick="Nav.switchTab('explore')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        <button class="icon-btn" onclick="Nav.switchTab('explore')" aria-label="Back to explore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
       </div>
       <div><div class="nbhd-tag" id="dNbhd">NYC</div><h1 id="dTitle">Route</h1></div>
     </div>
@@ -465,16 +496,16 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif
     <div class="detail-desc" id="dDesc"></div>
     <div class="stops-list" id="dStopsList"></div>
     <div class="action-bar">
-      <button class="icon-btn" onclick="Nav.switchTab('explore')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+      <button class="icon-btn" onclick="Nav.switchTab('explore')" aria-label="Back to explore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
       <button class="btn btn-primary" onclick="Walk.start()">Start walking</button>
     </div>
   </section>
 
   <!-- Walk -->
-  <section class="screen no-tab walk-screen" id="walk">
+  <section class="screen no-tab walk-screen" id="walk" aria-label="Walk in progress">
     <div class="walk-header">
-      <div><div class="stop-counter" id="wCounter">Stop 1 of 6</div><h2 id="wTitle">Stop name</h2></div>
-      <button class="icon-btn" onclick="Walk.exit()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      <div><div class="stop-counter" id="wCounter">Stop 1 of 6</div><h1 id="wTitle" style="margin:6px 0 0;font-size:20px;font-weight:700;letter-spacing:-0.02em;max-width:80%;">Stop name</h1></div>
+      <button class="icon-btn" onclick="Walk.exit()" aria-label="Exit walk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
       <div class="walk-progress"><div class="fill" id="wProgressFill" style="width:16%"></div></div>
     </div>
     <div class="walk-body">
@@ -498,27 +529,27 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif
   </section>
 
   <!-- My Spots -->
-  <section class="screen" id="archive">
+  <section class="screen" id="archive" aria-label="My spots">
     <div class="topbar bordered">
-      <h2>My Spots</h2>
-      <div class="view-toggle" id="archiveToggle" style="display:none;">
-        <button class="on" onclick="Archive.setView('list')">List</button>
-        <button onclick="Archive.setView('map')">Map</button>
+      <h1 style="margin:0;font-size:17px;font-weight:600;flex:1;letter-spacing:-0.02em;">My Spots</h1>
+      <div class="view-toggle" id="archiveToggle" style="display:none;" role="tablist" aria-label="Archive view">
+        <button class="on" onclick="Archive.setView('list')" aria-label="List view">List</button>
+        <button onclick="Archive.setView('map')" aria-label="Map view">Map</button>
       </div>
     </div>
     <div id="archiveContent"></div>
   </section>
 
   <!-- Offers -->
-  <section class="screen" id="offers">
-    <div class="topbar bordered"><h2>Promotions Near You</h2></div>
+  <section class="screen" id="offers" aria-label="Promotions">
+    <div class="topbar bordered"><h1 style="margin:0;font-size:17px;font-weight:600;flex:1;letter-spacing:-0.02em;">Promotions Near You</h1></div>
     <div class="greeting-wrap" style="padding:14px 22px 0;">
       <div class="greeting-eyebrow">Limited-time · NYC</div>
       <p class="greeting-sub" style="margin-top:4px;">Local businesses, real offers.</p>
     </div>
-    <div class="promo-route-cta" onclick="Promotions.generateRoute()">
+    <div class="promo-route-cta" onclick="Promotions.generateRoute()" role="button" tabindex="0" aria-label="Generate promo route">
       <div class="eyebrow">New · Promo Route</div>
-      <h3>Build a route from nearby offers.</h3>
+      <h2 style="margin:6px 0 4px;font-size:18px;font-weight:800;letter-spacing:-0.01em;line-height:1.2;max-width:22ch;">Build a route from nearby offers.</h2>
       <p>2–4 promo stops + 2 aesthetic exploration stops. Made for today.</p>
       <span class="btn-row">✨ Generate now →</span>
     </div>
@@ -526,43 +557,45 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif
   </section>
 
   <!-- Feedback hub -->
-  <section class="screen" id="feedback">
+  <section class="screen" id="feedback" aria-label="Feedback">
     <div class="topbar bordered">
-      <h2>Feedback</h2>
-      <button class="icon-btn" onclick="Nav.switchTab('changelog')" title="Changelog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+      <h1 style="margin:0;font-size:17px;font-weight:600;flex:1;letter-spacing:-0.02em;">Feedback</h1>
+      <button class="icon-btn" onclick="Nav.switchTab('changelog')" title="Changelog" aria-label="Changelog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
     </div>
     <div class="greeting-wrap" style="padding:14px 22px 8px;">
       <div class="greeting-eyebrow">Help shape the product</div>
-      <h1 class="greeting-h" style="font-size:22px;">What should we build next?</h1>
+      <p class="greeting-h" style="font-size:22px;margin:4px 0 6px;font-weight:700;letter-spacing:-0.02em;line-height:1.15;">What should we build next?</p>
       <p class="greeting-sub">Vote on feature requests, file bugs, request neighborhoods.</p>
     </div>
-    <div class="tabs-row" id="fbTabs">
-      <button class="tab-pill on" data-fbtab="feature">✨ Feature requests</button>
-      <button class="tab-pill" data-fbtab="bug">🐛 Bug reports</button>
-      <button class="tab-pill" data-fbtab="rating">⭐ Route ratings</button>
-      <button class="tab-pill" data-fbtab="neighborhood">🗺️ Neighborhood requests</button>
+    <div class="tabs-row" id="fbTabs" role="tablist" aria-label="Feedback type">
+      <button class="tab-pill on" data-fbtab="feature" role="tab">✨ Feature requests</button>
+      <button class="tab-pill" data-fbtab="bug" role="tab">🐛 Bug reports</button>
+      <button class="tab-pill" data-fbtab="rating" role="tab">⭐ Route ratings</button>
+      <button class="tab-pill" data-fbtab="neighborhood" role="tab">🗺️ Neighborhood requests</button>
     </div>
     <div class="fb-form">
-      <input class="input" id="fbTitle" placeholder="Short summary (e.g. Add Astoria neighborhood)" maxlength="140">
+      <label for="fbTitle">Summary</label>
+      <input class="input" id="fbTitle" placeholder="Short summary (e.g. Add Astoria neighborhood)" maxlength="140" aria-required="true">
+      <label for="fbBody">Details (optional)</label>
       <textarea class="input" id="fbBody" placeholder="Tell us more (optional). What's the use case?" maxlength="4000"></textarea>
       <button class="btn btn-primary btn-block" onclick="Feedback.submit()">Submit</button>
     </div>
-    <div class="section-h"><h3 id="fbBoardTitle">Feature requests</h3><span class="more" id="fbCount">—</span></div>
+    <div class="section-h"><h2 id="fbBoardTitle" style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin:0;">Feature requests</h2><span class="more" id="fbCount">—</span></div>
     <div class="fb-list" id="fbList"></div>
   </section>
 
   <!-- Changelog -->
-  <section class="screen" id="changelog">
+  <section class="screen" id="changelog" aria-label="What's new">
     <div class="topbar bordered">
-      <h2>What's new</h2>
-      <button class="icon-btn" onclick="Nav.switchTab('feedback')" title="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+      <h1 style="margin:0;font-size:17px;font-weight:600;flex:1;letter-spacing:-0.02em;">What's new</h1>
+      <button class="icon-btn" onclick="Nav.switchTab('feedback')" title="Back" aria-label="Back to feedback"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
     </div>
     <div class="changelog" id="changelogContent"></div>
   </section>
 
   <!-- Loop completion -->
-  <section class="screen no-tab" id="loop">
-    <div class="topbar"><button class="icon-btn" onclick="Nav.switchTab('explore')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button><h2>Your Loop</h2></div>
+  <section class="screen no-tab" id="loop" aria-label="Loop complete">
+    <div class="topbar"><button class="icon-btn" onclick="Nav.switchTab('explore')" aria-label="Back to explore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button><h2 style="margin:0;font-size:17px;font-weight:600;flex:1;letter-spacing:-0.02em;">Your Loop</h2></div>
     <div style="padding:32px 24px 16px;text-align:center;">
       <span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:0.12em;color:var(--gold-dark);text-transform:uppercase;background:rgba(224,179,65,0.15);padding:5px 12px;border-radius:100px;margin-bottom:12px;">Walk complete</span>
       <h1 id="loopTitle" style="margin:0;font-size:32px;font-weight:800;letter-spacing:-0.025em;background:linear-gradient(120deg,var(--navy),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Your NYC Loop</h1>
@@ -572,25 +605,30 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif
   </section>
 
   <!-- Capture modal -->
-  <div class="modal" id="captureModal">
+  <div class="modal" id="captureModal" role="dialog" aria-modal="true" aria-labelledby="captureModalTitle" aria-hidden="true">
     <div class="modal-card">
-      <div class="modal-handle"></div>
-      <h2>Save this spot</h2>
+      <div class="modal-handle" aria-hidden="true"></div>
+      <div class="modal-close-row">
+        <button class="icon-btn" onclick="Capture.close()" aria-label="Close capture"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      </div>
+      <h2 id="captureModalTitle">Save this spot</h2>
       <p class="sub" id="captureStopLabel">Capture a moment from this stop.</p>
       <label class="capture-photo-zone" for="captureFile">
-        <input type="file" id="captureFile" accept="image/*" capture="environment" onchange="Capture.onFile(event)">
-        <img id="capturePreview" alt="" style="display:none;">
+        <span class="visually-hidden">Tap to capture or upload a photo</span>
+        <input type="file" id="captureFile" accept="image/*" capture="environment" onchange="Capture.onFile(event)" aria-label="Photo file">
+        <img id="capturePreview" alt="Captured photo preview" style="display:none;">
         <div class="placeholder" id="capturePlaceholder">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
           <p><b>Tap to capture or upload</b></p>
         </div>
       </label>
-      <p class="sub" style="margin-bottom:8px;font-size:13px;">Tags</p>
-      <div class="tag-grid" id="tagGrid"></div>
-      <p class="sub" style="margin-bottom:8px;font-size:13px;">Revisit rating</p>
-      <div class="rating-row" id="ratingRow"></div>
-      <textarea class="notes-input" id="captureNotes" placeholder="Notes (optional). What was the vibe?"></textarea>
-      <div class="gps-row" id="gpsRow">📡 Locating you…</div>
+      <p class="sub" style="margin-bottom:8px;font-size:13px;" id="tagGridLabel">Tags</p>
+      <div class="tag-grid" id="tagGrid" role="group" aria-labelledby="tagGridLabel"></div>
+      <p class="sub" style="margin-bottom:8px;font-size:13px;" id="ratingRowLabel">Revisit rating</p>
+      <div class="rating-row" id="ratingRow" role="radiogroup" aria-labelledby="ratingRowLabel"></div>
+      <label for="captureNotes" class="visually-hidden">Notes</label>
+      <textarea class="notes-input" id="captureNotes" placeholder="Notes (optional). What was the vibe?" aria-label="Notes"></textarea>
+      <div class="gps-row" id="gpsRow" aria-live="polite">📡 Locating you…</div>
       <div style="display:grid;gap:10px;">
         <button class="btn btn-primary btn-block" id="captureSaveBtn" onclick="Capture.save()">Save to my Archive</button>
         <button class="btn btn-outline btn-block" onclick="Capture.close()">Cancel</button>
@@ -599,41 +637,73 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif
   </div>
 
   <!-- Spot detail -->
-  <div class="modal" id="spotModal">
+  <div class="modal" id="spotModal" role="dialog" aria-modal="true" aria-labelledby="spotModalTitle" aria-hidden="true">
     <div class="modal-card">
-      <div class="modal-handle"></div>
+      <div class="modal-handle" aria-hidden="true"></div>
+      <div class="modal-close-row">
+        <button class="icon-btn" onclick="Archive.closeSpot()" aria-label="Close spot detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      </div>
+      <h2 id="spotModalTitle" class="visually-hidden">Spot detail</h2>
       <div id="spotModalContent"></div>
       <div style="display:grid;gap:10px;margin-top:16px;">
         <button class="btn btn-outline btn-block" onclick="Archive.closeSpot()">Close</button>
-        <button class="btn btn-outline btn-block" id="spotDeleteBtn" style="color:var(--love);border-color:rgba(220,38,38,0.3);">Delete spot</button>
+        <button class="btn btn-outline btn-block" id="spotDeleteBtn" style="color:var(--love);border-color:rgba(220,38,38,0.3);" aria-label="Delete this spot">Delete spot</button>
       </div>
     </div>
   </div>
 
+  <!-- Toast region (a11y) -->
+  <div id="toastRegion" role="status" aria-live="polite" aria-atomic="true"></div>
+
   <!-- Tab bar -->
-  <nav class="tabbar hidden" id="tabbar">
-    <button data-tab="explore" onclick="Nav.switchTab('explore')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+  <nav class="tabbar hidden" id="tabbar" aria-label="Main navigation">
+    <button data-tab="explore" onclick="Nav.switchTab('explore')" aria-label="Explore">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
       <span class="lbl">Explore</span></button>
-    <button data-tab="archive" onclick="Nav.switchTab('archive')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    <button data-tab="archive" onclick="Nav.switchTab('archive')" aria-label="My spots">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
       <span class="lbl">My Spots</span></button>
-    <button data-tab="offers" onclick="Nav.switchTab('offers')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+    <button data-tab="offers" onclick="Nav.switchTab('offers')" aria-label="Offers">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
       <span class="lbl">Offers</span></button>
-    <button data-tab="feedback" onclick="Nav.switchTab('feedback')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <button data-tab="feedback" onclick="Nav.switchTab('feedback')" aria-label="Feedback">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       <span class="lbl">Feedback</span></button>
-    <button data-tab="changelog" onclick="Nav.switchTab('changelog')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <button data-tab="changelog" onclick="Nav.switchTab('changelog')" aria-label="What's new">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       <span class="lbl">What's new</span></button>
   </nav>
 </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<!-- Leaflet is now lazy-loaded on demand inside the JS (see LeafletLoader). -->
 <script>
 "use strict";
+
+/* ===== Escape helper (prevents XSS) ===== */
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, m => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+}
+
+/* ===== Lazy Leaflet loader ===== */
+const LeafletLoader = {
+  _promise: null,
+  load() {
+    if (typeof window.L !== 'undefined') return Promise.resolve(window.L);
+    if (this._promise) return this._promise;
+    this._promise = new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      s.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
+      s.crossOrigin = '';
+      s.onload = () => resolve(window.L);
+      s.onerror = () => reject(new Error('leaflet_load_failed'));
+      document.head.appendChild(s);
+    });
+    return this._promise;
+  }
+};
 
 /* ===== API client (cookie-based; auto-redirect on 401) ===== */
 const API = {
@@ -836,11 +906,40 @@ const State = {
   fbType: 'feature', fbItems: []
 };
 
+/* ===== Telemetry (PostHog stub) ===== */
+const Telemetry = {
+  ready: false,
+  init() {
+    try {
+      // PostHog snippet — placeholder key; real key injected via env at deploy time.
+      !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+      window.posthog.init('phc_PLACEHOLDER', { api_host: 'https://app.posthog.com', capture_pageview: false });
+      this.ready = true;
+    } catch (e) { /* fail silent */ }
+  },
+  identify(user) {
+    if (!this.ready || !user) return;
+    try {
+      window.posthog.identify(user.id || user.email || 'anon', {
+        email: user.email,
+        loops_completed: user.loops_completed,
+        cohort: user.cohort
+      });
+    } catch (e) {}
+  },
+  track(event, props) {
+    if (!this.ready) return;
+    try { window.posthog.capture(event, props || {}); } catch (e) {}
+  }
+};
+
 /* ===== Toast ===== */
 const Toast = {
-  show(msg, kind) {
+  show(msg) {
+    const region = document.getElementById('toastRegion');
+    if (!region) return;
     let el = document.getElementById('toast');
-    if (!el) { el = document.createElement('div'); el.id = 'toast'; el.className = 'toast'; document.getElementById('app').appendChild(el); }
+    if (!el) { el = document.createElement('div'); el.id = 'toast'; el.className = 'toast'; region.appendChild(el); }
     el.textContent = msg;
     el.classList.add('show');
     clearTimeout(window.__t);
@@ -848,12 +947,65 @@ const Toast = {
   }
 };
 
+/* ===== Body lock for modals ===== */
+const ModalLock = {
+  _openCount: 0,
+  open(modalEl) {
+    if (modalEl) {
+      modalEl.classList.add('show');
+      modalEl.setAttribute('aria-hidden', 'false');
+    }
+    this._openCount++;
+    document.body.classList.add('modal-open');
+    // Focus trap setup
+    if (modalEl) {
+      this._lastFocus = document.activeElement;
+      setTimeout(() => {
+        const focusable = modalEl.querySelectorAll('button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])');
+        if (focusable.length) focusable[0].focus();
+      }, 60);
+    }
+  },
+  close(modalEl) {
+    if (modalEl) {
+      modalEl.classList.remove('show');
+      modalEl.setAttribute('aria-hidden', 'true');
+    }
+    this._openCount = Math.max(0, this._openCount - 1);
+    if (this._openCount === 0) document.body.classList.remove('modal-open');
+    if (this._lastFocus && this._lastFocus.focus) try { this._lastFocus.focus(); } catch (e) {}
+  }
+};
+
+/* Esc closes any open modal */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const cap = document.getElementById('captureModal');
+    const spot = document.getElementById('spotModal');
+    if (cap && cap.classList.contains('show')) Capture.close();
+    else if (spot && spot.classList.contains('show')) Archive.closeSpot();
+  }
+  // Focus trap inside modals
+  if (e.key === 'Tab') {
+    const modal = document.querySelector('.modal.show');
+    if (!modal) return;
+    const f = modal.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+    else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+  }
+});
+
 /* ===== App boot ===== */
 const App = {
   async init() {
+    Telemetry.init();
+    Telemetry.track('app_loaded');
     try {
       const me = await API.me();
       State.user = me.user;
+      Telemetry.identify(State.user);
       document.getElementById('boot').style.display = 'none';
       Render.exploreFeed();
       Nav.switchTab('explore');
@@ -862,6 +1014,66 @@ const App = {
   async signOut() {
     try { await API.signOut(); } catch {}
     location.href = '/beta';
+  }
+};
+
+/* ===== Right Now contextual recommendation =====
+   Picks a route based on time-of-day + weekday. Hidden once loops_completed > 0. */
+const RightNow = {
+  pick() {
+    const now = new Date();
+    const dow = now.getDay(); // 0=Sun
+    const hr = now.getHours();
+    const isWeekend = (dow === 0 || dow === 6);
+    let routeId, ctx;
+    // Late afternoon / evening -> sunset routes
+    if (hr >= 16 && hr < 21) {
+      routeId = isWeekend ? 'williamsburg' : 'wv_books';
+      ctx = isWeekend ? 'It\'s a ' + this._dowName(dow) + ' afternoon — sunset over Brooklyn awaits.'
+                      : 'It\'s a ' + this._dowName(dow) + ' evening in NYC — golden-hour West Village.';
+    } else if (hr >= 9 && hr < 12) {
+      routeId = 'soho_aesthetic';
+      ctx = 'It\'s a ' + this._dowName(dow) + ' morning in NYC — try a SoHo café crawl.';
+    } else if (hr >= 12 && hr < 16) {
+      routeId = isWeekend ? 'central_park' : 'highline_galleries';
+      ctx = isWeekend ? 'It\'s a ' + this._dowName(dow) + ' afternoon — Central Park is at its best.'
+                      : 'It\'s a ' + this._dowName(dow) + ' afternoon — High Line + Chelsea galleries.';
+    } else if (hr >= 21 || hr < 2) {
+      routeId = 'ev_vintage';
+      ctx = 'It\'s late in NYC — East Village vinyl & late-night diners.';
+    } else {
+      routeId = 'dumbo_bridge';
+      ctx = 'Quiet hours in NYC — DUMBO and the Brooklyn Bridge before the crowds.';
+    }
+    return { route: routeById(routeId), ctx: ctx };
+  },
+  _dowName(d) { return ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d]; },
+  shouldShow() {
+    return !State.user || (State.user.loops_completed === 0 || State.user.loops_completed == null);
+  },
+  render() {
+    const slot = document.getElementById('rightNowSlot');
+    if (!slot) return;
+    if (!this.shouldShow()) { slot.innerHTML = ''; return; }
+    const pick = this.pick();
+    if (!pick.route) { slot.innerHTML = ''; return; }
+    slot.innerHTML =
+      '<div class="rightnow-card" id="rightNowCard" role="button" tabindex="0" aria-label="Try this recommended walk">' +
+        '<div class="eyebrow">Right Now · For you</div>' +
+        '<div class="ctx">' + esc(pick.ctx) + '</div>' +
+        '<h3>' + esc(pick.route.title) + '</h3>' +
+        '<span class="cta-pill">Start this walk →</span>' +
+      '</div>';
+    const card = document.getElementById('rightNowCard');
+    if (card) {
+      const go = () => {
+        State.currentRoute = pick.route;
+        Telemetry.track('route_viewed', { route_id: pick.route.id, source: 'right_now' });
+        Nav.go('detail');
+      };
+      card.addEventListener('click', go);
+      card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    }
   }
 };
 
@@ -898,9 +1110,12 @@ const Capture = {
         { timeout: 8000 }
       );
     } else { gpsRow.textContent = '📡 GPS unavailable'; }
-    document.getElementById('captureModal').classList.add('show');
+    ModalLock.open(document.getElementById('captureModal'));
   },
-  close() { document.getElementById('captureModal').classList.remove('show'); this.pending = null; },
+  close() {
+    ModalLock.close(document.getElementById('captureModal'));
+    this.pending = null;
+  },
   onFile(ev) {
     const file = ev.target.files && ev.target.files[0]; if (!file) return;
     const reader = new FileReader();
@@ -943,9 +1158,11 @@ const Capture = {
       };
       await API.spotsSave(body);
       State.walkPhotos++;
+      Telemetry.track('spot_saved', { route_id: body.routeId, neighborhood: body.neighborhood, rating: body.rating });
       this.close();
       Toast.show('Spot saved to your Archive');
-      State.spots = null; // force reload next archive view
+      // Reload spots, THEN refresh tab badges (fixes race)
+      try { const r = await API.spotsList(); State.spots = r.spots || []; } catch { State.spots = State.spots || []; }
       Render.tabBadges();
       const flash = document.querySelector('.stop-photo-frame .flash');
       if (flash) { flash.classList.add('on'); setTimeout(() => flash.classList.remove('on'), 240); }
@@ -970,33 +1187,43 @@ const Archive = {
   openSpot(id) {
     const s = (State.spots || []).find(x => x.id === id); if (!s) return;
     const ratingObj = RATINGS.find(r => r.id === s.rating);
-    const ratingHtml = ratingObj ? '<div style="display:inline-flex;align-items:center;gap:6px;margin-top:6px;font-size:12px;font-weight:600;color:'+ratingObj.color+';"><span style="width:10px;height:10px;border-radius:50%;background:'+ratingObj.color+';"></span>'+ratingObj.label+' revisit</div>' : '';
-    const tags = (s.tags || []).map(t => '<span style="font-size:11px;padding:3px 8px;background:var(--cream-2);border-radius:100px;">'+t+'</span>').join('');
+    const ratingHtml = ratingObj ? '<div style="display:inline-flex;align-items:center;gap:6px;margin-top:6px;font-size:12px;font-weight:600;color:'+ratingObj.color+';"><span style="width:10px;height:10px;border-radius:50%;background:'+ratingObj.color+';"></span>'+esc(ratingObj.label)+' revisit</div>' : '';
+    const tags = (s.tags || []).map(t => '<span style="font-size:11px;padding:3px 8px;background:var(--cream-2);border-radius:100px;">'+esc(t)+'</span>').join('');
     const nbhdName = (NEIGHBORHOODS.find(n => n.id === s.neighborhood) || {}).name || 'NYC';
     const date = new Date(s.savedAt).toLocaleDateString(undefined, { month:'short', day:'numeric', year:'numeric' });
     const gps = (s.lat != null && s.lon != null) ? '<div class="muted" style="font-size:11px;margin-top:8px;">📍 '+s.lat.toFixed(4)+', '+s.lon.toFixed(4)+'</div>' : '';
-    // We don't load the photo into list view (saves bandwidth) but we keep it in spot detail; fetch via list payload if present
     const photo = s.photo || '';
     document.getElementById('spotModalContent').innerHTML =
-      (photo ? '<div style="aspect-ratio:4/3;border-radius:14px;overflow:hidden;margin-bottom:14px;"><img src="'+photo+'" alt="" style="width:100%;height:100%;object-fit:cover;"></div>' : '') +
-      '<h2 style="margin:0 0 4px;font-size:20px;">'+s.stopName+'</h2>' +
-      '<div style="font-size:11px;font-weight:700;color:var(--gold-dark);letter-spacing:0.06em;text-transform:uppercase;">'+nbhdName+' · '+date+'</div>' +
+      (photo ? '<div style="aspect-ratio:4/3;border-radius:14px;overflow:hidden;margin-bottom:14px;"><img src="'+esc(photo)+'" alt="Captured spot photo" style="width:100%;height:100%;object-fit:cover;"></div>' : '') +
+      '<h3 style="margin:0 0 4px;font-size:20px;">'+esc(s.stopName)+'</h3>' +
+      '<div style="font-size:11px;font-weight:700;color:var(--gold-dark);letter-spacing:0.06em;text-transform:uppercase;">'+esc(nbhdName)+' · '+esc(date)+'</div>' +
       ratingHtml +
       '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;">'+tags+'</div>' +
-      (s.notes ? '<div style="margin-top:10px;font-size:14px;line-height:1.5;color:var(--ink-2);">'+s.notes.replace(/</g,'&lt;')+'</div>' : '') +
+      (s.notes ? '<div style="margin-top:10px;font-size:14px;line-height:1.5;color:var(--ink-2);">'+esc(s.notes)+'</div>' : '') +
       gps;
     document.getElementById('spotDeleteBtn').onclick = async () => {
       if (!confirm('Delete this spot from your Archive?')) return;
       try { await API.spotsDelete(id); State.spots = State.spots.filter(x => x.id !== id); this.closeSpot(); Render.archive(); Render.tabBadges(); Toast.show('Spot deleted'); }
       catch { Toast.show('Failed to delete'); }
     };
-    document.getElementById('spotModal').classList.add('show');
+    ModalLock.open(document.getElementById('spotModal'));
   },
-  closeSpot() { document.getElementById('spotModal').classList.remove('show'); },
+  closeSpot() { ModalLock.close(document.getElementById('spotModal')); },
   _map: null,
-  drawMap() {
-    if (this._map) { this._map.remove(); this._map = null; }
+  _mapTeardown() {
+    if (this._map) {
+      try { this._map.off(); } catch (e) {}
+      try { this._map.remove(); } catch (e) {}
+      this._map = null;
+    }
+    const oldEl = document.getElementById('archiveMap');
+    if (oldEl) oldEl.innerHTML = '';
+  },
+  async drawMap() {
+    this._mapTeardown();
     const spots = (State.spots || []).filter(s => s.lat != null && s.lon != null);
+    let L;
+    try { L = await LeafletLoader.load(); } catch (e) { Toast.show('Map failed to load'); return; }
     setTimeout(() => {
       const el = document.getElementById('archiveMap'); if (!el) return;
       const center = spots.length ? [spots[0].lat, spots[0].lon] : [40.7233, -73.9991];
@@ -1010,11 +1237,11 @@ const Archive = {
         const m = L.marker([s.lat, s.lon], {
           icon: L.divIcon({
             className:'',
-            html:'<div style="background:'+ratingObj.color+';width:30px;height:30px;border-radius:50%;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);'+(photo?'background-image:url('+photo+');background-size:cover;background-position:center;':'')+'"></div>',
+            html:'<div style="background:'+ratingObj.color+';width:30px;height:30px;border-radius:50%;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);'+(photo?'background-image:url('+esc(photo)+');background-size:cover;background-position:center;':'')+'"></div>',
             iconSize:[30,30], iconAnchor:[15,15]
           })
         }).addTo(this._map);
-        m.bindPopup('<div style="text-align:center;">'+(photo ? '<img src="'+photo+'" style="width:160px;height:120px;object-fit:cover;border-radius:8px;display:block;margin:0 auto 6px;">' : '')+'<b>'+s.stopName+'</b><br><small>'+(s.tags||[]).slice(0,2).join(' · ')+'</small></div>');
+        m.bindPopup('<div style="text-align:center;">'+(photo ? '<img src="'+esc(photo)+'" style="width:160px;height:120px;object-fit:cover;border-radius:8px;display:block;margin:0 auto 6px;" alt="">' : '')+'<b>'+esc(s.stopName)+'</b><br><small>'+esc((s.tags||[]).slice(0,2).join(' · '))+'</small></div>');
         bounds.push([s.lat, s.lon]);
       });
       if (bounds.length > 1) this._map.fitBounds(bounds, { padding:[40,40] });
@@ -1036,6 +1263,7 @@ const Promotions = {
     const stops = promos.map(p => ({ name:p.business, lat:p.lat, lon:p.lon, sponsored:p.sponsored, desc:p.offer, why:'Promo · '+p.offer+' · expires '+p.expires }))
       .concat(aesthetic.map(s => ({ name:s.name, lat:s.lat, lon:s.lon, desc:s.desc, why:'Curated near your offers — '+s.why })));
     State.currentRoute = { id:'promo_'+Date.now(), title:'Promo Route · '+(seedArr[0] ? seedArr[0].nbhd.toUpperCase() : 'NYC'), nbhd:(seedArr[0] && seedArr[0].nbhd) || 'soho', minutes:90, miles:2.0, desc:'Built from '+promos.length+' nearby offers + '+aesthetic.length+' aesthetic finds.', stops, isPromoRoute:true };
+    Telemetry.track('promo_route_generated', { promos: promos.length });
     Nav.go('detail');
   },
   addToRoute(id) { const p = PROMOTIONS.find(x => x.id === id); if (p) { Toast.show('Adding '+p.business+'…'); setTimeout(() => this.generateRoute(p), 500); } }
@@ -1043,26 +1271,34 @@ const Promotions = {
 
 /* ===== Walk ===== */
 const Walk = {
-  start() { State.walkIdx = 0; State.walkPhotos = 0; Nav.go('walk'); },
+  start() {
+    State.walkIdx = 0; State.walkPhotos = 0;
+    Telemetry.track('walk_started', { route_id: State.currentRoute && State.currentRoute.id });
+    Nav.go('walk');
+  },
   renderStop() {
     const r = State.currentRoute; if (!r) return Nav.switchTab('explore');
     const s = r.stops[State.walkIdx];
     document.getElementById('wCounter').textContent = 'Stop '+(State.walkIdx+1)+' of '+r.stops.length;
     document.getElementById('wTitle').textContent = s.name;
-    document.getElementById('wPhoto').style = coverArt(r.id+'-'+State.walkIdx);
+    document.getElementById('wPhoto').setAttribute('style', coverArt(r.id+'-'+State.walkIdx));
     document.getElementById('wPhotoLabel').textContent = s.name;
     document.getElementById('wSponsoredTag').style.display = s.sponsored ? '' : 'none';
     document.getElementById('wDesc').textContent = s.desc || '';
-    document.getElementById('wWhy').innerHTML = '<b>Why this for you:</b> ' + s.why;
+    document.getElementById('wWhy').innerHTML = '<b>Why this for you:</b> ' + esc(s.why);
     document.getElementById('wDist').textContent = (r.miles * (State.walkIdx+1) / r.stops.length).toFixed(1) + ' mi';
     document.getElementById('wTime').textContent = Math.round(r.minutes * (State.walkIdx+1) / r.stops.length) + ' min';
     document.getElementById('wNext').textContent = State.walkIdx === r.stops.length - 1 ? 'Finish & save Loop →' : 'Next stop →';
     document.getElementById('wProgressFill').style.width = (((State.walkIdx + 1) / r.stops.length) * 100) + '%';
+    Telemetry.track('stop_walked', { route_id: r.id, stop_idx: State.walkIdx, stop_name: s.name });
   },
   async next() {
     const r = State.currentRoute;
     if (State.walkIdx === r.stops.length - 1) {
       try { await API.loopsSave({ routeId:r.id, routeTitle:r.title, nbhd:r.nbhd, stops:r.stops.length, miles:r.miles, minutes:r.minutes, photos:State.walkPhotos }); } catch {}
+      Telemetry.track('loop_completed', { route_id: r.id, photos: State.walkPhotos });
+      // bump locally so Right Now disappears immediately
+      if (State.user) State.user.loops_completed = (State.user.loops_completed || 0) + 1;
       Nav.go('loop');
       const nbhd = NEIGHBORHOODS.find(n => n.id === r.nbhd);
       document.getElementById('loopTitle').textContent = 'Your '+(nbhd ? nbhd.name : 'NYC')+' Loop';
@@ -1088,6 +1324,7 @@ const Feedback = {
       await API.fbSubmit({ type: State.fbType, title, body });
       document.getElementById('fbTitle').value = '';
       document.getElementById('fbBody').value = '';
+      Telemetry.track('feedback_submitted', { type: State.fbType });
       Toast.show('Submitted — thank you');
       Render.fbList();
     } catch { Toast.show('Failed to submit'); }
@@ -1098,6 +1335,7 @@ const Feedback = {
       const r = await API.fbVote(id);
       btn.classList.add('voted');
       btn.querySelector('.n').textContent = r.votes;
+      Telemetry.track('vote_cast', { id });
       Toast.show('Vote counted');
     } catch { Toast.show('Failed to vote'); }
   }
@@ -1111,6 +1349,7 @@ const Render = {
     let g = 'Good morning'; if (hour >= 12 && hour < 17) g = 'Good afternoon'; else if (hour >= 17) g = 'Good evening';
     greet.textContent = g + ', explorer';
     document.getElementById('greetingSub').textContent = '12 hand-curated NYC routes';
+    RightNow.render();
     const all = document.getElementById('allList'); all.innerHTML = '';
     ROUTES.forEach(r => all.appendChild(this._routeCard(r)));
   },
@@ -1125,26 +1364,42 @@ const Render = {
         '<div class="meta-pill">📍 '+r.stops.length+' stops</div>' +
       '</div>' +
       '<div class="route-body">' +
-        '<div class="nbhd-tag">'+(nbhd ? nbhd.name : 'NYC')+'</div>' +
-        '<div class="title">'+r.title+'</div>' +
-        '<div class="desc">'+r.desc+'</div>' +
-        '<div class="meta-row"><span>⏱️ '+fmtMins(r.minutes)+'</span><span>📏 '+r.miles+' mi</span></div>' +
+        '<div class="nbhd-tag">'+esc(nbhd ? nbhd.name : 'NYC')+'</div>' +
+        '<div class="title">'+esc(r.title)+'</div>' +
+        '<div class="desc">'+esc(r.desc)+'</div>' +
+        '<div class="meta-row"><span>⏱️ '+esc(fmtMins(r.minutes))+'</span><span>📏 '+esc(String(r.miles))+' mi</span></div>' +
       '</div>';
-    el.onclick = () => { State.currentRoute = r; Nav.go('detail'); };
+    el.onclick = () => {
+      State.currentRoute = r;
+      Telemetry.track('route_viewed', { route_id: r.id, source: 'feed' });
+      Nav.go('detail');
+    };
     return el;
   },
   _detailMap: null,
-  detail(route) {
+  _detailMapTeardown() {
+    if (this._detailMap) {
+      try { this._detailMap.off(); } catch (e) {}
+      try { this._detailMap.remove(); } catch (e) {}
+      this._detailMap = null;
+    }
+    const oldEl = document.getElementById('map');
+    if (oldEl) oldEl.innerHTML = '';
+  },
+  async detail(route) {
     const nbhd = NEIGHBORHOODS.find(n => n.id === route.nbhd);
-    document.getElementById('dHeroArt').style = coverArt(route);
+    document.getElementById('dHeroArt').setAttribute('style', coverArt(route));
     document.getElementById('dTitle').textContent = route.title;
     document.getElementById('dNbhd').textContent = nbhd ? nbhd.name : 'NYC';
     document.getElementById('dStops').textContent = route.stops.length;
     document.getElementById('dMins').textContent = fmtMins(route.minutes);
     document.getElementById('dMiles').textContent = route.miles + ' mi';
     document.getElementById('dDesc').textContent = route.desc;
-    if (this._detailMap) { this._detailMap.remove(); this._detailMap = null; }
+    this._detailMapTeardown();
+    let L;
+    try { L = await LeafletLoader.load(); } catch (e) { Toast.show('Map failed to load'); }
     setTimeout(() => {
+      if (!L) return;
       this._detailMap = L.map('map', { zoomControl: false, attributionControl: true }).setView([route.stops[0].lat, route.stops[0].lon], 15);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap', maxZoom:19 }).addTo(this._detailMap);
       const path = route.stops.map(s => [s.lat, s.lon]);
@@ -1156,14 +1411,14 @@ const Render = {
             html:'<div style="background:'+(s.sponsored?'#E0B341':'#1F3864')+';color:'+(s.sponsored?'#1F3864':'white')+';width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.30);">'+(i+1)+'</div>',
             iconSize:[30,30], iconAnchor:[15,15]
           })
-        }).addTo(this._detailMap).bindPopup('<b>'+s.name+'</b><br><small>'+(s.desc || '')+'</small>');
+        }).addTo(this._detailMap).bindPopup('<b>'+esc(s.name)+'</b><br><small>'+esc(s.desc || '')+'</small>');
       });
       this._detailMap.fitBounds(path, { padding:[40,40] });
     }, 60);
     const list = document.getElementById('dStopsList'); list.innerHTML = '';
     route.stops.forEach((s, i) => {
       const el = document.createElement('div'); el.className = 'stop' + (s.sponsored ? ' sponsored' : '');
-      el.innerHTML = '<div class="n">'+(i+1)+'</div><div class="body" style="flex:1;"><h3>'+s.name+'</h3><p>'+(s.desc || '')+'</p><div class="why"><b>Why this for you:</b> '+s.why+'</div></div>'+(s.sponsored ? '<span class="badge">Sponsored</span>' : '');
+      el.innerHTML = '<div class="n">'+(i+1)+'</div><div class="body" style="flex:1;"><h3>'+esc(s.name)+'</h3><p>'+esc(s.desc || '')+'</p><div class="why"><b>Why this for you:</b> '+esc(s.why)+'</div></div>'+(s.sponsored ? '<span class="badge">Sponsored</span>' : '');
       list.appendChild(el);
     });
   },
@@ -1172,7 +1427,7 @@ const Render = {
     const c = document.getElementById('archiveContent');
     document.getElementById('archiveToggle').style.display = State.spots.length ? '' : 'none';
     if (!State.spots.length) {
-      c.innerHTML = '<div class="archive-empty"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div><h3>Your city memory starts here.</h3><p>Capture a spot during any walk and it lives here forever.</p><button class="btn btn-primary" onclick="Nav.switchTab(\'explore\')">Pick a route</button></div>';
+      c.innerHTML = '<div class="archive-empty"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div><h3>Your city memory starts here.</h3><p>Capture a photo on your next walk to start your archive.</p><button class="btn btn-primary" onclick="Nav.switchTab(\'explore\')">Pick a route</button></div>';
       return;
     }
     if (State.archiveView === 'map') { c.innerHTML = '<div id="archiveMap"></div>'; Archive.drawMap(); return; }
@@ -1181,10 +1436,10 @@ const Render = {
       const ratingObj = RATINGS.find(r => r.id === s.rating);
       const nbhdName = (NEIGHBORHOODS.find(n => n.id === s.neighborhood) || {}).name || 'NYC';
       const date = new Date(s.savedAt).toLocaleDateString(undefined, { month:'short', day:'numeric' });
-      const tags = (s.tags || []).slice(0, 3).map(t => '<span>'+t+'</span>').join('');
+      const tags = (s.tags || []).slice(0, 3).map(t => '<span>'+esc(t)+'</span>').join('');
       const rb = ratingObj ? '<div class="rating-badge" style="background:'+ratingObj.color+';"></div>' : '';
       const photo = s.photo || '';
-      html += '<div class="spot-card" onclick="Archive.openSpot(\'' + s.id + '\')"><div class="photo"' + (photo ? ' style="background-image:url(' + photo + ')"' : '') + '>' + rb + '</div><div class="body"><h4>'+s.stopName+'</h4><div class="nbhd-tag">'+nbhdName+'</div><div class="tag-row">'+tags+'</div><div class="meta"><span>'+date+'</span>'+(s.lat != null ? '<span>📍 GPS</span>' : '')+'</div></div></div>';
+      html += '<div class="spot-card" onclick="Archive.openSpot(\'' + esc(s.id) + '\')"><div class="photo"' + (photo ? ' style="background-image:url(' + esc(photo) + ')"' : '') + '>' + rb + '</div><div class="body"><h4>'+esc(s.stopName)+'</h4><div class="nbhd-tag">'+esc(nbhdName)+'</div><div class="tag-row">'+tags+'</div><div class="meta"><span>'+esc(date)+'</span>'+(s.lat != null ? '<span>📍 GPS</span>' : '')+'</div></div></div>';
     });
     html += '</div>'; c.innerHTML = html;
   },
@@ -1193,7 +1448,7 @@ const Render = {
     PROMOTIONS.forEach((p, i) => {
       const el = document.createElement('div');
       el.className = 'offer-card' + (p.sponsored && i < 2 ? ' featured' : '');
-      el.innerHTML = '<div class="head"><div><div class="name">'+p.business+'</div><div class="nbhd-tag">'+((NEIGHBORHOODS.find(n => n.id === p.nbhd) || {}).name || 'NYC')+(p.sponsored ? ' · Sponsored' : '')+'</div></div><div class="price">'+p.priceTier+'</div></div><div class="offer">'+p.offer+'</div><div class="meta"><span>📍 '+p.distance+'</span><span>⏱️ '+p.expires+'</span></div><div class="actions"><button class="add-btn" onclick="Promotions.addToRoute(\'' + p.id + '\')">Add to route →</button></div>';
+      el.innerHTML = '<div class="head"><div><div class="name">'+esc(p.business)+'</div><div class="nbhd-tag">'+esc((NEIGHBORHOODS.find(n => n.id === p.nbhd) || {}).name || 'NYC')+(p.sponsored ? ' · Sponsored' : '')+'</div></div><div class="price">'+esc(p.priceTier)+'</div></div><div class="offer">'+esc(p.offer)+'</div><div class="meta"><span>📍 '+esc(p.distance)+'</span><span>⏱️ '+esc(p.expires)+'</span></div><div class="actions"><button class="add-btn" onclick="Promotions.addToRoute(\''+esc(p.id)+'\')" aria-label="Add '+esc(p.business)+' to route">Add to route →</button></div>';
       list.appendChild(el);
     });
   },
@@ -1211,10 +1466,10 @@ const Render = {
         const el = document.createElement('div'); el.className = 'fb-card';
         const showVote = State.fbType === 'feature';
         el.innerHTML = '<div class="head">' +
-          (showVote ? '<div class="vote" onclick="Feedback.vote(\'' + it.id + '\', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg><span class="n">'+(it.votes || 0)+'</span></div>' : '') +
-          '<div class="body"><h4>'+it.title+'</h4>' +
-          (it.body ? '<p>'+it.body.replace(/</g,'&lt;')+'</p>' : '') +
-          '<div class="meta"><span class="status '+(it.status || 'open')+'">'+(it.status || 'open')+'</span>' +
+          (showVote ? '<button class="vote" onclick="Feedback.vote(\''+esc(it.id)+'\', this)" aria-label="Vote for '+esc(it.title)+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg><span class="n">'+(it.votes || 0)+'</span></button>' : '') +
+          '<div class="body"><h4>'+esc(it.title)+'</h4>' +
+          (it.body ? '<p>'+esc(it.body)+'</p>' : '') +
+          '<div class="meta"><span class="status '+esc(it.status || 'open')+'">'+esc(it.status || 'open')+'</span>' +
           (it.mine ? '<span style="color:var(--gold-dark);">your post</span>' : '') +
           '</div></div></div>';
         list.appendChild(el);
@@ -1223,6 +1478,14 @@ const Render = {
   },
   changelog() {
     const releases = [
+      { v:'v0.6 — Security, a11y, performance', date:'May 9, 2026', items:[
+        'XSS-safe rendering across routes, spots, and feedback',
+        'iOS-friendly: 100svh, 16px inputs, safe-area for the tab bar',
+        'WCAG AA pass: aria labels, dialog semantics, focus trap, Esc-close',
+        'Performance: Leaflet now lazy-loads only when a map is opened',
+        'Right Now contextual recommendation on first app load',
+        'Telemetry stub (PostHog) tracking app loaded, walks, spots, loops, feedback'
+      ]},
       { v:'v0.5 — Beta platform', date:'April 30, 2026', items:[
         'Token-gated beta access at walkingexplorers.com/beta',
         'Server-side route generation, spot saving, loop tracking',
@@ -1240,30 +1503,39 @@ const Render = {
         'Real NYC landmark photos (Brooklyn Bridge, Washington Sq Arch, etc.)'
       ]}
     ];
-    document.getElementById('changelogContent').innerHTML = releases.map(r => '<div class="release"><h4>'+r.v+'</h4><time>'+r.date+'</time><ul>'+r.items.map(i => '<li>'+i+'</li>').join('')+'</ul></div>').join('');
+    document.getElementById('changelogContent').innerHTML = releases.map(r =>
+      '<article class="release"><h2>'+esc(r.v)+'</h2><time>'+esc(r.date)+'</time><ul>'+r.items.map(i => '<li>'+esc(i)+'</li>').join('')+'</ul></article>'
+    ).join('');
   },
   captureTags() {
     const grid = document.getElementById('tagGrid'); grid.innerHTML = '';
     TAGS.forEach(t => {
-      const el = document.createElement('div');
+      const el = document.createElement('button');
+      el.type = 'button';
       el.className = 'tag' + (Capture.pending && Capture.pending.tags.has(t) ? ' selected' : '');
-      el.textContent = t; el.onclick = () => Capture.toggleTag(t);
+      el.textContent = t;
+      el.setAttribute('aria-pressed', !!(Capture.pending && Capture.pending.tags.has(t)));
+      el.onclick = () => Capture.toggleTag(t);
       grid.appendChild(el);
     });
   },
   captureRatings() {
     const row = document.getElementById('ratingRow'); row.innerHTML = '';
     RATINGS.forEach(r => {
-      const el = document.createElement('div');
+      const el = document.createElement('button');
+      el.type = 'button';
       el.className = 'rating-pill r-' + r.id + (Capture.pending && Capture.pending.rating === r.id ? ' selected' : '');
-      el.innerHTML = '<span class="dot" style="background:'+r.color+';"></span>'+r.label;
+      el.setAttribute('role', 'radio');
+      el.setAttribute('aria-checked', !!(Capture.pending && Capture.pending.rating === r.id));
+      el.setAttribute('aria-label', r.label + ' revisit');
+      el.innerHTML = '<span class="dot" style="background:'+r.color+';" aria-hidden="true"></span>'+esc(r.label);
       el.onclick = () => Capture.setRating(r.id);
       row.appendChild(el);
     });
   },
   tabBadges() {
     const archiveBtn = document.querySelector('.tabbar button[data-tab="archive"]');
-    if (archiveBtn) archiveBtn.classList.toggle('has-dot', State.spots && State.spots.length > 0);
+    if (archiveBtn) archiveBtn.classList.toggle('has-dot', !!(State.spots && State.spots.length > 0));
   }
 };
 
