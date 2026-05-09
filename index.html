@@ -3,11 +3,58 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Walking Explorers — Where curiosity meets the city.</title>
-<meta name="description" content="AI walking-discovery app for New York. Personalized routes through Instagram-worthy cafés, vintage shops, hidden gems — generated from your tastes, your time, and your real GPS." />
-<meta property="og:title" content="Walking Explorers — Where curiosity meets the city." />
-<meta property="og:description" content="AI walking-discovery app for New York. Personalized routes through the cafés, shops, and corners that match your tastes." />
+
+<!-- SEO -->
+<title>Walking Explorers — AI-curated walking routes through NYC</title>
+<meta name="description" content="AI-curated walks through NYC's most beautiful streets. Personalized routes, hidden gems, and editorial neighborhood guides — built for walkers, not tourists." />
+<link rel="canonical" href="https://walkingexplorers.com/" />
+
+<!-- Open Graph -->
 <meta property="og:type" content="website" />
+<meta property="og:url" content="https://walkingexplorers.com/" />
+<meta property="og:title" content="Walking Explorers — AI-curated walking routes through NYC" />
+<meta property="og:description" content="Personalized routes, hidden gems, and editorial neighborhood guides — built for walkers, not tourists." />
+<meta property="og:image" content="https://walkingexplorers.com/og-image.png" />
+<meta property="og:site_name" content="Walking Explorers" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Walking Explorers — AI-curated walking routes through NYC" />
+<meta name="twitter:description" content="Personalized routes, hidden gems, and editorial neighborhood guides — built for walkers, not tourists." />
+<meta name="twitter:image" content="https://walkingexplorers.com/og-image.png" />
+
+<!-- Inter font (real import — fixes audit #20: Inter was 4th in stack with no link) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+
+<!-- JSON-LD: Organization + WebSite -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://walkingexplorers.com/#org",
+      "name": "Walking Explorers",
+      "url": "https://walkingexplorers.com/",
+      "logo": "https://walkingexplorers.com/logo.png",
+      "description": "AI-curated walking routes through NYC's most beautiful streets.",
+      "founder": { "@type": "Person", "name": "Nova" },
+      "areaServed": { "@type": "City", "name": "New York City" }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://walkingexplorers.com/#website",
+      "url": "https://walkingexplorers.com/",
+      "name": "Walking Explorers",
+      "publisher": { "@id": "https://walkingexplorers.com/#org" },
+      "inLanguage": "en-US"
+    }
+  ]
+}
+</script>
+
 <style>
   :root {
     --navy: #1F3864;
@@ -24,7 +71,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     color: var(--ink); background: var(--cream); line-height: 1.55; -webkit-font-smoothing: antialiased;
   }
   a { color: var(--blue); text-decoration: none; }
@@ -38,37 +85,63 @@
   .nav-cta { padding: 8px 18px; background: var(--navy); color: white !important; border-radius: 8px; font-weight: 600; }
   .nav-cta:hover { background: var(--navy-2); }
   @media (max-width: 720px) { .nav-links a:not(.nav-cta) { display: none; } }
-  .hero { position: relative; overflow: hidden; background: linear-gradient(160deg, #1F3864 0%, #2E75B6 60%, #E0B341 130%); color: white; padding: 80px 32px 100px; }
-  .hero-inner { max-width: 1200px; margin: 0 auto; }
-  .hero h1 { font-size: clamp(36px, 6vw, 72px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; max-width: 12ch; margin-bottom: 20px; }
+
+  /* Hero */
+  .hero { position: relative; overflow: hidden; background: linear-gradient(160deg, #1F3864 0%, #2E75B6 60%, #E0B341 130%); color: white; padding: 80px 32px 120px; }
+  .hero-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 50px; align-items: center; }
+  @media (max-width: 900px) { .hero-inner { grid-template-columns: 1fr; gap: 40px; } }
+  .hero h1 { font-size: clamp(34px, 5.4vw, 64px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 22px; }
   .hero h1 .accent { color: var(--gold); }
-  .hero p.lede { font-size: clamp(16px, 1.6vw, 20px); max-width: 56ch; color: rgba(255,255,255,0.92); margin-bottom: 36px; line-height: 1.5; }
+  .hero p.lede { font-size: clamp(16px, 1.6vw, 20px); max-width: 56ch; color: rgba(255,255,255,0.92); margin-bottom: 32px; line-height: 1.5; }
   .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
   .btn { display: inline-flex; align-items: center; gap: 8px; padding: 16px 26px; border-radius: 12px; font-weight: 600; font-size: 15px; transition: all 120ms; cursor: pointer; border: 0; text-decoration: none; }
   .btn-accent { background: var(--gold); color: var(--navy) !important; }
   .btn-accent:hover { background: white; color: var(--navy) !important; transform: translateY(-1px); }
   .btn-ghost { background: transparent; color: white !important; border: 1.5px solid rgba(255,255,255,0.4); }
   .btn-ghost:hover { background: rgba(255,255,255,0.10); }
-  .hero-meta { margin-top: 50px; display: flex; gap: 28px; flex-wrap: wrap; color: rgba(255,255,255,0.75); font-size: 13px; }
+  .waitlist-counter { margin-top: 16px; font-size: 13px; color: rgba(255,255,255,0.78); display: flex; align-items: center; gap: 8px; }
+  .waitlist-counter .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); display: inline-block; box-shadow: 0 0 0 0 rgba(224,179,65,0.7); animation: pulse 2s infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(224,179,65,0.7);} 70% { box-shadow: 0 0 0 8px rgba(224,179,65,0);} 100% { box-shadow: 0 0 0 0 rgba(224,179,65,0);} }
+  .hero-meta { margin-top: 36px; display: flex; gap: 24px; flex-wrap: wrap; color: rgba(255,255,255,0.75); font-size: 13px; }
   .hero-meta .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); margin-right: 8px; vertical-align: middle; }
+
+  /* Phone mockup (inline SVG hero illustration) */
+  .hero-visual { position: relative; display: flex; justify-content: center; align-items: center; }
+  .phone-mockup { width: 100%; max-width: 360px; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.35)); }
+
   .skyline { position: absolute; bottom: 0; left: 0; right: 0; height: 70px; pointer-events: none; opacity: 0.5; }
   .skyline svg { width: 100%; height: 100%; }
+
   section { padding: 90px 32px; }
   .container { max-width: 1100px; margin: 0 auto; }
   .eyebrow { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 14px; }
   h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 800; letter-spacing: -0.01em; color: var(--navy); margin-bottom: 16px; line-height: 1.15; max-width: 18ch; }
   .lead { font-size: clamp(16px, 1.4vw, 18px); color: var(--mute); max-width: 60ch; margin-bottom: 40px; }
+
+  /* Product screenshots row */
+  .shots-bg { background: white; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .shots { display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 36px; }
+  .shot { background: var(--cream); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; transition: 200ms; }
+  .shot:hover { transform: translateY(-3px); box-shadow: 0 16px 32px rgba(31,56,100,0.08); }
+  .shot-img { width: 100%; aspect-ratio: 9/16; max-height: 460px; background: linear-gradient(160deg, #1F3864, #2E75B6); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.85); position: relative; }
+  .shot-img svg { width: 64%; height: auto; }
+  .shot-cap { padding: 22px; }
+  .shot-cap h3 { font-size: 18px; color: var(--navy); margin-bottom: 6px; }
+  .shot-cap p { font-size: 14px; color: var(--mute); line-height: 1.5; }
+
   .steps { display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top: 30px; }
   .step { background: white; border: 1px solid var(--line); border-radius: 18px; padding: 28px; position: relative; transition: 200ms; }
   .step:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(31,56,100,0.10); }
   .step-num { width: 40px; height: 40px; border-radius: 50%; background: var(--navy); color: var(--gold); display: grid; place-items: center; font-weight: 700; font-size: 16px; margin-bottom: 18px; }
   .step h3 { font-size: 18px; color: var(--navy); margin-bottom: 8px; }
   .step p { font-size: 14px; color: var(--mute); line-height: 1.55; }
+
   .features-bg { background: white; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .features { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 40px; }
   .feature { padding: 30px; border-left: 4px solid var(--gold); background: var(--cream); border-radius: 10px; }
   .feature h3 { font-size: 17px; color: var(--navy); margin-bottom: 8px; }
   .feature p { font-size: 14px; color: var(--ink); line-height: 1.55; }
+
   .proof { background: var(--navy); color: white; }
   .proof h2 { color: white; }
   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 30px; margin-top: 30px; }
@@ -76,16 +149,29 @@
   .stat .num { font-size: 42px; font-weight: 800; color: var(--gold); }
   .stat .lab { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 6px; }
   .stat-foot { margin-top: 24px; font-size: 13px; color: rgba(255,255,255,0.55); font-style: italic; }
+
   .nbhd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-top: 36px; }
   .nbhd { aspect-ratio: 4/5; border-radius: 16px; padding: 22px; color: white; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; transition: 200ms; }
   .nbhd:hover { transform: translateY(-3px); }
   .nbhd .name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
   .nbhd .meta { font-size: 12px; opacity: 0.85; }
-  .press { padding: 60px 32px; background: white; border-top: 1px solid var(--line); }
-  .press-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
-  .press p { font-size: 13px; color: var(--mute); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 24px; }
-  .press-row { display: flex; justify-content: center; gap: 50px; flex-wrap: wrap; opacity: 0.55; font-weight: 700; color: var(--navy); }
-  .press-row span { font-size: 18px; letter-spacing: -0.01em; }
+
+  /* Trust band (replaces removed fake press strip) */
+  .trust { padding: 50px 32px; background: white; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .trust-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
+  .trust-line { font-size: 15px; color: var(--navy); font-weight: 600; letter-spacing: -0.01em; }
+  .trust-sub { margin-top: 8px; font-size: 13px; color: var(--mute); }
+
+  /* Founder */
+  .founder-bg { background: var(--cream); border-top: 1px solid var(--line); }
+  .founder { display: grid; grid-template-columns: 200px 1fr; gap: 36px; align-items: center; }
+  @media (max-width: 720px) { .founder { grid-template-columns: 1fr; gap: 20px; text-align: center; } }
+  .founder-photo { width: 200px; height: 200px; border-radius: 50%; background: linear-gradient(160deg, #1F3864, #2E75B6); display: grid; place-items: center; color: white; font-weight: 700; font-size: 64px; letter-spacing: -0.04em; box-shadow: 0 12px 28px rgba(31,56,100,0.18); }
+  @media (max-width: 720px) { .founder-photo { margin: 0 auto; } }
+  .founder-text h3 { font-size: 22px; color: var(--navy); margin-bottom: 8px; }
+  .founder-text p { color: var(--mute); font-size: 15px; line-height: 1.6; max-width: 56ch; margin-bottom: 14px; }
+  .founder-text a { font-weight: 600; }
+
   .signup { background: linear-gradient(135deg, var(--navy), var(--blue)); color: white; }
   .signup h2 { color: white; }
   .signup p.lead { color: rgba(255,255,255,0.85); }
@@ -94,6 +180,7 @@
   .signup-form input[type=email]::placeholder { color: rgba(255,255,255,0.6); }
   .signup-form input[type=email]:focus { outline: 0; border-color: var(--gold); background: rgba(255,255,255,0.15); }
   #signup-msg { margin-top: 14px; font-size: 14px; color: var(--gold); min-height: 18px; }
+
   .faq-bg { background: var(--cream); }
   .faq { margin-top: 30px; max-width: 800px; }
   .faq details { background: white; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 12px; padding: 18px 22px; cursor: pointer; transition: 150ms; }
@@ -102,6 +189,7 @@
   .faq summary::after { content: "+"; font-size: 22px; color: var(--gold-dark); }
   .faq details[open] summary::after { content: "\2212"; }
   .faq p { color: var(--mute); margin-top: 10px; line-height: 1.6; }
+
   footer { background: var(--navy-2); color: rgba(255,255,255,0.7); padding: 60px 32px 30px; font-size: 13px; }
   .foot-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 40px; }
   @media (max-width: 720px) { .foot-inner { grid-template-columns: 1fr; gap: 30px; } }
@@ -114,29 +202,342 @@
 </style>
 </head>
 <body>
-<nav class="nav"><div class="nav-inner"><div class="brand">walking<span>.</span>explorers</div><div class="nav-links"><a href="#how">How it works</a><a href="#cities">Cities</a><a href="#about">About</a><a href="#signup" class="nav-cta">Join the beta</a></div></div></nav>
-<section class="hero"><div class="hero-inner"><h1>Where <span class="accent">curiosity</span> meets the city.</h1><p class="lede">Walking Explorers turns any city into a personalized adventure. AI generates a one-of-a-kind walking route from your tastes, your time, and your real GPS — through the cafés, vintage shops, and hidden corners that match your particular kind of curious.</p><div class="hero-ctas"><a href="#signup" class="btn btn-accent">Join the New York beta →</a><a href="#how" class="btn btn-ghost">See how it works</a></div><div class="hero-meta"><span><span class="dot"></span>NYC pilot launching 2026</span><span>iOS &amp; Android</span><span>Backed by AI · powered by GPS</span></div></div><div class="skyline"><svg viewBox="0 0 1200 80" preserveAspectRatio="none"><polygon fill="#162B4A" points="0,80 0,50 40,50 40,30 80,30 80,55 110,55 110,15 150,15 150,40 200,40 200,25 250,25 250,55 290,55 290,10 330,10 330,45 380,45 380,30 430,30 430,55 470,55 470,20 520,20 520,40 580,40 580,15 630,15 630,50 680,50 680,35 730,35 730,55 780,55 780,25 830,25 830,45 880,45 880,30 930,30 930,55 980,55 980,20 1030,20 1030,40 1080,40 1080,55 1130,55 1130,30 1170,30 1170,50 1200,50 1200,80"/></svg></div></section>
-<section id="how"><div class="container"><span class="eyebrow">How it works</span><h2>Four steps. Zero generic itineraries.</h2><p class="lead">No more saving Pinterest boards that never become a walked Saturday. No more Google Maps' "popular places." A route built only for you, only for today.</p><div class="steps"><div class="step"><div class="step-num">1</div><h3>Tell us what you love</h3><p>Pick your moods — aesthetic cafés, vintage shops, street art, sunset spots, bookstores, hidden gardens. The AI learns your taste in 30 seconds.</p></div><div class="step"><div class="step-num">2</div><h3>Pick your time</h3><p>Have 30 minutes or half a day? We match route length to your schedule — and to where you're standing right now.</p></div><div class="step"><div class="step-num">3</div><h3>Walk a route built for you</h3><p>Turn-by-turn navigation through 5–8 hand-picked stops. Each one with the story of why we chose it for you specifically.</p></div><div class="step"><div class="step-num">4</div><h3>Save it as a Loop</h3><p>Photos auto-organize into a sharable visual memory. Send it privately. Post it. Walk it again next month.</p></div></div></div></section>
-<section class="features-bg" id="features"><div class="container"><span class="eyebrow">What makes it different</span><h2>Aesthetic, not algorithmic.</h2><p class="lead">Other apps optimize for ratings, traffic, or convenience. We optimize for <i>your</i> kind of beautiful.</p><div class="features"><div class="feature"><h3>AI-generated, never pre-curated</h3><p>Every route is unique. Inventory is unbounded. The longer you use it, the better your recommendations get.</p></div><div class="feature"><h3>Mood-first, not rating-first</h3><p>We index places by feel — vintage, cozy, hidden, sunset-friendly — not by a 4.6-star average. Your aesthetic is the signal.</p></div><div class="feature"><h3>Independent businesses, surfaced</h3><p>Local cafés, galleries, and vintage shops we love — not the same chain restaurants every algorithm recommends.</p></div><div class="feature"><h3>The walk becomes a memory</h3><p>Loops are visual artifacts of your day — a route, a story, a stack of photos. Share them, save them, walk them again.</p></div><div class="feature"><h3>Built privacy-first</h3><p>Your taste profile never leaves your phone unencrypted. We process locations without selling them.</p></div><div class="feature"><h3>Designed for the city you're in</h3><p>Manhattan-grade walking is different from suburban strolling. Routes are built around real neighborhood density, not raw distance.</p></div></div></div></section>
-<section class="proof"><div class="container"><span class="eyebrow" style="color: var(--gold);">Built for New York</span><h2>12 hand-curated routes. 72 stops. All real, all walked.</h2><p class="lead" style="color: rgba(255,255,255,0.85);">We started with the city that breaks every consumer app: New York. Eight neighborhoods, twelve hand-picked routes, every stop verified.</p><div class="stats"><div class="stat"><div class="num">12</div><div class="lab">NYC routes live in the beta</div></div><div class="stat"><div class="num">72</div><div class="lab">Hand-picked stops with stories</div></div><div class="stat"><div class="num">8</div><div class="lab">NYC neighborhoods covered</div></div><div class="stat"><div class="num">62M</div><div class="lab">Annual NYC visitors (NYC &amp; Co)</div></div></div><p class="stat-foot">Hold the working beta in your hand → ask us for the link.</p></div></section>
-<section id="cities"><div class="container"><span class="eyebrow">Beta · neighborhoods</span><h2>Walk a New York you don't already know.</h2><p class="lead">Routes built around the eight NYC neighborhoods that reward walking the most.</p><div class="nbhd-grid"><div class="nbhd" style="background: linear-gradient(160deg, #2E75B6, #1F3864);"><div class="name">SoHo</div><div class="meta">Café crawl · Hidden galleries</div></div><div class="nbhd" style="background: linear-gradient(160deg, #B85042, #6B2D1A);"><div class="name">East Village</div><div class="meta">Vintage &amp; vinyl</div></div><div class="nbhd" style="background: linear-gradient(160deg, #5B7C5B, #2C4A2C);"><div class="name">West Village</div><div class="meta">Bookshops &amp; brownstones</div></div><div class="nbhd" style="background: linear-gradient(160deg, #2C5F2D, #97BC62);"><div class="name">Chelsea</div><div class="meta">High Line + galleries</div></div><div class="nbhd" style="background: linear-gradient(160deg, #E0B341, #8C5B00);"><div class="name">Williamsburg</div><div class="meta">Street art walk</div></div><div class="nbhd" style="background: linear-gradient(160deg, #6D2E46, #2D0F1B);"><div class="name">DUMBO</div><div class="meta">Brooklyn Bridge loop</div></div><div class="nbhd" style="background: linear-gradient(160deg, #028090, #024758);"><div class="name">Central Park</div><div class="meta">Hidden corners</div></div><div class="nbhd" style="background: linear-gradient(160deg, #C84B31, #5C2114);"><div class="name">Lower East Side</div><div class="meta">Foodie crawl</div></div></div></div></section>
-<section class="press"><div class="press-inner"><p>For walkers, locals, tourists, and re-discoverers</p><div class="press-row"><span>Aesthetic-first</span><span>·</span><span>Privacy-first</span><span>·</span><span>Local-first</span><span>·</span><span>NYC-first</span></div></div></section>
-<section id="signup" class="signup"><div class="container"><span class="eyebrow" style="color: var(--gold);">Join the beta</span><h2>Be the first to walk it.</h2><p class="lead">We're opening the New York beta in waves. Add your email — we'll text you when your neighborhood unlocks.</p><form class="signup-form" onsubmit="signup(event)"><input type="email" required placeholder="you@example.com" id="signup-email" /><button type="submit" class="btn btn-accent">Join the waitlist →</button></form><div id="signup-msg"></div></div></section>
-<section class="faq-bg" id="about"><div class="container"><span class="eyebrow">Common questions</span><h2>Things people ask first.</h2><div class="faq"><details><summary>Is this for tourists or locals?</summary><p>Both. Tourists use it to find the city behind the city. Locals use it to rediscover neighborhoods they thought they knew. Our most loyal beta users are New Yorkers who walk the same blocks every week and want a Sunday surprise.</p></details><details><summary>How is this different from Google Maps?</summary><p>Google Maps optimizes for proximity and traffic. We optimize for personal aesthetic. Maps are functional. Loops are emotional.</p></details><details><summary>Why New York first?</summary><p>It has the most walkable streets, the densest independent-business ecosystem, and the most demanding users. If a walking app works in New York, it works anywhere.</p></details><details><summary>What does the AI actually do?</summary><p>It takes your stated tastes, learns from what you actually click and walk, factors in your real-time location and time available, and picks 5–8 stops that sequence into a coherent walk. It doesn't invent places — every stop is from a curated, human-verified database.</p></details><details><summary>Is it free?</summary><p>Yes — three AI routes a month, free forever. Power users can upgrade to unlimited routes, ad-free walking, and group features.</p></details><details><summary>I run a café/shop/gallery in NYC — how do I get featured?</summary><p>Email <a href="mailto:mbkill4ever@gmail.com">mbkill4ever@gmail.com</a> with the subject line "Charter business — [name]." Our charter program gives the first 30 partner businesses 90 days of free featured placement.</p></details><details><summary>I'm an investor / partner — how do I get in touch?</summary><p>Same email. Subject line "Walking Explorers — Investor / Partner." We'll send the deck and a link to the working beta.</p></details></div></div></section>
-<footer><div class="foot-inner"><div><div class="brand" style="color: white; font-size: 18px;">walking<span style="color: var(--gold);">.</span>explorers</div><p style="margin-top: 14px; max-width: 32ch;">Where curiosity meets the city. NYC pilot launching 2026. iOS &amp; Android.</p></div><div><h4>Product</h4><ul><li><a href="#how">How it works</a></li><li><a href="#cities">Cities</a></li><li><a href="#signup">Beta signup</a></li></ul></div><div><h4>Company</h4><ul><li><a href="mailto:mbkill4ever@gmail.com">Contact</a></li><li><a href="mailto:mbkill4ever@gmail.com?subject=Charter%20business">Charter businesses</a></li><li><a href="mailto:mbkill4ever@gmail.com?subject=Investor">Investors</a></li><li><a href="mailto:mbkill4ever@gmail.com?subject=CTO%20interest">Working with us</a></li></ul></div></div><div class="foot-bottom"><span>© 2026 Walking Explorers · All rights reserved.</span><span>Built in New York.</span></div></footer>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand">walking<span>.</span>explorers</div>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#cities">Cities</a>
+      <a href="#about">About</a>
+      <a href="#waitlist" class="nav-cta">Join the waitlist</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO (rewritten per audit #7 / brand audit #20) -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <h1>AI-curated walks through <span class="accent">NYC's</span> most beautiful streets.</h1>
+      <p class="lede">Personalized routes, hidden gems, and editorial neighborhood guides &mdash; built for walkers, not tourists.</p>
+      <div class="hero-ctas">
+        <!-- TODO: swap mailto for real Tally/Typeform once form is provisioned -->
+        <a href="mailto:waitlist@walkingexplorers.com?subject=Walking%20Explorers%20waitlist" class="btn btn-accent" id="hero-cta-waitlist">Join the waitlist &rarr;</a>
+        <!-- TODO: swap href for the Loom URL when the demo agent ships it -->
+        <a href="#demo" class="btn btn-ghost">Watch 60-sec demo</a>
+      </div>
+      <!-- TODO: wire to KV `waitlist:count` once /api/waitlist exists. Currently hardcoded. -->
+      <div class="waitlist-counter" id="waitlist-counter">
+        <span class="pulse"></span>
+        <span>Join <b id="waitlist-count">327</b> walkers on the waitlist</span>
+      </div>
+      <div class="hero-meta">
+        <span><span class="dot"></span>NYC beta open now (invite-only)</span>
+        <span>iOS &amp; Android</span>
+      </div>
+    </div>
+    <!-- Phone mockup hero illustration (inline SVG; swap for PNG when designed) -->
+    <div class="hero-visual" aria-hidden="true">
+      <svg class="phone-mockup" viewBox="0 0 360 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Walking Explorers app preview">
+        <rect x="10" y="10" width="340" height="700" rx="48" ry="48" fill="#0E1A30" stroke="#162B4A" stroke-width="2"/>
+        <rect x="22" y="22" width="316" height="676" rx="38" ry="38" fill="#FAF7F2"/>
+        <rect x="140" y="30" width="80" height="22" rx="11" fill="#0E1A30"/>
+        <text x="42" y="86" font-family="Inter, sans-serif" font-size="11" fill="#6B7280" font-weight="600" letter-spacing="1.5">SOHO &middot; SAT 4:12 PM</text>
+        <text x="42" y="118" font-family="Inter, sans-serif" font-size="22" fill="#1F3864" font-weight="800">Aesthetic café crawl</text>
+        <text x="42" y="140" font-family="Inter, sans-serif" font-size="13" fill="#6B7280">5 stops &middot; 1.4 mi &middot; ~58 min</text>
+        <rect x="32" y="160" width="296" height="220" rx="16" fill="#E8E2D2"/>
+        <path d="M 50 220 L 310 200" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+        <path d="M 60 280 L 300 270" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+        <path d="M 110 170 L 130 360" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+        <path d="M 220 170 L 240 360" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+        <path d="M 70 340 Q 130 310 160 270 T 250 220 L 290 190" fill="none" stroke="#1F3864" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 4"/>
+        <circle cx="70" cy="340" r="9" fill="#E0B341" stroke="#1F3864" stroke-width="2"/>
+        <circle cx="155" cy="280" r="9" fill="#E0B341" stroke="#1F3864" stroke-width="2"/>
+        <circle cx="200" cy="240" r="9" fill="#E0B341" stroke="#1F3864" stroke-width="2"/>
+        <circle cx="250" cy="220" r="9" fill="#E0B341" stroke="#1F3864" stroke-width="2"/>
+        <circle cx="290" cy="190" r="9" fill="#E0B341" stroke="#1F3864" stroke-width="2"/>
+        <rect x="32" y="404" width="296" height="78" rx="14" fill="#FFFFFF" stroke="#E5E1D8"/>
+        <circle cx="58" cy="443" r="14" fill="#1F3864"/>
+        <text x="58" y="448" font-family="Inter, sans-serif" font-size="13" fill="#E0B341" text-anchor="middle" font-weight="700">1</text>
+        <text x="84" y="438" font-family="Inter, sans-serif" font-size="14" fill="#1F3864" font-weight="700">Devoción</text>
+        <text x="84" y="456" font-family="Inter, sans-serif" font-size="11" fill="#6B7280">Third-wave coffee &middot; 4 min walk</text>
+        <rect x="32" y="492" width="296" height="78" rx="14" fill="#FFFFFF" stroke="#E5E1D8"/>
+        <circle cx="58" cy="531" r="14" fill="#1F3864"/>
+        <text x="58" y="536" font-family="Inter, sans-serif" font-size="13" fill="#E0B341" text-anchor="middle" font-weight="700">2</text>
+        <text x="84" y="526" font-family="Inter, sans-serif" font-size="14" fill="#1F3864" font-weight="700">McNally Jackson</text>
+        <text x="84" y="544" font-family="Inter, sans-serif" font-size="11" fill="#6B7280">Indie bookshop &middot; 6 min walk</text>
+        <rect x="32" y="580" width="296" height="78" rx="14" fill="#FFFFFF" stroke="#E5E1D8"/>
+        <circle cx="58" cy="619" r="14" fill="#1F3864"/>
+        <text x="58" y="624" font-family="Inter, sans-serif" font-size="13" fill="#E0B341" text-anchor="middle" font-weight="700">3</text>
+        <text x="84" y="614" font-family="Inter, sans-serif" font-size="14" fill="#1F3864" font-weight="700">Housing Works Thrift</text>
+        <text x="84" y="632" font-family="Inter, sans-serif" font-size="11" fill="#6B7280">Vintage finds &middot; 8 min walk</text>
+        <rect x="32" y="668" width="296" height="22" rx="11" fill="#E0B341"/>
+      </svg>
+    </div>
+  </div>
+  <div class="skyline" aria-hidden="true"><svg viewBox="0 0 1200 80" preserveAspectRatio="none"><polygon fill="#162B4A" points="0,80 0,50 40,50 40,30 80,30 80,55 110,55 110,15 150,15 150,40 200,40 200,25 250,25 250,55 290,55 290,10 330,10 330,45 380,45 380,30 430,30 430,55 470,55 470,20 520,20 520,40 580,40 580,15 630,15 630,50 680,50 680,35 730,35 730,55 780,55 780,25 830,25 830,45 880,45 880,30 930,30 930,55 980,55 980,20 1030,20 1030,40 1080,40 1080,55 1130,55 1130,30 1170,30 1170,50 1200,50 1200,80"/></svg></div>
+</section>
+
+<!-- Trust band (replaces removed fake press strip) -->
+<section class="trust">
+  <div class="trust-inner">
+    <p class="trust-line">Built privately. No ads, no tracking, no data sold.</p>
+    <p class="trust-sub">Aesthetic-first &middot; Privacy-first &middot; Local-first &middot; NYC-first</p>
+  </div>
+</section>
+
+<!-- Product screenshots: Discover / Walk / Remember -->
+<section class="shots-bg" id="screenshots">
+  <div class="container">
+    <span class="eyebrow">What you'll actually do</span>
+    <h2>Discover. Walk. Remember.</h2>
+    <p class="lead">Three screens, three moments. The whole product on one page &mdash; from the route you choose to the memory you keep.</p>
+    <div class="shots">
+      <!-- DISCOVER -->
+      <div class="shot">
+        <div class="shot-img" role="img" aria-label="Discover: route card placeholder">
+          <!-- TODO: replace with real PNG screenshot of the route card -->
+          <svg viewBox="0 0 240 400" xmlns="http://www.w3.org/2000/svg">
+            <rect x="14" y="14" width="212" height="372" rx="24" fill="#FAF7F2"/>
+            <rect x="32" y="36" width="120" height="14" rx="4" fill="#E0B341"/>
+            <rect x="32" y="60" width="170" height="22" rx="5" fill="#1F3864"/>
+            <rect x="32" y="92" width="140" height="12" rx="4" fill="#6B7280" opacity="0.55"/>
+            <rect x="32" y="124" width="176" height="120" rx="14" fill="#E8E2D2"/>
+            <circle cx="64" cy="172" r="6" fill="#E0B341"/>
+            <circle cx="118" cy="200" r="6" fill="#E0B341"/>
+            <circle cx="170" cy="166" r="6" fill="#E0B341"/>
+            <path d="M 60 174 Q 100 200 116 198 T 168 168" fill="none" stroke="#1F3864" stroke-width="2" stroke-dasharray="4 3"/>
+            <rect x="32" y="262" width="176" height="40" rx="10" fill="#FFFFFF" stroke="#E5E1D8"/>
+            <rect x="32" y="312" width="176" height="40" rx="10" fill="#FFFFFF" stroke="#E5E1D8"/>
+          </svg>
+        </div>
+        <div class="shot-cap">
+          <h3>Discover</h3>
+          <p>Tap a curated route card. See its mood, length, and stops before you start. Hand-picked by the AI for the time you have right now.</p>
+        </div>
+      </div>
+      <!-- WALK -->
+      <div class="shot">
+        <div class="shot-img" role="img" aria-label="Walk: walk-in-progress placeholder">
+          <!-- TODO: replace with real PNG screenshot of the walk-in-progress screen -->
+          <svg viewBox="0 0 240 400" xmlns="http://www.w3.org/2000/svg">
+            <rect x="14" y="14" width="212" height="372" rx="24" fill="#FAF7F2"/>
+            <rect x="14" y="14" width="212" height="220" rx="24" fill="#E8E2D2"/>
+            <path d="M 30 80 L 220 70" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+            <path d="M 40 140 L 215 130" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+            <path d="M 90 30 L 100 230" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+            <path d="M 170 30 L 180 230" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+            <path d="M 60 200 Q 110 160 140 130 T 200 90" fill="none" stroke="#1F3864" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="60" cy="200" r="8" fill="#E0B341" stroke="#1F3864" stroke-width="2"/>
+            <circle cx="140" cy="130" r="10" fill="#1F3864" stroke="#E0B341" stroke-width="3"/>
+            <circle cx="200" cy="90" r="8" fill="#FFFFFF" stroke="#1F3864" stroke-width="2"/>
+            <rect x="32" y="256" width="176" height="50" rx="12" fill="#1F3864"/>
+            <rect x="46" y="270" width="80" height="10" rx="3" fill="#E0B341"/>
+            <rect x="46" y="286" width="120" height="8" rx="3" fill="#FFFFFF" opacity="0.55"/>
+            <rect x="32" y="320" width="176" height="46" rx="12" fill="#FFFFFF" stroke="#E5E1D8"/>
+            <rect x="46" y="338" width="100" height="10" rx="3" fill="#6B7280" opacity="0.55"/>
+          </svg>
+        </div>
+        <div class="shot-cap">
+          <h3>Walk</h3>
+          <p>Live turn-by-turn through 5&ndash;8 stops. Each one with the story of why we chose it for you specifically. Snap a photo when you arrive.</p>
+        </div>
+      </div>
+      <!-- REMEMBER -->
+      <div class="shot">
+        <div class="shot-img" role="img" aria-label="Remember: archive placeholder">
+          <!-- TODO: replace with real PNG screenshot of the Loop archive -->
+          <svg viewBox="0 0 240 400" xmlns="http://www.w3.org/2000/svg">
+            <rect x="14" y="14" width="212" height="372" rx="24" fill="#FAF7F2"/>
+            <rect x="32" y="36" width="120" height="14" rx="4" fill="#E0B341"/>
+            <rect x="32" y="60" width="170" height="22" rx="5" fill="#1F3864"/>
+            <rect x="32" y="100" width="84" height="84" rx="10" fill="#B85042"/>
+            <rect x="124" y="100" width="84" height="84" rx="10" fill="#5B7C5B"/>
+            <rect x="32" y="192" width="84" height="84" rx="10" fill="#2C5F2D"/>
+            <rect x="124" y="192" width="84" height="84" rx="10" fill="#028090"/>
+            <rect x="32" y="290" width="176" height="14" rx="3" fill="#1F3864"/>
+            <rect x="32" y="312" width="120" height="10" rx="3" fill="#6B7280" opacity="0.55"/>
+            <rect x="32" y="332" width="176" height="40" rx="10" fill="#FFFFFF" stroke="#E5E1D8"/>
+          </svg>
+        </div>
+        <div class="shot-cap">
+          <h3>Remember</h3>
+          <p>Every walk becomes a Loop &mdash; a route, a story, a stack of photos. Send it privately, post it, or walk it again next month.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <span class="eyebrow">How it works</span>
+    <h2>Four steps. Zero generic itineraries.</h2>
+    <p class="lead">No more saving Pinterest boards that never become a walked Saturday. No more Google Maps' "popular places." A route built only for you, only for today.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><h3>Tell us what you love</h3><p>Pick your moods &mdash; aesthetic cafés, vintage shops, street art, sunset spots, bookstores, hidden gardens. The AI learns your taste in 30 seconds.</p></div>
+      <div class="step"><div class="step-num">2</div><h3>Pick your time</h3><p>Have 30 minutes or half a day? We match route length to your schedule &mdash; and to where you're standing right now.</p></div>
+      <div class="step"><div class="step-num">3</div><h3>Walk a route built for you</h3><p>Turn-by-turn navigation through 5&ndash;8 hand-picked stops. Each one with the story of why we chose it for you specifically.</p></div>
+      <div class="step"><div class="step-num">4</div><h3>Save it as a Loop</h3><p>Photos auto-organize into a sharable visual memory. Send it privately. Post it. Walk it again next month.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-bg" id="features">
+  <div class="container">
+    <span class="eyebrow">What makes it different</span>
+    <h2>Aesthetic, not algorithmic.</h2>
+    <p class="lead">Other apps optimize for ratings, traffic, or convenience. We optimize for <i>your</i> kind of beautiful.</p>
+    <div class="features">
+      <div class="feature"><h3>AI-generated, never pre-curated</h3><p>Every route is unique. Inventory is unbounded. The longer you use it, the better your recommendations get.</p></div>
+      <div class="feature"><h3>Mood-first, not rating-first</h3><p>We index places by feel &mdash; vintage, cozy, hidden, sunset-friendly &mdash; not by a 4.6-star average. Your aesthetic is the signal.</p></div>
+      <div class="feature"><h3>Independent businesses, surfaced</h3><p>Local cafés, galleries, and vintage shops we love &mdash; not the same chain restaurants every algorithm recommends.</p></div>
+      <div class="feature"><h3>The walk becomes a memory</h3><p>Loops are visual artifacts of your day &mdash; a route, a story, a stack of photos. Share them, save them, walk them again.</p></div>
+      <div class="feature"><h3>Built privacy-first</h3><p>Your taste profile never leaves your phone unencrypted. We process locations without selling them.</p></div>
+      <div class="feature"><h3>Designed for the city you're in</h3><p>Manhattan-grade walking is different from suburban strolling. Routes are built around real neighborhood density, not raw distance.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF -->
+<section class="proof">
+  <div class="container">
+    <span class="eyebrow" style="color: var(--gold);">Built for New York</span>
+    <h2>12 hand-curated routes. 72 stops. All real, all walked.</h2>
+    <p class="lead" style="color: rgba(255,255,255,0.85);">We started with the city that breaks every consumer app: New York. Eight neighborhoods, twelve hand-picked routes, every stop verified.</p>
+    <div class="stats">
+      <div class="stat"><div class="num">12</div><div class="lab">NYC routes live in the beta</div></div>
+      <div class="stat"><div class="num">72</div><div class="lab">Hand-picked stops with stories</div></div>
+      <div class="stat"><div class="num">8</div><div class="lab">NYC neighborhoods covered</div></div>
+      <div class="stat"><div class="num">62M</div><div class="lab">Annual NYC visitors (NYC &amp; Co)</div></div>
+    </div>
+    <p class="stat-foot">Hold the working beta in your hand &rarr; ask us for the link.</p>
+  </div>
+</section>
+
+<!-- CITIES -->
+<section id="cities">
+  <div class="container">
+    <span class="eyebrow">Beta &middot; neighborhoods</span>
+    <h2>Walk a New York you don't already know.</h2>
+    <p class="lead">Routes built around the eight NYC neighborhoods that reward walking the most.</p>
+    <div class="nbhd-grid">
+      <div class="nbhd" style="background: linear-gradient(160deg, #2E75B6, #1F3864);"><div class="name">SoHo</div><div class="meta">Café crawl &middot; Hidden galleries</div></div>
+      <div class="nbhd" style="background: linear-gradient(160deg, #B85042, #6B2D1A);"><div class="name">East Village</div><div class="meta">Vintage &amp; vinyl</div></div>
+      <div class="nbhd" style="background: linear-gradient(160deg, #5B7C5B, #2C4A2C);"><div class="name">West Village</div><div class="meta">Bookshops &amp; brownstones</div></div>
+      <div class="nbhd" style="background: linear-gradient(160deg, #2C5F2D, #97BC62);"><div class="name">Chelsea</div><div class="meta">High Line + galleries</div></div>
+      <div class="nbhd" style="background: linear-gradient(160deg, #E0B341, #8C5B00);"><div class="name">Williamsburg</div><div class="meta">Street art walk</div></div>
+      <div class="nbhd" style="background: linear-gradient(160deg, #6D2E46, #2D0F1B);"><div class="name">DUMBO</div><div class="meta">Brooklyn Bridge loop</div></div>
+      <div class="nbhd" style="background: linear-gradient(160deg, #028090, #024758);"><div class="name">Central Park</div><div class="meta">Hidden corners</div></div>
+      <div class="nbhd" style="background: linear-gradient(160deg, #C84B31, #5C2114);"><div class="name">Lower East Side</div><div class="meta">Foodie crawl</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="founder-bg" id="about">
+  <div class="container">
+    <span class="eyebrow">The founder</span>
+    <h2>Built by Nova in NYC.</h2>
+    <div class="founder">
+      <!-- TODO: replace with real founder photo when available -->
+      <div class="founder-photo" aria-label="Photo of Nova">N</div>
+      <div class="founder-text">
+        <h3>Nova &middot; founder</h3>
+        <!-- TODO: pull final 2-line bio from Walking_Explorers_Founder_Bio.md when that agent ships it -->
+        <p>Brief 2-line bio TBD &mdash; will pull from Walking_Explorers_Founder_Bio.md once that agent ships. For now: solo founder building Walking Explorers in New York. Designing the walking app she wished existed: aesthetic-first, privacy-first, written by a person who actually walks the streets it recommends.</p>
+        <p>
+          <!-- TODO: swap to real LinkedIn URL when available -->
+          <a href="https://www.linkedin.com/in/" target="_blank" rel="noopener noreferrer">LinkedIn &rarr;</a>
+          &nbsp;&middot;&nbsp;
+          <a href="mailto:mbkill4ever@gmail.com">Email Nova</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST SIGNUP -->
+<section id="waitlist" class="signup">
+  <div class="container">
+    <span class="eyebrow" style="color: var(--gold);">Join the waitlist</span>
+    <h2>Be the first to walk it.</h2>
+    <p class="lead">We're opening the New York beta in waves. Add your email &mdash; we'll text you when your neighborhood unlocks.</p>
+    <form class="signup-form" onsubmit="signup(event)">
+      <label for="signup-email" style="position:absolute;left:-9999px;">Email</label>
+      <input type="email" required placeholder="you@example.com" id="signup-email" />
+      <button type="submit" class="btn btn-accent">Join the waitlist &rarr;</button>
+    </form>
+    <div id="signup-msg" role="status" aria-live="polite"></div>
+    <p style="margin-top: 18px; font-size: 13px; color: rgba(255,255,255,0.7);">Already <b>327</b> walkers on the list. No spam, ever.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-bg" id="faq">
+  <div class="container">
+    <span class="eyebrow">Common questions</span>
+    <h2>Things people ask first.</h2>
+    <div class="faq">
+      <details><summary>Is this for tourists or locals?</summary><p>Both. Tourists use it to find the city behind the city. Locals use it to rediscover neighborhoods they thought they knew. Our most loyal beta users are New Yorkers who walk the same blocks every week and want a Sunday surprise.</p></details>
+      <details><summary>How is this different from Google Maps?</summary><p>Google Maps optimizes for proximity and traffic. We optimize for personal aesthetic. Maps are functional. Loops are emotional.</p></details>
+      <details><summary>Why New York first?</summary><p>It has the most walkable streets, the densest independent-business ecosystem, and the most demanding users. If a walking app works in New York, it works anywhere.</p></details>
+      <details><summary>What does the AI actually do?</summary><p>It takes your stated tastes, learns from what you actually click and walk, factors in your real-time location and time available, and picks 5&ndash;8 stops that sequence into a coherent walk. It doesn't invent places &mdash; every stop is from a curated, human-verified database.</p></details>
+      <details><summary>Is it free?</summary><p>Yes &mdash; three AI routes a month, free forever. Power users can upgrade to unlimited routes, ad-free walking, and group features.</p></details>
+      <details><summary>I run a café/shop/gallery in NYC &mdash; how do I get featured?</summary><p>Email <a href="mailto:mbkill4ever@gmail.com">mbkill4ever@gmail.com</a> with the subject line "Charter business &mdash; [name]." Our charter program gives the first 30 partner businesses 90 days of free featured placement.</p></details>
+      <details><summary>I'm an investor / partner &mdash; how do I get in touch?</summary><p>Same email. Subject line "Walking Explorers &mdash; Investor / Partner." We'll send the deck and a link to the working beta.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <div>
+      <div class="brand" style="color: white; font-size: 18px;">walking<span style="color: var(--gold);">.</span>explorers</div>
+      <p style="margin-top: 14px; max-width: 32ch;">AI-curated walks through NYC's most beautiful streets. Built privately. No ads, no tracking, no data sold.</p>
+    </div>
+    <div>
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#screenshots">Screenshots</a></li>
+        <li><a href="#cities">Cities</a></li>
+        <li><a href="#waitlist">Waitlist</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#about">About Nova</a></li>
+        <li><a href="mailto:mbkill4ever@gmail.com">Contact</a></li>
+        <li><a href="mailto:mbkill4ever@gmail.com?subject=Charter%20business">Charter businesses</a></li>
+        <li><a href="mailto:mbkill4ever@gmail.com?subject=Investor">Investors</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; 2026 Walking Explorers &middot; All rights reserved.</span>
+    <span>Built in New York.</span>
+  </div>
+</footer>
+
 <script>
 function signup(ev) {
   ev.preventDefault();
-  const email = document.getElementById('signup-email').value;
-  const msg = document.getElementById('signup-msg');
-  if (!email || !email.includes('@')) {
+  var email = document.getElementById('signup-email').value;
+  var msg = document.getElementById('signup-msg');
+  if (!email || email.indexOf('@') === -1) {
     msg.textContent = 'Hmm, that email looks off — try again?';
     msg.style.color = '#FF8C8C';
     return false;
   }
-  msg.innerHTML = "✓ <b>You’re in.</b> We’ll be in touch when your neighborhood unlocks. (For now, email Nova at mbkill4ever@gmail.com to skip the line.)";
+  msg.innerHTML = "&check; <b>You're in.</b> We'll be in touch when your neighborhood unlocks. (For now, email Nova at mbkill4ever@gmail.com to skip the line.)";
   msg.style.color = '#E0B341';
   document.getElementById('signup-email').value = '';
+  // TODO: POST to /api/waitlist when endpoint exists; bump KV waitlist:count
   return false;
 }
 </script>
