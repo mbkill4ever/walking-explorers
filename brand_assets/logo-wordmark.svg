@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 96" role="img" aria-labelledby="we-wm-title">
+  <title id="we-wm-title">walking.explorers</title>
+  <!-- Default: navy ink on cream. Add class="we-dark" to root <svg> for cream-on-navy. -->
+  <style>
+    .we-bg   { fill: #FAF7F2; }
+    .we-ink  { fill: #0E1320; }
+    .we-dot  { fill: #E0B341; }
+    .we-dark .we-bg  { fill: #0E1B30; }
+    .we-dark .we-ink { fill: #FAF7F2; }
+    .we-dark .we-dot { fill: #E0B341; } /* gold never changes */
+    .we-word {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-weight: 800;
+      font-size: 56px;
+      letter-spacing: -1.6px;
+    }
+  </style>
+  <rect class="we-bg" x="0" y="0" width="480" height="96"/>
+  <text class="we-word we-ink" x="14" y="66">walking</text>
+  <circle class="we-dot" cx="207" cy="60" r="6.5"/>
+  <text class="we-word we-ink" x="220" y="66">explorers</text>
+</svg>
