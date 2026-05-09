@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Terms of Service — Walking Explorers</title>
+<meta name="description" content="The terms governing your use of Walking Explorers — beta access, user content, walking safety disclaimers, and dispute resolution." />
+<meta name="theme-color" content="#1F3864" />
+<meta name="robots" content="index,follow" />
+<link rel="canonical" href="https://walkingexplorers.com/terms.html" />
+
+<link rel="icon" href="/icons/icon-192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="/icons/icon-512.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+
+<style>
+  :root {
+    --navy: #1F3864;
+    --navy-2: #162B4A;
+    --navy-3: #0E1C33;
+    --blue: #2E75B6;
+    --blue-soft: #5C9FE0;
+    --gold: #E0B341;
+    --gold-dark: #B8941F;
+    --gold-darker: #8C6E14;
+    --cream: #FAF7F2;
+    --cream-2: #F2EEE5;
+    --ink: #1A1A1A;
+    --ink-2: #2C2C2C;
+    --mute: #5B6472;
+    --line: #E5E1D8;
+    --shadow-sm: 0 2px 6px rgba(31,56,100,0.06);
+    --shadow-md: 0 12px 28px rgba(31,56,100,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  img, svg { display: block; max-width: 100%; }
+
+  body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a { color: var(--blue); text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { color: var(--navy); }
+
+  /* ============ NAV ============ */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(250,247,242,0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 880px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 800; color: var(--navy);
+    font-size: 18px; letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+  .brand-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 3px rgba(224,179,65,0.15);
+  }
+  .nav-links { display: flex; gap: 22px; font-size: 14px; }
+  .nav-links a { color: var(--mute); text-decoration: none; font-weight: 500; }
+  .nav-links a:hover { color: var(--navy); }
+
+  /* ============ HERO ============ */
+  .hero {
+    background: linear-gradient(180deg, var(--navy-2), var(--navy));
+    color: var(--cream);
+    padding: 64px 24px 56px;
+    text-align: center;
+  }
+  .hero-inner { max-width: 720px; margin: 0 auto; }
+  .eyebrow {
+    display: inline-block;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 44px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .hero .meta {
+    color: rgba(250,247,242,0.72);
+    font-size: 15px;
+    margin-top: 8px;
+  }
+
+  /* ============ DISCLAIMER ============ */
+  .disclaimer {
+    max-width: 720px; margin: 28px auto 0;
+    padding: 18px 22px;
+    background: #FFF8E1;
+    border: 1px solid var(--gold);
+    border-left: 4px solid var(--gold-dark);
+    border-radius: 8px;
+    color: var(--ink-2);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .disclaimer strong { color: var(--gold-darker); }
+
+  /* ============ BODY ============ */
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+  main h2 {
+    color: var(--navy);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold);
+    display: inline-block;
+  }
+  main h3 {
+    color: var(--navy-2);
+    font-size: 17px;
+    font-weight: 600;
+    margin: 22px 0 8px;
+  }
+  main p { margin: 12px 0; color: var(--ink-2); }
+  main ul, main ol { margin: 12px 0 12px 22px; color: var(--ink-2); }
+  main li { margin: 6px 0; }
+  main strong { color: var(--ink); }
+
+  .toc {
+    background: var(--cream-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin: 32px 0;
+  }
+  .toc h3 {
+    margin-top: 0;
+    color: var(--navy);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+  }
+  .toc ol { margin: 12px 0 0 18px; }
+  .toc li { margin: 4px 0; }
+  .toc a { color: var(--navy); text-decoration: none; }
+  .toc a:hover { color: var(--blue); text-decoration: underline; }
+
+  .caps {
+    background: var(--cream-2);
+    border-left: 4px solid var(--navy);
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--ink-2);
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--navy-3);
+    color: rgba(250,247,242,0.78);
+    padding: 40px 24px;
+    text-align: center;
+    font-size: 14px;
+  }
+  footer a { color: var(--gold); text-decoration: none; margin: 0 10px; }
+  footer a:hover { color: var(--cream); text-decoration: underline; }
+  footer .copy { margin-top: 14px; color: rgba(250,247,242,0.5); font-size: 13px; }
+
+  @media (max-width: 600px) {
+    .nav-inner { padding: 14px 18px; }
+    .nav-links { gap: 14px; font-size: 13px; }
+    main { padding: 40px 20px 60px; }
+    .hero { padding: 48px 20px 44px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="/">
+      <span class="brand-dot"></span>
+      <span>walking.explorers</span>
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/beta">Beta</a>
+      <a href="/privacy.html">Privacy</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Legal</div>
+    <h1>Terms of Service</h1>
+    <div class="meta">Last updated: May 9, 2026 &middot; Effective: May 9, 2026</div>
+  </div>
+</header>
+
+<div class="disclaimer">
+  <strong>Template notice.</strong> This is a starting template. Have a Delaware-licensed attorney review before relying on for production. Termly or Iubenda offer paid services that auto-update with regulatory changes ($99-200/year).
+</div>
+
+<main>
+
+  <p>Welcome to Walking Explorers. These Terms of Service ("<strong>Terms</strong>") form a binding agreement between you and Walking Explorers, Inc. ("<strong>Walking Explorers</strong>," "<strong>we</strong>," "<strong>us</strong>," or "<strong>our</strong>"), a Delaware corporation, governing your access to and use of walkingexplorers.com, the Walking Explorers beta web app, and any related services (collectively, the "<strong>Service</strong>").</p>
+
+  <p><strong>Please read these Terms carefully.</strong> By accessing or using the Service, you agree to be bound by these Terms and our <a href="/privacy.html">Privacy Policy</a>. If you do not agree, do not use the Service.</p>
+
+  <div class="toc">
+    <h3>Table of Contents</h3>
+    <ol>
+      <li><a href="#acceptance">Acceptance &amp; eligibility</a></li>
+      <li><a href="#account">Beta access &amp; accounts</a></li>
+      <li><a href="#use">Acceptable use</a></li>
+      <li><a href="#content">User content &amp; license</a></li>
+      <li><a href="#ip">Our intellectual property</a></li>
+      <li><a href="#fees">Fees &amp; subscriptions</a></li>
+      <li><a href="#third-party">Third-party services</a></li>
+      <li><a href="#termination">Suspension &amp; termination</a></li>
+      <li><a href="#disclaimers">Walking safety &amp; disclaimers</a></li>
+      <li><a href="#liability">Limitation of liability</a></li>
+      <li><a href="#indemnity">Indemnification</a></li>
+      <li><a href="#dispute">Dispute resolution &amp; arbitration</a></li>
+      <li><a href="#governing">Governing law</a></li>
+      <li><a href="#changes">Changes to these terms</a></li>
+      <li><a href="#misc">Miscellaneous</a></li>
+      <li><a href="#contact">Contact us</a></li>
+    </ol>
+  </div>
+
+  <h2 id="acceptance">1. Acceptance &amp; eligibility</h2>
+  <p>By creating an account, redeeming an invite code, or otherwise using the Service, you represent that:</p>
+  <ul>
+    <li>You are at least <strong>13 years old</strong>. If you are between 13 and 18 (or the age of majority in your jurisdiction), you confirm you have your parent's or legal guardian's permission.</li>
+    <li>You have the legal capacity to enter into a binding agreement.</li>
+    <li>You are not barred from using the Service under U.S. law or the law of your country of residence.</li>
+    <li>The information you provide is accurate and complete.</li>
+  </ul>
+  <p>The Service is intended for personal, non-commercial use within New York City and other supported markets.</p>
+
+  <h2 id="account">2. Beta access &amp; accounts</h2>
+
+  <h3>2.1 Invite-only beta</h3>
+  <p>The Service is currently in private beta. Access is granted via single-use invite codes. Each code may be redeemed once and may not be sold, transferred, or shared. We may revoke unused codes at any time.</p>
+
+  <h3>2.2 Account security</h3>
+  <p>You are responsible for keeping your invite code, login credentials, and session cookie confidential. You are responsible for all activity under your account. Notify us promptly at <a href="mailto:legal@walkingexplorers.com">legal@walkingexplorers.com</a> if you suspect unauthorized access.</p>
+
+  <h3>2.3 No transfer</h3>
+  <p>Accounts are personal. You may not transfer, assign, or sublicense your account or beta access without our prior written consent.</p>
+
+  <h2 id="use">3. Acceptable use</h2>
+  <p>You agree <strong>not</strong> to:</p>
+  <ul>
+    <li>Use the Service for any unlawful, harmful, deceptive, or abusive purpose.</li>
+    <li>Harass, threaten, defame, or harm other users or third parties.</li>
+    <li>Submit content that is illegal, hateful, sexually explicit involving minors, infringes IP, or violates someone's privacy.</li>
+    <li>Upload malware, viruses, or any code that damages or interferes with the Service.</li>
+    <li>Reverse engineer, decompile, disassemble, or attempt to derive the source code of the Service, except where this restriction is prohibited by law.</li>
+    <li>Scrape, crawl, or systematically extract data from the Service, including walk routes and spot descriptions, without our prior written consent.</li>
+    <li>Use the Service to build a competing product or service.</li>
+    <li>Bypass or attempt to bypass authentication, rate limits, or other security measures.</li>
+    <li>Impersonate any person or entity, or misrepresent your affiliation with anyone.</li>
+    <li>Use bots or automated tools to access the Service, except for authorized search engine crawlers.</li>
+  </ul>
+  <p>Violation of this section may result in immediate termination and, where applicable, civil or criminal liability.</p>
+
+  <h2 id="content">4. User content &amp; license</h2>
+
+  <h3>4.1 Ownership</h3>
+  <p>You retain all ownership rights in the photos, feedback, notes, and other content you submit to the Service ("<strong>User Content</strong>").</p>
+
+  <h3>4.2 License you grant to us</h3>
+  <p>By submitting User Content, you grant Walking Explorers a <strong>worldwide, non-exclusive, royalty-free, perpetual, irrevocable, sublicensable license</strong> to host, store, reproduce, display, distribute, modify, adapt, and create derivative works of the User Content for the purpose of operating, promoting, and improving the Service. This license survives termination of your account with respect to User Content already published or shared.</p>
+
+  <h3>4.3 Your representations</h3>
+  <p>You represent and warrant that you own or have all necessary rights to your User Content, that it does not infringe any third party's rights, and that it complies with these Terms.</p>
+
+  <h3>4.4 Removal</h3>
+  <p>We may remove User Content that violates these Terms, applicable law, or our policies, with or without notice. We are not obligated to host or back up User Content; please keep your own copies of anything important.</p>
+
+  <h2 id="ip">5. Our intellectual property</h2>
+  <p>The Service, including its software, design, text, graphics, logos, brand marks ("Walking Explorers," the gold-dot wordmark), curated route descriptions, and underlying database of NYC walks, is owned by Walking Explorers or its licensors and is protected by U.S. and international copyright, trademark, and other laws. We grant you a limited, revocable, non-exclusive, non-transferable license to access and use the Service for personal, non-commercial purposes consistent with these Terms. No other rights are granted.</p>
+
+  <h2 id="fees">6. Fees &amp; subscriptions</h2>
+  <p>The Service is currently free during the private beta. We may introduce paid features, premium subscriptions, or in-app purchases in the future. When we do:</p>
+  <ul>
+    <li><strong>Pricing</strong> will be disclosed before you commit to a paid plan.</li>
+    <li><strong>Billing</strong> will recur automatically (e.g., monthly or annually) until cancelled.</li>
+    <li><strong>Cancellation</strong> will be available in your account at any time and will take effect at the end of the then-current billing period.</li>
+    <li><strong>Refunds</strong> are not provided for partial billing periods, except where required by law.</li>
+    <li><strong>Price changes</strong> will be notified to you at least 30 days in advance and will take effect at your next renewal.</li>
+  </ul>
+  <p>This Section 6 is a placeholder. The specific paid-plan terms will be presented to you when monetization launches; your continued use of paid features will constitute acceptance of those terms.</p>
+
+  <h2 id="third-party">7. Third-party services</h2>
+  <p>The Service may include links to or integrations with third-party services (e.g., map tiles, fonts, photo storage). We are not responsible for third-party services and your use of them is subject to their own terms and policies. See our <a href="/privacy.html">Privacy Policy</a> for the current list of processors.</p>
+
+  <h2 id="termination">8. Suspension &amp; termination</h2>
+  <p>We may suspend or terminate your access to the Service at any time, with or without notice, for any reason, including:</p>
+  <ul>
+    <li>Violation of these Terms.</li>
+    <li>Fraudulent, abusive, or illegal activity.</li>
+    <li>Risk to the security or integrity of the Service.</li>
+    <li>Discontinuation of the Service or a material feature.</li>
+  </ul>
+  <p>You may terminate your account at any time by emailing <a href="mailto:legal@walkingexplorers.com">legal@walkingexplorers.com</a>. Sections 4 (license to User Content already submitted), 5, 9, 10, 11, 12, 13, 15, and 16 survive termination.</p>
+
+  <h2 id="disclaimers">9. Walking safety &amp; disclaimers</h2>
+
+  <h3>9.1 You walk at your own risk</h3>
+  <p>The Service suggests routes and points of interest. <strong>You assume all risks associated with following them</strong>, including but not limited to traffic, weather, terrain, neighborhood conditions, crime, accidents, fitness limitations, and interactions with other people, animals, or vehicles. Always use common sense, follow local laws, obey traffic signals, and remain aware of your surroundings.</p>
+
+  <h3>9.2 GPS and location accuracy</h3>
+  <p>GPS and geolocation data can be inaccurate, delayed, or unavailable, especially in dense urban areas like Manhattan and Brooklyn. Do not rely solely on the Service for navigation, emergency response, or location-critical decisions.</p>
+
+  <h3>9.3 Neighborhood conditions change</h3>
+  <p>NYC neighborhoods change quickly. Spots, businesses, and conditions described in walks may have closed, moved, become unsafe, or otherwise differ from descriptions. Verify current conditions before relying on them.</p>
+
+  <h3>9.4 No medical or professional advice</h3>
+  <p>The Service does not provide medical, fitness, legal, or other professional advice. Consult a qualified professional before beginning any new physical activity.</p>
+
+  <div class="caps">
+    The Service is provided "as is" and "as available," without warranties of any kind, whether express, implied, statutory, or otherwise. To the maximum extent permitted by law, Walking Explorers disclaims all warranties, including merchantability, fitness for a particular purpose, non-infringement, accuracy, and uninterrupted operation.
+  </div>
+
+  <h2 id="liability">10. Limitation of liability</h2>
+  <div class="caps">
+    To the maximum extent permitted by law, Walking Explorers and its officers, directors, employees, and agents shall not be liable for any indirect, incidental, special, consequential, exemplary, or punitive damages, including lost profits, lost data, or personal injury, arising out of or relating to your use of the Service, even if advised of the possibility of such damages.
+  </div>
+  <div class="caps">
+    Walking Explorers' total cumulative liability to you for all claims arising out of or relating to the Service shall not exceed the greater of (a) the amount you paid us in the twelve months preceding the claim or (b) one hundred U.S. dollars ($100).
+  </div>
+  <p>Some jurisdictions do not allow the exclusion or limitation of certain damages, so the above may not apply to you in full.</p>
+
+  <h2 id="indemnity">11. Indemnification</h2>
+  <p>You agree to indemnify, defend, and hold harmless Walking Explorers and its officers, directors, employees, and agents from and against any claims, damages, liabilities, losses, and expenses (including reasonable attorneys' fees) arising out of or related to (a) your use of the Service, (b) your violation of these Terms, (c) your User Content, or (d) your violation of any rights of a third party.</p>
+
+  <h2 id="dispute">12. Dispute resolution &amp; arbitration</h2>
+
+  <h3>12.1 Informal resolution first</h3>
+  <p>Before filing a claim, you agree to try to resolve the dispute informally by emailing <a href="mailto:legal@walkingexplorers.com">legal@walkingexplorers.com</a>. We will try to resolve the dispute within 30 days.</p>
+
+  <h3>12.2 Binding arbitration</h3>
+  <p>If informal resolution fails, any dispute, claim, or controversy arising out of or relating to these Terms or the Service shall be resolved by <strong>binding individual arbitration</strong> administered by the American Arbitration Association (AAA) under its Consumer Arbitration Rules. The arbitration will take place in <strong>Wilmington, Delaware</strong>, or by video conference at your option. Judgment on the award may be entered in any court of competent jurisdiction.</p>
+
+  <h3>12.3 Small-claims carve-out</h3>
+  <p>Either party may bring an individual action in <strong>small-claims court</strong> for disputes within that court's jurisdiction in lieu of arbitration.</p>
+
+  <h3>12.4 No class actions</h3>
+  <p>You and Walking Explorers each agree to bring claims only in your or our individual capacity, and not as a plaintiff or class member in any class, consolidated, or representative action.</p>
+
+  <h3>12.5 30-day opt-out</h3>
+  <p>You may opt out of the arbitration agreement in Sections 12.2 and 12.4 by emailing <a href="mailto:legal@walkingexplorers.com">legal@walkingexplorers.com</a> with the subject line "Arbitration Opt-Out" within 30 days of first agreeing to these Terms. Opting out does not affect any other provision of these Terms.</p>
+
+  <h2 id="governing">13. Governing law</h2>
+  <p>These Terms are governed by the laws of the <strong>State of Delaware, USA</strong>, without regard to its conflict-of-law principles. Subject to Section 12, the state and federal courts sitting in Wilmington, Delaware shall have exclusive jurisdiction over any non-arbitrable disputes.</p>
+
+  <h2 id="changes">14. Changes to these Terms</h2>
+  <p>We may update these Terms from time to time. For <strong>material changes</strong>, we will provide at least <strong>30 days' notice</strong> via the Service or by email before the changes take effect. The "Last updated" date at the top reflects the most recent revision. Continued use of the Service after the effective date constitutes acceptance of the revised Terms. If you do not agree to the changes, you must stop using the Service.</p>
+
+  <h2 id="misc">15. Miscellaneous</h2>
+  <ul>
+    <li><strong>Entire agreement.</strong> These Terms and our Privacy Policy constitute the entire agreement between you and Walking Explorers regarding the Service.</li>
+    <li><strong>Severability.</strong> If any provision is held invalid or unenforceable, the remaining provisions remain in effect.</li>
+    <li><strong>No waiver.</strong> Our failure to enforce any right or provision is not a waiver of that right or provision.</li>
+    <li><strong>Assignment.</strong> You may not assign these Terms without our prior written consent. We may assign them without restriction (for example, in a merger or sale of assets).</li>
+    <li><strong>Force majeure.</strong> We are not liable for delays or failures due to causes beyond our reasonable control.</li>
+    <li><strong>Notices.</strong> We may deliver notices to you via the Service, email, or posting on walkingexplorers.com.</li>
+    <li><strong>Independent contractors.</strong> Nothing in these Terms creates a partnership, joint venture, employment, or agency relationship between you and Walking Explorers.</li>
+  </ul>
+
+  <h2 id="contact">16. Contact us</h2>
+  <p>For legal notices and questions about these Terms:</p>
+  <ul>
+    <li><strong>Email:</strong> <a href="mailto:legal@walkingexplorers.com">legal@walkingexplorers.com</a></li>
+    <li><strong>Mail:</strong> Walking Explorers, Inc. (Delaware, USA &mdash; mailing address provided on request)</li>
+  </ul>
+
+  <p style="margin-top: 28px; font-size: 13px; color: var(--mute);">By using Walking Explorers, you acknowledge that you have read, understood, and agreed to these Terms of Service.</p>
+
+</main>
+
+<footer>
+  <div>
+    <a href="/">Home</a>
+    <a href="/beta">Beta</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/terms.html">Terms</a>
+    <a href="mailto:hello@walkingexplorers.com">Contact</a>
+  </div>
+  <div class="copy">&copy; 2026 Walking Explorers, Inc. &middot; Made with care in NYC.</div>
+</footer>
+
+</body>
+</html>

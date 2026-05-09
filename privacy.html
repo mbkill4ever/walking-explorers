@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Privacy Policy — Walking Explorers</title>
+<meta name="description" content="How Walking Explorers collects, uses, and protects your data. GPS coordinates, photos, and account information." />
+<meta name="theme-color" content="#1F3864" />
+<meta name="robots" content="index,follow" />
+<link rel="canonical" href="https://walkingexplorers.com/privacy.html" />
+
+<link rel="icon" href="/icons/icon-192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="/icons/icon-512.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+
+<style>
+  :root {
+    --navy: #1F3864;
+    --navy-2: #162B4A;
+    --navy-3: #0E1C33;
+    --blue: #2E75B6;
+    --blue-soft: #5C9FE0;
+    --gold: #E0B341;
+    --gold-dark: #B8941F;
+    --gold-darker: #8C6E14;
+    --cream: #FAF7F2;
+    --cream-2: #F2EEE5;
+    --ink: #1A1A1A;
+    --ink-2: #2C2C2C;
+    --mute: #5B6472;
+    --line: #E5E1D8;
+    --shadow-sm: 0 2px 6px rgba(31,56,100,0.06);
+    --shadow-md: 0 12px 28px rgba(31,56,100,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  img, svg { display: block; max-width: 100%; }
+
+  body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a { color: var(--blue); text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { color: var(--navy); }
+
+  /* ============ NAV ============ */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(250,247,242,0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 880px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 800; color: var(--navy);
+    font-size: 18px; letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+  .brand-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 3px rgba(224,179,65,0.15);
+  }
+  .nav-links { display: flex; gap: 22px; font-size: 14px; }
+  .nav-links a { color: var(--mute); text-decoration: none; font-weight: 500; }
+  .nav-links a:hover { color: var(--navy); }
+
+  /* ============ HERO ============ */
+  .hero {
+    background: linear-gradient(180deg, var(--navy-2), var(--navy));
+    color: var(--cream);
+    padding: 64px 24px 56px;
+    text-align: center;
+  }
+  .hero-inner { max-width: 720px; margin: 0 auto; }
+  .eyebrow {
+    display: inline-block;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 44px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .hero .meta {
+    color: rgba(250,247,242,0.72);
+    font-size: 15px;
+    margin-top: 8px;
+  }
+
+  /* ============ DISCLAIMER ============ */
+  .disclaimer {
+    max-width: 720px; margin: 28px auto 0;
+    padding: 18px 22px;
+    background: #FFF8E1;
+    border: 1px solid var(--gold);
+    border-left: 4px solid var(--gold-dark);
+    border-radius: 8px;
+    color: var(--ink-2);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .disclaimer strong { color: var(--gold-darker); }
+
+  /* ============ BODY ============ */
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+  main h2 {
+    color: var(--navy);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold);
+    display: inline-block;
+  }
+  main h3 {
+    color: var(--navy-2);
+    font-size: 17px;
+    font-weight: 600;
+    margin: 22px 0 8px;
+  }
+  main p { margin: 12px 0; color: var(--ink-2); }
+  main ul, main ol { margin: 12px 0 12px 22px; color: var(--ink-2); }
+  main li { margin: 6px 0; }
+  main strong { color: var(--ink); }
+
+  .toc {
+    background: var(--cream-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin: 32px 0;
+  }
+  .toc h3 {
+    margin-top: 0;
+    color: var(--navy);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+  }
+  .toc ol { margin: 12px 0 0 18px; }
+  .toc li { margin: 4px 0; }
+  .toc a { color: var(--navy); text-decoration: none; }
+  .toc a:hover { color: var(--blue); text-decoration: underline; }
+
+  table.proc {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+  table.proc th, table.proc td {
+    border: 1px solid var(--line);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  table.proc th {
+    background: var(--cream-2);
+    color: var(--navy);
+    font-weight: 600;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--navy-3);
+    color: rgba(250,247,242,0.78);
+    padding: 40px 24px;
+    text-align: center;
+    font-size: 14px;
+  }
+  footer a { color: var(--gold); text-decoration: none; margin: 0 10px; }
+  footer a:hover { color: var(--cream); text-decoration: underline; }
+  footer .copy { margin-top: 14px; color: rgba(250,247,242,0.5); font-size: 13px; }
+
+  @media (max-width: 600px) {
+    .nav-inner { padding: 14px 18px; }
+    .nav-links { gap: 14px; font-size: 13px; }
+    main { padding: 40px 20px 60px; }
+    .hero { padding: 48px 20px 44px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="/">
+      <span class="brand-dot"></span>
+      <span>walking.explorers</span>
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/beta">Beta</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Legal</div>
+    <h1>Privacy Policy</h1>
+    <div class="meta">Last updated: May 9, 2026 &middot; Effective: May 9, 2026</div>
+  </div>
+</header>
+
+<div class="disclaimer">
+  <strong>Template notice.</strong> This is a starting template. Have a Delaware-licensed attorney review before relying on for production. Termly or Iubenda offer paid services that auto-update with regulatory changes ($99-200/year).
+</div>
+
+<main>
+
+  <p>Walking Explorers, Inc. ("<strong>Walking Explorers</strong>," "<strong>we</strong>," "<strong>us</strong>," or "<strong>our</strong>") respects your privacy. This Privacy Policy explains what personal information we collect, how we use it, who we share it with, and the choices you have. It applies to walkingexplorers.com, the Walking Explorers beta web app, and any related services (collectively, the "<strong>Service</strong>").</p>
+
+  <p>By using the Service, you agree to the practices described in this Privacy Policy. If you do not agree, please do not use the Service.</p>
+
+  <div class="toc">
+    <h3>Table of Contents</h3>
+    <ol>
+      <li><a href="#info-we-collect">Information we collect</a></li>
+      <li><a href="#how-we-use">How we use information</a></li>
+      <li><a href="#legal-bases">Legal bases (EEA / UK)</a></li>
+      <li><a href="#sharing">When and how we share information</a></li>
+      <li><a href="#processors">Third-party processors</a></li>
+      <li><a href="#cookies">Cookies and tracking</a></li>
+      <li><a href="#retention">Data retention</a></li>
+      <li><a href="#security">Data security</a></li>
+      <li><a href="#rights">Your rights (GDPR &amp; CCPA)</a></li>
+      <li><a href="#children">Children</a></li>
+      <li><a href="#international">International data transfers</a></li>
+      <li><a href="#changes">Changes to this policy</a></li>
+      <li><a href="#contact">Contact us</a></li>
+    </ol>
+  </div>
+
+  <h2 id="info-we-collect">1. Information we collect</h2>
+
+  <h3>1.1 Information you provide</h3>
+  <ul>
+    <li><strong>Email address</strong> — collected when you join the waitlist, request a feature, or correspond with support. Email is not required to use most of the beta.</li>
+    <li><strong>Invite codes</strong> — single-use beta access codes you redeem to create a session.</li>
+    <li><strong>Photos</strong> — images you choose to upload from a walk (e.g., a noteworthy spot or a check-in photo). You decide when to capture and upload.</li>
+    <li><strong>Feedback and content</strong> — any text, feedback, or notes you submit through the Service.</li>
+  </ul>
+
+  <h3>1.2 Information we collect automatically</h3>
+  <ul>
+    <li><strong>GPS coordinates</strong> — collected <em>only</em> when you explicitly trigger a location capture (e.g., tap "use my location" or upload a photo with location attached). We do not run continuous background location tracking.</li>
+    <li><strong>Device and browser information</strong> — IP address, user-agent string, viewport size, and language settings, used for compatibility and security.</li>
+    <li><strong>Session cookie</strong> — a short, HMAC-signed cookie (`we_session`) issued after you redeem an invite code. It is HTTP-only and used only for authentication.</li>
+    <li><strong>Usage and event data</strong> — pages viewed, buttons clicked, errors encountered, captured via PostHog analytics in aggregate.</li>
+  </ul>
+
+  <h3>1.3 What we do <em>not</em> collect</h3>
+  <ul>
+    <li>We do not collect government IDs, payment card numbers (until paid plans launch), social security numbers, biometric identifiers, or precise health data.</li>
+    <li>We do not buy personal data from data brokers.</li>
+    <li>We do not sell or rent personal information to third parties.</li>
+  </ul>
+
+  <h2 id="how-we-use">2. How we use information</h2>
+  <p>We use the information we collect to:</p>
+  <ul>
+    <li>Operate, maintain, and improve the Service (route discovery, photo capture, walk history).</li>
+    <li>Authenticate users via signed session cookies and rate-limit abusive traffic.</li>
+    <li>Debug crashes and performance issues using device and event logs.</li>
+    <li>Aggregate anonymous analytics to understand which neighborhoods and routes users find valuable.</li>
+    <li>Communicate with you about beta updates, security notices, and (only if you opt in) product news.</li>
+    <li>Enforce our <a href="/terms.html">Terms of Service</a> and protect the rights, safety, and property of Walking Explorers and our users.</li>
+    <li>Comply with legal obligations.</li>
+  </ul>
+  <p><strong>We do not resell or license your personal data to third parties for their own marketing.</strong></p>
+
+  <h2 id="legal-bases">3. Legal bases for processing (EEA / UK users)</h2>
+  <p>If you are in the European Economic Area, the United Kingdom, or Switzerland, we process your personal data under the following GDPR legal bases:</p>
+  <ul>
+    <li><strong>Contract</strong> (Art. 6(1)(b)) — to provide the Service you signed up for.</li>
+    <li><strong>Legitimate interests</strong> (Art. 6(1)(f)) — to secure the Service, prevent fraud, and improve features.</li>
+    <li><strong>Consent</strong> (Art. 6(1)(a)) — for optional analytics cookies and marketing emails. You may withdraw consent at any time.</li>
+    <li><strong>Legal obligation</strong> (Art. 6(1)(c)) — to comply with applicable law.</li>
+  </ul>
+
+  <h2 id="sharing">4. When and how we share information</h2>
+  <p>We share personal information only in these limited cases:</p>
+  <ul>
+    <li><strong>With service providers</strong> (see Section 5) who process data on our behalf under written contracts.</li>
+    <li><strong>For legal reasons</strong> — to comply with subpoenas, court orders, or other lawful requests; to enforce our Terms; or to protect the rights, safety, or property of Walking Explorers, our users, or the public.</li>
+    <li><strong>In a corporate transaction</strong> — if Walking Explorers is involved in a merger, acquisition, financing, or sale of assets, personal data may be transferred as part of that transaction. We will notify you and your data will remain subject to this Privacy Policy unless you agree otherwise.</li>
+    <li><strong>With your consent</strong> — for any other sharing not described in this Policy.</li>
+  </ul>
+
+  <h2 id="processors">5. Third-party processors</h2>
+  <p>We use the following sub-processors. Each is bound by a data processing agreement.</p>
+  <table class="proc">
+    <thead>
+      <tr><th>Processor</th><th>Purpose</th><th>Data handled</th><th>Location</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Vercel, Inc.</td><td>Web hosting, serverless functions</td><td>Request logs, IP, content served</td><td>USA</td></tr>
+      <tr><td>Upstash, Inc.</td><td>Key-value database (Vercel KV)</td><td>Session records, invite codes, walk metadata</td><td>USA</td></tr>
+      <tr><td>Vercel Blob</td><td>Photo storage</td><td>User-uploaded photos</td><td>USA</td></tr>
+      <tr><td>PostHog Inc.</td><td>Product analytics</td><td>Anonymized event data, IP (truncated)</td><td>USA / EU</td></tr>
+      <tr><td>Google LLC (Fonts)</td><td>Web fonts CDN — being migrated to self-hosted</td><td>IP, user-agent</td><td>Global</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="cookies">6. Cookies and tracking</h2>
+  <p>We use a small number of cookies and similar technologies:</p>
+  <ul>
+    <li><strong>`we_session`</strong> — strictly necessary. HMAC-signed, HTTP-only cookie that authenticates beta users. Without it, the app cannot function.</li>
+    <li><strong>`we_admin`</strong> — strictly necessary. Issued only to administrators of Walking Explorers.</li>
+    <li><strong>PostHog analytics</strong> — first-party cookie used to measure feature usage. You can opt out via your browser's "Do Not Track" signal or by emailing us at the address below. We do not use third-party advertising cookies.</li>
+  </ul>
+  <p>Most browsers let you refuse or delete cookies through settings. Disabling strictly-necessary cookies will break login and core app functionality.</p>
+
+  <h2 id="retention">7. Data retention</h2>
+  <ul>
+    <li><strong>Account data</strong> — retained indefinitely while your account is active.</li>
+    <li><strong>Photos and walk history</strong> — retained while your account is active. Deleted on request within 30 days.</li>
+    <li><strong>Session cookies</strong> — expire automatically after 30 days of inactivity.</li>
+    <li><strong>Server access logs</strong> — retained for up to 90 days for security and debugging.</li>
+    <li><strong>Backups</strong> — encrypted backups may persist for up to 35 days after deletion of live data, then permanently overwritten.</li>
+  </ul>
+  <p>You can request deletion at any time by emailing <a href="mailto:privacy@walkingexplorers.com">privacy@walkingexplorers.com</a>. We will complete deletion within 30 days, except where we are legally required to retain certain data.</p>
+
+  <h2 id="security">8. Data security</h2>
+  <p>We use reasonable technical and organizational measures designed to protect your information, including:</p>
+  <ul>
+    <li>HTTPS / TLS encryption for all traffic.</li>
+    <li>HMAC-signed, HTTP-only session cookies.</li>
+    <li>Rate limiting on authentication endpoints.</li>
+    <li>Audit logs of administrative actions.</li>
+    <li>Principle-of-least-privilege access for staff (currently a sole founder + reviewed contractors).</li>
+    <li>Encrypted storage at rest with our hosting and KV providers.</li>
+  </ul>
+  <p>No system is perfectly secure. If we become aware of a security breach affecting your personal information, we will notify you and applicable regulators as required by law.</p>
+
+  <h2 id="rights">9. Your rights</h2>
+
+  <h3>9.1 EEA / UK rights (GDPR Articles 15-22)</h3>
+  <p>If you are in the EEA, UK, or Switzerland you have the right to:</p>
+  <ul>
+    <li><strong>Access</strong> — request a copy of the personal data we hold about you (Art. 15).</li>
+    <li><strong>Rectification</strong> — request correction of inaccurate data (Art. 16).</li>
+    <li><strong>Erasure</strong> — request deletion of your data ("right to be forgotten") (Art. 17).</li>
+    <li><strong>Restriction</strong> — request that we limit how we process your data (Art. 18).</li>
+    <li><strong>Portability</strong> — receive your data in a structured, commonly used format (Art. 20).</li>
+    <li><strong>Object</strong> — object to processing based on legitimate interests (Art. 21).</li>
+    <li><strong>Withdraw consent</strong> — at any time, where processing is based on consent.</li>
+    <li><strong>Lodge a complaint</strong> — with your local data protection authority.</li>
+  </ul>
+
+  <h3>9.2 California rights (CCPA / CPRA)</h3>
+  <p>California residents have the right to:</p>
+  <ul>
+    <li>Know what personal information we collect, use, disclose, and (if applicable) sell.</li>
+    <li>Request deletion of personal information.</li>
+    <li>Correct inaccurate personal information.</li>
+    <li>Opt out of "sale" or "sharing" of personal information &mdash; we do not sell or share personal information as those terms are defined.</li>
+    <li>Limit use of sensitive personal information.</li>
+    <li>Be free from discrimination for exercising these rights.</li>
+  </ul>
+
+  <h3>9.3 How to exercise your rights</h3>
+  <p>Email <a href="mailto:privacy@walkingexplorers.com">privacy@walkingexplorers.com</a> with the subject line "Privacy Request." We may need to verify your identity before fulfilling the request. We aim to respond within 30 days (45 days for CCPA requests with a possible 45-day extension as permitted by law).</p>
+
+  <h2 id="children">10. Children</h2>
+  <p>The Service is not directed to children under 13 and we do not knowingly collect personal information from children under 13. If you believe we have collected information from a child under 13, please contact <a href="mailto:privacy@walkingexplorers.com">privacy@walkingexplorers.com</a> and we will delete it promptly. The Service is intended for users 13 and older; users between 13 and 18 must have permission from a parent or legal guardian.</p>
+
+  <h2 id="international">11. International data transfers</h2>
+  <p>Walking Explorers is incorporated in the State of Delaware, USA. Personal data is primarily processed on servers located in the United States. If you access the Service from outside the U.S., your information will be transferred to and processed in the United States. Where required, we rely on Standard Contractual Clauses or other lawful transfer mechanisms.</p>
+
+  <h2 id="changes">12. Changes to this policy</h2>
+  <p>We may update this Privacy Policy from time to time. Material changes will be communicated via the Service or by email at least 30 days before they take effect. The "Last updated" date at the top reflects the most recent revision. Continued use of the Service after the effective date constitutes acceptance of the revised policy.</p>
+
+  <h2 id="contact">13. Contact us</h2>
+  <p>For privacy questions, requests, or complaints:</p>
+  <ul>
+    <li><strong>Email:</strong> <a href="mailto:privacy@walkingexplorers.com">privacy@walkingexplorers.com</a></li>
+    <li><strong>Mail:</strong> Walking Explorers, Inc. (Delaware, USA &mdash; mailing address provided on request)</li>
+  </ul>
+
+  <p style="margin-top: 28px; font-size: 13px; color: var(--mute);">This Privacy Policy is governed by the laws of the State of Delaware, USA, without regard to its conflict-of-law principles.</p>
+
+</main>
+
+<footer>
+  <div>
+    <a href="/">Home</a>
+    <a href="/beta">Beta</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/terms.html">Terms</a>
+    <a href="mailto:hello@walkingexplorers.com">Contact</a>
+  </div>
+  <div class="copy">&copy; 2026 Walking Explorers, Inc. &middot; Made with care in NYC.</div>
+</footer>
+
+</body>
+</html>
