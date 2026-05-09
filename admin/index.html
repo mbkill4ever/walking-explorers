@@ -102,10 +102,12 @@ code, .mono { font-family:'JetBrains Mono', ui-monospace, monospace; }
 .btn-danger { background:rgba(220,38,38,0.10); color:var(--love); border:1px solid rgba(220,38,38,0.20); }
 .btn:disabled { opacity:0.4; cursor:not-allowed; }
 
+/* All inputs/selects/textareas at >=16px to prevent iOS zoom-on-focus. */
 .input, select.input, textarea.input { padding:11px 14px; border-radius:10px; border:1.5px solid var(--line); background:white;
   font:inherit; font-size:16px; color:var(--ink); }
 .input:focus { outline:0; border-color:var(--navy); }
 textarea.input { width:100%; resize:vertical; min-height:80px; line-height:1.45; }
+input, select, textarea { font-size:16px; }
 
 table { width:100%; border-collapse:collapse; font-size:13.5px; }
 table th { text-align:left; padding:10px 14px; background:var(--cream); color:var(--mute);
@@ -129,6 +131,7 @@ table tr.clickable { cursor:pointer; }
 .pill.cohort { background:rgba(46,117,182,0.10); color:var(--navy); }
 .pill.priority-info { background:rgba(46,117,182,0.10); color:var(--navy); }
 .pill.priority-warn { background:rgba(180,83,9,0.12); color:var(--warn); }
+.pill.banned { background:rgba(220,38,38,0.12); color:var(--love); }
 
 .tokens-row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:14px; }
 .tokens-row label { font-size:11px; font-weight:700; color:var(--mute); letter-spacing:0.06em; text-transform:uppercase; }
@@ -140,8 +143,11 @@ table tr.clickable { cursor:pointer; }
 .fb-card-mod .head .type { font-weight:700; color:var(--navy); }
 .fb-card-mod h4 { font-size:14.5px; font-weight:700; margin:2px 0 6px; word-break:break-word; }
 .fb-card-mod p { font-size:13px; color:var(--ink-2); margin:0 0 10px; line-height:1.45; word-break:break-word; white-space:pre-wrap; }
-.fb-card-mod .actions { display:flex; gap:6px; flex-wrap:wrap; }
-.fb-card-mod select { font-size:12px; padding:6px 10px; border-radius:8px; border:1px solid var(--line); background:white; }
+.fb-card-mod .actions { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.fb-card-mod select { font-size:16px; padding:8px 10px; border-radius:8px; border:1px solid var(--line); background:white; }
+.fb-card-mod label.changelog-toggle { display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--ink-2); cursor:pointer; }
+.fb-card-mod label.changelog-toggle input[type=checkbox] { width:16px; height:16px; cursor:pointer; }
+.fb-card-mod .changelog-published { font-size:11.5px; color:var(--good); font-weight:700; letter-spacing:0.04em; text-transform:uppercase; }
 
 /* Announcement banner editor */
 .ann-row { display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap; }
@@ -175,7 +181,7 @@ table tr.clickable { cursor:pointer; }
 /* Command palette / shortcut help */
 .modal-back { position:fixed; inset:0; background:rgba(14,19,32,0.50); z-index:100; display:none; align-items:flex-start; justify-content:center; padding-top:14vh; }
 .modal-back.show { display:flex; }
-.modal { background:white; width:min(560px, 92vw); border-radius:16px; box-shadow:var(--shadow-3); overflow:hidden; }
+.modal { background:white; width:min(560px, 92vw); border-radius:16px; box-shadow:var(--shadow-3); overflow:hidden; position:relative; }
 .modal .palette-input { width:100%; padding:18px 22px; border:0; font:inherit; font-size:16px; border-bottom:1px solid var(--line); outline:0; background:white; }
 .modal .palette-list { max-height:300px; overflow-y:auto; }
 .modal .palette-list button { width:100%; text-align:left; background:white; border:0; cursor:pointer;
@@ -183,6 +189,7 @@ table tr.clickable { cursor:pointer; }
 .modal .palette-list button:last-child { border-bottom:0; }
 .modal .palette-list button:hover, .modal .palette-list button.focused { background:var(--cream); }
 .modal .palette-list .kbd { font-size:11px; color:var(--mute); font-family:'JetBrains Mono', monospace; }
+.modal .palette-list .group-label { font-size:10px; color:var(--mute); letter-spacing:0.08em; text-transform:uppercase; padding:8px 22px 4px; background:#FBF8F1; border-bottom:1px solid var(--line); }
 .modal .help-body { padding:22px; }
 .modal .help-body h3 { font-size:17px; font-weight:800; margin-bottom:14px; }
 .modal .help-body dl { display:grid; grid-template-columns:max-content 1fr; gap:10px 18px; font-size:13.5px; }
@@ -195,6 +202,15 @@ table tr.clickable { cursor:pointer; }
   display:none; }
 .kbd-toast.show { display:block; }
 
+/* Audit log list */
+.audit-row { display:grid; grid-template-columns:140px 160px 1fr; gap:12px; padding:10px 14px;
+  border-bottom:1px solid var(--line); font-size:13px; align-items:start; }
+.audit-row:last-child { border-bottom:0; }
+.audit-row .ts { color:var(--mute); font-family:'JetBrains Mono', monospace; font-size:12px; white-space:nowrap; }
+.audit-row .action { font-weight:700; color:var(--navy); font-family:'JetBrains Mono', monospace; font-size:12px; }
+.audit-row .detail { color:var(--ink-2); word-break:break-word; }
+.audit-row .actor { color:var(--mute); font-size:12px; margin-top:2px; }
+
 @media (max-width: 720px) {
   .shell { flex-direction:column; }
   .sidebar { width:100%; height:auto; position:static; flex-direction:row; align-items:center;
@@ -204,6 +220,7 @@ table tr.clickable { cursor:pointer; }
   .sidebar nav button { padding:8px 12px; font-size:13px; }
   .sidebar nav button .kbd { display:none; }
   .main { padding:20px; }
+  .audit-row { grid-template-columns:1fr; gap:4px; }
 }
 </style>
 </head>
@@ -217,7 +234,7 @@ table tr.clickable { cursor:pointer; }
     <p class="lede">Enter the admin password to manage tokens, users, and feedback.</p>
     <label for="adminPw">Admin password</label>
     <input type="password" id="adminPw" autocomplete="current-password" placeholder="Admin password" aria-label="Admin password" />
-    <button id="loginBtn" type="submit">Sign in</button>
+    <button id="loginBtn" type="submit" aria-label="Sign in">Sign in</button>
     <div class="msg" id="loginMsg" role="alert"></div>
   </form>
 </div>
@@ -228,18 +245,19 @@ table tr.clickable { cursor:pointer; }
     <div class="brand">walking<span class="dot">.</span>explorers</div>
     <div class="label">Admin</div>
     <nav id="sideNav" aria-label="Admin navigation">
-      <button class="active" data-page="overview"><span>Overview</span><span class="kbd">g o</span></button>
-      <button data-page="tokens"><span>Tokens</span><span class="kbd">g t</span></button>
-      <button data-page="users"><span>Users</span><span class="kbd">g u</span></button>
-      <button data-page="routes"><span>Routes</span><span class="kbd">g r</span></button>
-      <button data-page="feedback"><span>Feedback</span><span class="kbd">g f</span></button>
-      <button data-page="promotions"><span>Promotions</span></button>
-      <button data-page="operations"><span>Operations</span></button>
+      <button class="active" data-page="overview" aria-label="Overview"><span>Overview</span><span class="kbd" aria-hidden="true">g o</span></button>
+      <button data-page="tokens" aria-label="Tokens"><span>Tokens</span><span class="kbd" aria-hidden="true">g t</span></button>
+      <button data-page="users" aria-label="Users"><span>Users</span><span class="kbd" aria-hidden="true">g u</span></button>
+      <button data-page="routes" aria-label="Routes"><span>Routes</span><span class="kbd" aria-hidden="true">g r</span></button>
+      <button data-page="feedback" aria-label="Feedback"><span>Feedback</span><span class="kbd" aria-hidden="true">g f</span></button>
+      <button data-page="audit" aria-label="Audit log"><span>Audit</span><span class="kbd" aria-hidden="true">g a</span></button>
+      <button data-page="promotions" aria-label="Promotions"><span>Promotions</span></button>
+      <button data-page="operations" aria-label="Operations"><span>Operations</span></button>
     </nav>
     <div class="foot">
       Logged in as admin
-      <br><button onclick="Admin.signOut()" type="button">Sign out</button>
-      <div class="hint"><kbd>?</kbd> shortcuts · <kbd>⌘</kbd>+<kbd>K</kbd> palette</div>
+      <br><button onclick="Admin.signOut()" type="button" aria-label="Sign out">Sign out</button>
+      <div class="hint"><kbd>?</kbd> shortcuts &middot; <kbd>&#8984;</kbd>+<kbd>K</kbd> palette</div>
     </div>
   </aside>
 
@@ -251,7 +269,7 @@ table tr.clickable { cursor:pointer; }
       <div class="stats" id="statsRow"></div>
       <div class="section">
         <h3>Engagement</h3>
-        <p class="sub">Active users and retention. Empty cells (—) mean the auth-event log isn't populated yet.</p>
+        <p class="sub">Active users and retention. Empty cells (&mdash;) mean the auth-event log isn&apos;t populated yet.</p>
         <div class="stats" id="engagementRow"></div>
       </div>
       <div class="section">
@@ -264,7 +282,7 @@ table tr.clickable { cursor:pointer; }
             <option value="info">info</option>
             <option value="warn">warn</option>
           </select>
-          <button class="btn btn-accent" type="button" onclick="Admin.pushAnnouncement()">Push</button>
+          <button class="btn btn-accent" type="button" onclick="Admin.pushAnnouncement()" aria-label="Push announcement">Push</button>
         </div>
       </div>
       <div class="section">
@@ -280,7 +298,7 @@ table tr.clickable { cursor:pointer; }
       <p class="sub">Generate single-use codes. Distribute them to beta candidates.</p>
       <div class="section">
         <h3>Generate new tokens</h3>
-        <p class="sub">Each token is a 22-char base64url string, single-use, claims into a unique user.</p>
+        <p class="sub">Each token is a 22-char base64url string, single-use, claims into a unique user. Press <kbd>n</kbd> on this tab to focus the count input.</p>
         <div class="tokens-row">
           <label for="genCount">Count</label>
           <input class="input" type="number" id="genCount" value="5" min="1" max="100" style="width:80px;" aria-label="Token count">
@@ -297,17 +315,17 @@ table tr.clickable { cursor:pointer; }
             <option value="investors">investors</option>
             <option value="press">press</option>
             <option value="waitlist">waitlist</option>
-            <option value="custom">custom…</option>
+            <option value="custom">custom&hellip;</option>
           </select>
           <input class="input" type="text" id="genCohortCustom" placeholder="custom cohort label" style="display:none;width:160px;" aria-label="Custom cohort label">
           <input class="input" type="text" id="genNote" placeholder="Optional note (e.g. Tim Ferriss)" style="flex:1;min-width:160px;" aria-label="Token note">
-          <button class="btn btn-accent" type="button" onclick="Admin.generateTokens()">Generate</button>
+          <button class="btn btn-accent" type="button" onclick="Admin.generateTokens()" aria-label="Generate tokens">Generate</button>
         </div>
         <div id="justGenerated" style="display:none;"></div>
       </div>
       <div class="section">
         <h3>All tokens</h3>
-        <p class="sub" id="tokensSub">—</p>
+        <p class="sub" id="tokensSub">&mdash;</p>
         <div style="overflow-x:auto;"><table id="tokensTable"></table></div>
       </div>
     </section>
@@ -317,6 +335,13 @@ table tr.clickable { cursor:pointer; }
       <h2>Users</h2>
       <p class="sub">Beta users who have claimed a token. Click a row for full activity.</p>
       <div class="section">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px;">
+          <label for="userCohortFilter" style="font-size:11px;font-weight:700;color:var(--mute);letter-spacing:0.06em;text-transform:uppercase;">Cohort</label>
+          <select class="input" id="userCohortFilter" aria-label="Filter by cohort" onchange="Admin.setUserCohortFilter(this.value)">
+            <option value="all">All</option>
+          </select>
+          <input class="input" type="search" id="userSearch" placeholder="Search by id or email" aria-label="Search users" oninput="Admin.renderUsers()" style="flex:1;min-width:200px;">
+        </div>
         <div style="overflow-x:auto;"><table id="usersTable"></table></div>
       </div>
     </section>
@@ -324,7 +349,7 @@ table tr.clickable { cursor:pointer; }
     <!-- Routes -->
     <section data-page="routes" class="page" hidden>
       <h2>Routes</h2>
-      <p class="sub">Aggregated stats per route from the loop log. Click a column header to sort.</p>
+      <p class="sub">Per-route completion rate, drop-off stop, and most-photographed stop. Click a column header to sort.</p>
       <div class="section">
         <div style="overflow-x:auto;"><table id="routesTable"></table></div>
       </div>
@@ -333,16 +358,25 @@ table tr.clickable { cursor:pointer; }
     <!-- Feedback -->
     <section data-page="feedback" class="page" hidden>
       <h2>Feedback</h2>
-      <p class="sub">Bug reports, feature requests, ratings, and neighborhood requests.</p>
+      <p class="sub">Bug reports, feature requests, ratings, and neighborhood requests. All user content is escaped before render.</p>
       <div class="section">
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;" id="fbFilters">
-          <button class="btn btn-outline" data-fbfilter="all" type="button">All</button>
-          <button class="btn btn-outline" data-fbfilter="feature" type="button">Features</button>
-          <button class="btn btn-outline" data-fbfilter="bug" type="button">Bugs</button>
-          <button class="btn btn-outline" data-fbfilter="rating" type="button">Ratings</button>
-          <button class="btn btn-outline" data-fbfilter="neighborhood" type="button">Neighborhoods</button>
+          <button class="btn btn-outline" data-fbfilter="all" type="button" aria-label="All feedback">All</button>
+          <button class="btn btn-outline" data-fbfilter="feature" type="button" aria-label="Feature requests">Features</button>
+          <button class="btn btn-outline" data-fbfilter="bug" type="button" aria-label="Bug reports">Bugs</button>
+          <button class="btn btn-outline" data-fbfilter="rating" type="button" aria-label="Ratings">Ratings</button>
+          <button class="btn btn-outline" data-fbfilter="neighborhood" type="button" aria-label="Neighborhood requests">Neighborhoods</button>
         </div>
         <div id="fbModList"></div>
+      </div>
+    </section>
+
+    <!-- Audit -->
+    <section data-page="audit" class="page" hidden>
+      <h2>Audit log</h2>
+      <p class="sub">Every admin write action is logged here. Showing the last 200 entries.</p>
+      <div class="section">
+        <div id="auditList"></div>
       </div>
     </section>
 
@@ -358,7 +392,7 @@ table tr.clickable { cursor:pointer; }
     <!-- Operations -->
     <section data-page="operations" class="page" hidden>
       <h2>Operations</h2>
-      <p class="sub">Live infrastructure health. Counters with no value yet show as —.</p>
+      <p class="sub">Live infrastructure health. Counters with no value yet show as &mdash;.</p>
       <div class="stats" id="opsRow"></div>
       <div class="section">
         <h3>What this is reading</h3>
@@ -373,7 +407,7 @@ table tr.clickable { cursor:pointer; }
 <aside class="side-panel" id="userPanel" role="dialog" aria-modal="true" aria-labelledby="userPanelTitle" aria-hidden="true">
   <div class="head">
     <h3 id="userPanelTitle">User</h3>
-    <button class="close-btn" type="button" onclick="Admin.closeUserPanel()" aria-label="Close">×</button>
+    <button class="close-btn" type="button" onclick="Admin.closeUserPanel()" aria-label="Close user panel">&times;</button>
   </div>
   <div class="body" id="userPanelBody"></div>
 </aside>
@@ -382,7 +416,7 @@ table tr.clickable { cursor:pointer; }
 <div class="modal-back" id="paletteBack" onclick="if(event.target===this)Admin.closePalette()">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="paletteLabel">
     <span id="paletteLabel" style="position:absolute;left:-9999px;">Command palette</span>
-    <input class="palette-input" id="paletteInput" placeholder="Type to navigate…" aria-label="Search admin">
+    <input class="palette-input" id="paletteInput" placeholder="Type to search users by email, tokens by code, or jump to a tab&hellip;" aria-label="Search admin">
     <div class="palette-list" id="paletteList"></div>
   </div>
 </div>
@@ -398,7 +432,9 @@ table tr.clickable { cursor:pointer; }
         <dt><kbd>g</kbd> <kbd>u</kbd></dt><dd>Go to Users</dd>
         <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Go to Routes</dd>
         <dt><kbd>g</kbd> <kbd>f</kbd></dt><dd>Go to Feedback</dd>
-        <dt><kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>K</kbd></dt><dd>Command palette</dd>
+        <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>Go to Audit log</dd>
+        <dt><kbd>n</kbd></dt><dd>(on Tokens) focus the count input</dd>
+        <dt><kbd>&#8984;</kbd>/<kbd>Ctrl</kbd>+<kbd>K</kbd></dt><dd>Command palette / search</dd>
         <dt><kbd>?</kbd></dt><dd>Show this help</dd>
         <dt><kbd>Esc</kbd></dt><dd>Close any modal / panel</dd>
       </dl>
@@ -429,6 +465,7 @@ function esc(v) {
 function escAttr(v) { return esc(v).replace(/\\/g, '\\\\'); }
 function escJs(v) { return String(v == null ? '' : v).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/</g, '\\u003c'); }
 function fmtDate(ts) { if (!ts) return '—'; try { return new Date(ts).toLocaleDateString(undefined, { month:'short', day:'numeric' }); } catch { return '—'; } }
+function fmtDateTime(ts) { if (!ts) return '—'; try { return new Date(ts).toLocaleString(undefined, { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' }); } catch { return '—'; } }
 function fmtRelative(ts) {
   if (!ts) return '—';
   const diff = Date.now() - new Date(ts).getTime();
@@ -454,7 +491,8 @@ function fmtBytes(v) {
   return (v/1024/1024/1024).toFixed(2) + ' GB';
 }
 
-async function api(path, opts = {}) {
+async function api(path, opts) {
+  opts = opts || {};
   opts.credentials = 'same-origin';
   opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
   const r = await fetch(path, opts);
@@ -463,14 +501,19 @@ async function api(path, opts = {}) {
   return data;
 }
 
-const PAGES = ['overview', 'tokens', 'users', 'routes', 'feedback', 'promotions', 'operations'];
-const SHORTCUT_PAGES = { o: 'overview', t: 'tokens', u: 'users', r: 'routes', f: 'feedback' };
+const PAGES = ['overview', 'tokens', 'users', 'routes', 'feedback', 'audit', 'promotions', 'operations'];
+const SHORTCUT_PAGES = { o: 'overview', t: 'tokens', u: 'users', r: 'routes', f: 'feedback', a: 'audit' };
 
 const Admin = {
   page: 'overview',
   fbFilter: 'all',
   routeSort: { col: 'completionRate', dir: 'desc' },
-  data: { stats:null, tokens:[], users:[], feedback:[], routes:[], promotions:[], ops:null, announcement:null },
+  userCohort: 'all',
+  data: { stats:null, tokens:[], users:[], feedback:[], routes:[], promotions:[], ops:null, announcement:null, audit:[] },
+  // We track the "ship to changelog" intent per-card on the feedback list, so
+  // changing the status select to 'shipped' triggers an immediate publish if
+  // the operator pre-checked the box.
+  fbChangelogChecks: {},
 
   async init() {
     try {
@@ -524,6 +567,7 @@ const Admin = {
     if (page === 'users') this.loadUsers();
     if (page === 'routes') this.loadRoutes();
     if (page === 'feedback') this.loadFeedback();
+    if (page === 'audit') this.loadAudit();
     if (page === 'promotions') this.loadPromotions();
     if (page === 'operations') this.loadOperations();
   },
@@ -555,7 +599,7 @@ const Admin = {
         { lab:'DAU (last 24h)', num: dauVal, hint: 'Distinct users with an auth event' },
         { lab:'WAU (last 7d)',  num: wauVal, hint: 'Distinct users with an auth event' },
         { lab:'Retention W2',   num: eng.retentionW2 == null ? null : fmtPct(eng.retentionW2), hint: 'Joined 14–21d ago who logged in last 7d' },
-        { lab:'Time to first spot (median)', num: fmtDuration(eng.medianTimeToFirstSpotMs), hint: 'Activation latency' },
+        { lab:'Time to first spot (median)', num: eng.medianTimeToFirstSpotMs == null ? null : fmtDuration(eng.medianTimeToFirstSpotMs), hint: 'Activation latency' },
         { lab:'Churn signals',  num: eng.churnSignals == null ? null : eng.churnSignals, hint: 'Users inactive >7d' }
       ];
       document.getElementById('engagementRow').innerHTML = engCards.map(c => {
@@ -601,7 +645,7 @@ const Admin = {
       '<span class="pill priority-' + cls + '">' + esc(a.priority || 'info') + '</span>' +
       '<span class="text">' + esc(a.text) + '</span>' +
       '<span style="font-size:11.5px;color:var(--mute);">' + esc(expires) + '</span>' +
-      '<button class="btn btn-outline" type="button" onclick="Admin.clearAnnouncement()">Clear</button>' +
+      '<button class="btn btn-outline" type="button" onclick="Admin.clearAnnouncement()" aria-label="Clear announcement">Clear</button>' +
     '</div>';
   },
   async pushAnnouncement() {
@@ -630,6 +674,10 @@ const Admin = {
   onCohortChange(v) {
     document.getElementById('genCohortCustom').style.display = v === 'custom' ? '' : 'none';
   },
+  focusGenCount() {
+    const el = document.getElementById('genCount');
+    if (el) { el.focus(); el.select && el.select(); }
+  },
   async loadTokens() {
     try {
       const r = await api('/api/admin/tokens');
@@ -642,14 +690,15 @@ const Admin = {
             const date = fmtDate(t.createdAt);
             const claimed = t.claimedAt ? fmtDate(t.claimedAt) : '—';
             const cohortPill = t.cohort ? '<span class="pill cohort">' + esc(t.cohort) + '</span>' : '<span style="color:var(--mute-2);">—</span>';
-            return '<tr><td class="code-cell">' + esc(t.code) + ' <button class="btn btn-outline" type="button" style="padding:4px 8px;font-size:11px;margin-left:6px;" onclick="Admin.copy(\'' + escJs(t.code) + '\')">Copy</button></td>' +
+            const codeEsc = escJs(t.code);
+            return '<tr><td class="code-cell">' + esc(t.code) + ' <button class="btn btn-outline" type="button" style="padding:4px 8px;font-size:11px;margin-left:6px;" onclick="Admin.copy(\'' + codeEsc + '\')" aria-label="Copy token code ' + esc(t.code) + '">Copy</button></td>' +
               '<td><span class="pill ' + esc(t.status) + '">' + esc(t.status) + '</span></td>' +
               '<td>' + esc(t.tier || 'beta') + '</td>' +
               '<td>' + cohortPill + '</td>' +
-              '<td>' + esc(date) + ' → ' + esc(claimed) + '</td>' +
-              '<td><button class="btn btn-danger" type="button" onclick="Admin.revokeToken(\'' + escJs(t.code) + '\')" ' + (t.status !== 'unused' ? 'disabled style="opacity:0.4;"' : '') + '>Revoke</button></td></tr>';
+              '<td>' + esc(date) + ' &rarr; ' + esc(claimed) + '</td>' +
+              '<td><button class="btn btn-danger" type="button" onclick="Admin.revokeToken(\'' + codeEsc + '\')" ' + (t.status !== 'unused' ? 'disabled style="opacity:0.4;"' : '') + ' aria-label="Revoke token ' + esc(t.code) + '">Revoke</button></td></tr>';
           }).join('');
-      document.getElementById('tokensTable').innerHTML = '<thead><tr><th>Code</th><th>Status</th><th>Tier</th><th>Cohort</th><th>Created → Claimed</th><th></th></tr></thead><tbody>' + rows + '</tbody>';
+      document.getElementById('tokensTable').innerHTML = '<thead><tr><th>Code</th><th>Status</th><th>Tier</th><th>Cohort</th><th>Created &rarr; Claimed</th><th></th></tr></thead><tbody>' + rows + '</tbody>';
     } catch (e) {
       document.getElementById('tokensTable').innerHTML = '<tr><td class="empty">Failed to load tokens.</td></tr>';
     }
@@ -668,9 +717,9 @@ const Admin = {
       const codes = (r.tokens || []).map(t => t.code);
       const html = '<div class="section" style="background:rgba(224,179,65,0.10);border-color:rgba(224,179,65,0.30);margin-top:14px;">' +
         '<h3 style="color:var(--gold-dark);">' + codes.length + ' new token' + (codes.length === 1 ? '' : 's') + ' generated</h3>' +
-        '<p class="sub">Copy these now — they\'re also visible in the table below.</p>' +
+        '<p class="sub">Copy these now — they&apos;re also visible in the table below.</p>' +
         '<div style="display:grid;gap:6px;font-family:monospace;font-size:12px;">' +
-        codes.map(c => '<div style="display:flex;gap:8px;align-items:center;"><code style="flex:1;background:white;padding:6px 10px;border-radius:6px;">' + esc(c) + '</code><button class="btn btn-outline" type="button" style="padding:6px 10px;font-size:11px;" onclick="Admin.copy(\'' + escJs(c) + '\')">Copy</button></div>').join('') +
+        codes.map(c => '<div style="display:flex;gap:8px;align-items:center;"><code style="flex:1;background:white;padding:6px 10px;border-radius:6px;">' + esc(c) + '</code><button class="btn btn-outline" type="button" style="padding:6px 10px;font-size:11px;" onclick="Admin.copy(\'' + escJs(c) + '\')" aria-label="Copy token ' + esc(c) + '">Copy</button></div>').join('') +
         '</div></div>';
       document.getElementById('justGenerated').innerHTML = html;
       document.getElementById('justGenerated').style.display = '';
@@ -692,45 +741,78 @@ const Admin = {
   },
 
   // ===== Users =====
+  setUserCohortFilter(v) { this.userCohort = v || 'all'; this.renderUsers(); },
   async loadUsers() {
     try {
       const r = await api('/api/admin/users');
       this.data.users = r.users || [];
-      const rows = this.data.users.length === 0
-        ? '<tr><td colspan="7" class="empty">No users yet. Generate tokens first, then share them.</td></tr>'
-        : this.data.users.map((u, idx) => {
-            const joined = u.createdAt ? new Date(u.createdAt).toLocaleString() : '—';
-            const last = u.lastSeen ? fmtRelative(u.lastSeen) : '—';
-            return '<tr class="clickable" data-uidx="' + idx + '">' +
-              '<td class="code-cell">' + esc(u.id) + '</td>' +
-              '<td>' + esc(u.planTier || u.tier || 'free') + '</td>' +
-              '<td>' + esc(joined) + '</td>' +
-              '<td>' + esc(last) + '</td>' +
-              '<td>' + esc(u.totalLoops != null ? u.totalLoops : 0) + '</td>' +
-              '<td>' + esc(u.totalSpots != null ? u.totalSpots : 0) + '</td>' +
-              '<td>' + esc(u.totalFeedback != null ? u.totalFeedback : 0) + '</td>' +
-            '</tr>';
-          }).join('');
-      const t = document.getElementById('usersTable');
-      t.innerHTML = '<thead><tr><th>User ID</th><th>Plan</th><th>Joined</th><th>Last seen</th><th>Loops</th><th>Spots</th><th>Feedback</th></tr></thead><tbody>' + rows + '</tbody>';
-      t.querySelectorAll('tr.clickable').forEach(tr => {
-        tr.addEventListener('click', () => {
-          const idx = Number(tr.getAttribute('data-uidx'));
-          if (!Number.isNaN(idx)) Admin.openUserPanel(idx);
-        });
-      });
+      // Populate cohort filter dropdown.
+      const cohorts = Array.from(new Set(this.data.users.map(u => u.cohort).filter(Boolean))).sort();
+      const sel = document.getElementById('userCohortFilter');
+      const cur = sel.value || 'all';
+      sel.innerHTML = '<option value="all">All</option><option value="__none__">(no cohort)</option>' +
+        cohorts.map(c => '<option value="' + esc(c) + '">' + esc(c) + '</option>').join('');
+      sel.value = cur;
+      this.renderUsers();
     } catch {
       document.getElementById('usersTable').innerHTML = '<tr><td>Failed to load users.</td></tr>';
     }
+  },
+  renderUsers() {
+    const q = (document.getElementById('userSearch') && document.getElementById('userSearch').value || '').trim().toLowerCase();
+    const filter = this.userCohort || 'all';
+    const filtered = this.data.users.filter(u => {
+      if (filter === '__none__' && u.cohort) return false;
+      if (filter !== 'all' && filter !== '__none__' && u.cohort !== filter) return false;
+      if (q) {
+        const haystack = ((u.id || '') + ' ' + (u.email || '') + ' ' + (u.name || '')).toLowerCase();
+        if (haystack.indexOf(q) === -1) return false;
+      }
+      return true;
+    });
+    const rows = filtered.length === 0
+      ? '<tr><td colspan="8" class="empty">No users match. Generate tokens first, then share them.</td></tr>'
+      : filtered.map((u, idx) => {
+          const joined = u.createdAt ? new Date(u.createdAt).toLocaleString() : '—';
+          const last = u.lastSeen ? fmtRelative(u.lastSeen) : '—';
+          const cohortCell = u.cohort ? '<span class="pill cohort">' + esc(u.cohort) + '</span>' : '<span style="color:var(--mute-2);">—</span>';
+          const planCell = u.banned
+            ? '<span class="pill banned">banned</span>'
+            : esc(u.planTier || u.tier || 'free');
+          // Find original index so we can open the panel for the right user.
+          const origIdx = this.data.users.indexOf(u);
+          return '<tr class="clickable" data-uidx="' + origIdx + '">' +
+            '<td class="code-cell">' + esc(u.id) + '</td>' +
+            '<td>' + planCell + '</td>' +
+            '<td>' + cohortCell + '</td>' +
+            '<td>' + esc(joined) + '</td>' +
+            '<td>' + esc(last) + '</td>' +
+            '<td>' + esc(u.totalLoops != null ? u.totalLoops : 0) + '</td>' +
+            '<td>' + esc(u.totalSpots != null ? u.totalSpots : 0) + '</td>' +
+            '<td>' + esc(u.totalFeedback != null ? u.totalFeedback : 0) + '</td>' +
+          '</tr>';
+        }).join('');
+    const t = document.getElementById('usersTable');
+    t.innerHTML = '<thead><tr><th>User ID</th><th>Plan</th><th>Cohort</th><th>Joined</th><th>Last seen</th><th>Loops</th><th>Spots</th><th>Feedback</th></tr></thead><tbody>' + rows + '</tbody>';
+    t.querySelectorAll('tr.clickable').forEach(tr => {
+      tr.addEventListener('click', () => {
+        const idx = Number(tr.getAttribute('data-uidx'));
+        if (!Number.isNaN(idx)) Admin.openUserPanel(idx);
+      });
+    });
   },
   openUserPanel(idx) {
     const u = this.data.users[idx];
     if (!u) return;
     document.getElementById('userPanelTitle').textContent = u.id;
+    const banBtn = u.banned
+      ? '<button class="btn btn-outline" type="button" onclick="Admin.banUser(\'' + escJs(u.id) + '\', \'unban\')" aria-label="Unban user">Unban</button>'
+      : '<button class="btn btn-danger" type="button" onclick="Admin.banUser(\'' + escJs(u.id) + '\', \'ban\')" aria-label="Ban user">Ban user</button>';
     const html =
       '<dl>' +
         '<dt>User ID</dt><dd class="code-cell">' + esc(u.id) + '</dd>' +
-        '<dt>Plan</dt><dd>' + esc(u.planTier || u.tier || 'free') + '</dd>' +
+        '<dt>Plan</dt><dd>' + esc(u.planTier || u.tier || 'free') + (u.banned ? ' <span class="pill banned">banned</span>' : '') + '</dd>' +
+        '<dt>Cohort</dt><dd>' + (u.cohort ? '<span class="pill cohort">' + esc(u.cohort) + '</span>' : '—') + '</dd>' +
         '<dt>Joined</dt><dd>' + esc(u.createdAt ? new Date(u.createdAt).toLocaleString() : '—') + '</dd>' +
         '<dt>Last seen</dt><dd>' + esc(u.lastSeen ? fmtRelative(u.lastSeen) : '—') + '</dd>' +
         '<dt>Token used</dt><dd class="code-cell">' + esc(u.claimedToken || '—') + '</dd>' +
@@ -741,6 +823,7 @@ const Admin = {
         '<div class="mini-stat"><div class="lab">Feedback</div><div class="num">' + esc(u.totalFeedback || 0) + '</div></div>' +
         '<div class="mini-stat"><div class="lab">Plan</div><div class="num" style="font-size:18px;">' + esc(u.planTier || u.tier || 'free') + '</div></div>' +
       '</div>' +
+      '<div style="margin-top:18px;display:flex;gap:8px;">' + banBtn + '</div>' +
       '<p style="margin-top:18px;font-size:12.5px;color:var(--mute);">A full per-event timeline ships once the backend writes per-user activity logs. For now, these are the rolled-up counters.</p>';
     document.getElementById('userPanelBody').innerHTML = html;
     document.getElementById('userPanel').classList.add('show');
@@ -752,11 +835,23 @@ const Admin = {
     document.getElementById('userPanel').setAttribute('aria-hidden', 'true');
     document.getElementById('userOverlay').classList.remove('show');
   },
+  async banUser(id, action) {
+    const verb = action === 'ban' ? 'Ban' : 'Unban';
+    if (!confirm(verb + ' user ' + id.slice(0, 12) + '…?')) return;
+    try {
+      await api('/api/admin/users', { method:'POST', body: JSON.stringify({ id, action }) });
+      this.closeUserPanel();
+      this.loadUsers();
+    } catch (e) { alert('Failed: ' + ((e && e.data && e.data.error) || (e && e.message) || '')); }
+  },
 
   // ===== Routes =====
   async loadRoutes() {
     try {
-      const r = await api('/api/admin/routes');
+      // Prefer the new endpoint, fall back to /routes for compatibility.
+      let r;
+      try { r = await api('/api/admin/routes-stats'); }
+      catch { r = await api('/api/admin/routes'); }
       this.data.routes = r.routes || [];
       this.renderRoutes();
     } catch {
@@ -791,9 +886,10 @@ const Admin = {
       '<th class="sortable" data-sort="completionRate">Completion %' + arrow('completionRate') + '</th>' +
       '<th class="sortable" data-sort="avgPhotos">Avg photos' + arrow('avgPhotos') + '</th>' +
       '<th>Most photographed stop</th>' +
+      '<th>Drop-off stop</th>' +
     '</tr></thead>';
     const body = list.length === 0
-      ? '<tbody><tr><td colspan="7" class="empty">No loop activity yet — stats appear once users start completing routes.</td></tr></tbody>'
+      ? '<tbody><tr><td colspan="8" class="empty">No loop activity yet — stats appear once users start completing routes.</td></tr></tbody>'
       : '<tbody>' + list.map(r =>
           '<tr>' +
             '<td>' + esc(r.title || r.routeId) + '</td>' +
@@ -803,6 +899,7 @@ const Admin = {
             '<td>' + fmtPct(r.completionRate) + '</td>' +
             '<td>' + esc(r.avgPhotos != null ? r.avgPhotos : '—') + '</td>' +
             '<td>' + esc(r.mostPhotographedStop || '—') + '</td>' +
+            '<td>' + esc(r.dropOffStop || '—') + '</td>' +
           '</tr>'
         ).join('') + '</tbody>';
     const t = document.getElementById('routesTable');
@@ -829,27 +926,135 @@ const Admin = {
       const date = fmtDate(i.createdAt);
       const status = i.status || 'open';
       const userIdShort = (i.userId || '?').slice(0, 8);
+      const userName = i.userName || i.userEmail || null;
       const votesPart = i.type === 'feature' ? ' · ' + esc(i.votes || 0) + ' votes' : '';
-      // CRITICAL: every user-controlled field flows through esc().
+      // CRITICAL: every user-controlled field flows through esc() before
+      // landing in innerHTML. Title, body, userName all came from KV and
+      // could contain <script> if a malicious user submitted feedback.
       const titleHtml = '<h4>' + esc(i.title || '') + '</h4>';
       const bodyHtml = i.body ? '<p>' + esc(i.body) + '</p>' : '';
       const idEsc = escJs(i.id);
       const opts = ['open','reviewing','planned','shipped','rejected','closed']
         .map(sv => '<option value="' + esc(sv) + '"' + (sv === status ? ' selected' : '') + '>' + esc(sv) + '</option>').join('');
-      return '<div class="fb-card-mod">' +
-        '<div class="head"><span class="type">' + esc(i.type || 'feedback') + '</span> · ' + esc(date) + ' · user ' + esc(userIdShort) + ' · <span class="pill ' + esc(status) + '">' + esc(status) + '</span>' + votesPart + '</div>' +
+      const userBadge = userName
+        ? '<span>by ' + esc(userName) + '</span> · user ' + esc(userIdShort)
+        : 'user ' + esc(userIdShort);
+      const isShipped = status === 'shipped';
+      const alreadyPublished = !!i.changelogPublished;
+      let changelogControl = '';
+      if (i.type === 'feature' || i.type === 'bug') {
+        if (alreadyPublished) {
+          changelogControl = '<span class="changelog-published" aria-label="Already published to public changelog">✓ Published to changelog</span>';
+        } else {
+          const checked = this.fbChangelogChecks[i.id] ? 'checked' : '';
+          changelogControl =
+            '<label class="changelog-toggle" title="When status is set to shipped, also append this item to the public changelog (KV: changelog:public).">' +
+              '<input type="checkbox" data-fb-changelog="' + esc(i.id) + '" ' + checked + ' onchange="Admin.toggleChangelog(\'' + idEsc + '\', this.checked)" aria-label="Publish to public changelog when shipped">' +
+              ' Publish to changelog' +
+            '</label>';
+          if (isShipped && !alreadyPublished) {
+            changelogControl +=
+              ' <button class="btn btn-outline" type="button" onclick="Admin.publishToChangelog(\'' + idEsc + '\')" aria-label="Publish this shipped item to the public changelog">Publish now</button>';
+          }
+        }
+      }
+      return '<div class="fb-card-mod" data-fb-id="' + esc(i.id) + '">' +
+        '<div class="head"><span class="type">' + esc(i.type || 'feedback') + '</span> · ' + esc(date) + ' · ' + userBadge + ' · <span class="pill ' + esc(status) + '">' + esc(status) + '</span>' + votesPart + '</div>' +
         titleHtml + bodyHtml +
-        '<div class="actions"><select aria-label="Status" onchange="Admin.setFeedbackStatus(\'' + idEsc + '\', this.value)">' + opts + '</select></div>' +
+        '<div class="actions">' +
+          '<select aria-label="Status" onchange="Admin.setFeedbackStatus(\'' + idEsc + '\', this.value)">' + opts + '</select>' +
+          changelogControl +
+        '</div>' +
       '</div>';
     }).join('');
   },
+  toggleChangelog(id, checked) { this.fbChangelogChecks[id] = !!checked; },
   async setFeedbackStatus(id, status) {
+    const publishToChangelog = status === 'shipped' && !!this.fbChangelogChecks[id];
     try {
-      await api('/api/admin/feedback', { method:'POST', body: JSON.stringify({ id, status }) });
+      const r = await api('/api/admin/feedback', { method:'POST', body: JSON.stringify({ id, status, publishToChangelog }) });
       const item = this.data.feedback.find(x => x.id === id);
-      if (item) item.status = status;
+      if (item) {
+        item.status = status;
+        if (r && r.item && r.item.changelogPublished) {
+          item.changelogPublished = true;
+          item.changelogPublishedAt = r.item.changelogPublishedAt;
+        }
+      }
+      // Reset the per-card check after submit so we don't double-publish.
+      this.fbChangelogChecks[id] = false;
       this.renderFeedback();
     } catch { alert('Failed to update status.'); }
+  },
+  async publishToChangelog(id) {
+    const item = this.data.feedback.find(x => x.id === id);
+    if (!item) return;
+    if (!confirm('Publish "' + (item.title || 'this item').slice(0, 60) + '" to the public changelog?')) return;
+    try {
+      const r = await api('/api/admin/feedback', { method:'POST', body: JSON.stringify({ id, status: 'shipped', publishToChangelog: true }) });
+      if (r && r.item && r.item.changelogPublished) {
+        item.changelogPublished = true;
+        item.changelogPublishedAt = r.item.changelogPublishedAt;
+      }
+      this.fbChangelogChecks[id] = false;
+      this.renderFeedback();
+    } catch { alert('Failed to publish.'); }
+  },
+
+  // ===== Audit =====
+  async loadAudit() {
+    try {
+      const r = await api('/api/admin/audit');
+      this.data.audit = r.entries || [];
+      this.renderAudit();
+    } catch {
+      document.getElementById('auditList').innerHTML = '<div class="empty">Failed to load audit log.</div>';
+    }
+  },
+  renderAudit() {
+    const list = this.data.audit || [];
+    const el = document.getElementById('auditList');
+    if (!list.length) {
+      el.innerHTML = '<div class="empty">No audit entries yet. Generate a token, change a feedback status, or push an announcement — actions will appear here.</div>';
+      return;
+    }
+    el.innerHTML = list.map(e => {
+      const detail = this.formatAuditDetail(e);
+      return '<div class="audit-row">' +
+        '<div class="ts">' + esc(fmtDateTime(e.ts)) + '</div>' +
+        '<div class="action">' + esc(e.action || 'unknown') + '</div>' +
+        '<div><div class="detail">' + detail + '</div>' +
+          '<div class="actor">' + esc(e.actor || 'admin') + '</div></div>' +
+      '</div>';
+    }).join('');
+  },
+  formatAuditDetail(e) {
+    const a = e.action || '';
+    const t = e.target || {};
+    const m = e.meta || {};
+    if (a === 'token.generate') {
+      const cohort = t.cohort ? ' cohort:' + esc(t.cohort) : '';
+      return 'Generated <strong>' + esc(t.count || 1) + '</strong> token' + ((t.count || 1) === 1 ? '' : 's') + ' (tier:' + esc(t.tier || 'beta') + cohort + ')';
+    }
+    if (a === 'token.revoke') {
+      return 'Revoked token <code>' + esc((t.code || '').slice(0, 12)) + '…</code>';
+    }
+    if (a === 'feedback.status') {
+      const title = t.title ? ' — <em>' + esc(String(t.title).slice(0, 80)) + '</em>' : '';
+      const cl = m.publishedToChangelog ? ' <span class="pill shipped" style="font-size:9px;">+changelog</span>' : '';
+      return 'Status <code>' + esc(m.from || '?') + '</code> &rarr; <code>' + esc(m.to || '?') + '</code>' + cl + title;
+    }
+    if (a === 'announcement.push') {
+      return 'Pushed announcement (priority:' + esc(m.priority || 'info') + ', ' + esc(m.length || 0) + ' chars)';
+    }
+    if (a === 'announcement.clear') {
+      return 'Cleared the active announcement banner';
+    }
+    if (a === 'user.ban' || a === 'user.unban') {
+      return (a === 'user.ban' ? 'Banned' : 'Unbanned') + ' user <code>' + esc((t.id || '').slice(0, 16)) + '</code>';
+    }
+    // Generic fallback.
+    return esc(a) + (t && t.id ? ' <code>' + esc(String(t.id).slice(0, 24)) + '</code>' : '');
   },
 
   // ===== Promotions =====
@@ -866,8 +1071,8 @@ const Admin = {
               '<td>' + esc(p.offer || '—') + '</td>' +
               '<td>' + esc(p.addedToRoute || '—') + '</td>' +
               '<td>' + esc(p.redemptionsTracked || 0) + '</td>' +
-              '<td><button class="btn btn-outline" type="button" disabled title="Coming soon">Edit</button> ' +
-              '<button class="btn btn-outline" type="button" disabled title="Coming soon">Disable</button></td>' +
+              '<td><button class="btn btn-outline" type="button" disabled title="Coming soon" aria-label="Edit promotion">Edit</button> ' +
+              '<button class="btn btn-outline" type="button" disabled title="Coming soon" aria-label="Disable promotion">Disable</button></td>' +
             '</tr>'
           ).join('') + '</tbody>';
       document.getElementById('promoTable').innerHTML = head + body;
@@ -898,37 +1103,88 @@ const Admin = {
   },
 
   // ===== Command palette =====
+  // The palette serves as an in-app search. Skeleton: searches users by id/email
+  // and tokens by code/cohort, plus jump-to-tab navigation.
   openPalette() {
     document.getElementById('paletteBack').classList.add('show');
     const input = document.getElementById('paletteInput');
     input.value = ''; input.focus();
+    // Lazy-load search corpus when palette opens — no need to keep refreshing.
+    if (!this._paletteCorpusLoaded) {
+      this._paletteCorpusLoaded = true;
+      Promise.all([
+        api('/api/admin/users').catch(() => ({ users: [] })),
+        api('/api/admin/tokens').catch(() => ({ tokens: [] }))
+      ]).then(([u, t]) => {
+        this.data.users = u.users || this.data.users;
+        this.data.tokens = t.tokens || this.data.tokens;
+        this.renderPalette(input.value);
+      });
+    }
     this.renderPalette('');
   },
   closePalette() {
     document.getElementById('paletteBack').classList.remove('show');
   },
   renderPalette(q) {
-    const items = [
-      { lab: 'Overview', act: () => Admin.go('overview'), kbd: 'g o' },
-      { lab: 'Tokens', act: () => Admin.go('tokens'), kbd: 'g t' },
-      { lab: 'Users', act: () => Admin.go('users'), kbd: 'g u' },
-      { lab: 'Routes', act: () => Admin.go('routes'), kbd: 'g r' },
-      { lab: 'Feedback', act: () => Admin.go('feedback'), kbd: 'g f' },
-      { lab: 'Promotions', act: () => Admin.go('promotions'), kbd: '' },
-      { lab: 'Operations', act: () => Admin.go('operations'), kbd: '' },
-      { lab: 'Generate tokens', act: () => { Admin.go('tokens'); setTimeout(() => document.getElementById('genCount').focus(), 50); }, kbd: '' },
-      { lab: 'Push announcement', act: () => { Admin.go('overview'); setTimeout(() => document.getElementById('annText').focus(), 50); }, kbd: '' },
-      { lab: 'Sign out', act: () => Admin.signOut(), kbd: '' }
-    ];
     const ql = (q || '').toLowerCase().trim();
-    const filtered = ql ? items.filter(i => i.lab.toLowerCase().includes(ql)) : items;
-    this._paletteItems = filtered;
+    const navItems = [
+      { lab: 'Overview', group: 'Navigate', act: () => Admin.go('overview'), kbd: 'g o' },
+      { lab: 'Tokens', group: 'Navigate', act: () => Admin.go('tokens'), kbd: 'g t' },
+      { lab: 'Users', group: 'Navigate', act: () => Admin.go('users'), kbd: 'g u' },
+      { lab: 'Routes', group: 'Navigate', act: () => Admin.go('routes'), kbd: 'g r' },
+      { lab: 'Feedback', group: 'Navigate', act: () => Admin.go('feedback'), kbd: 'g f' },
+      { lab: 'Audit log', group: 'Navigate', act: () => Admin.go('audit'), kbd: 'g a' },
+      { lab: 'Promotions', group: 'Navigate', act: () => Admin.go('promotions'), kbd: '' },
+      { lab: 'Operations', group: 'Navigate', act: () => Admin.go('operations'), kbd: '' }
+    ];
+    const actionItems = [
+      { lab: 'Generate tokens', group: 'Actions', act: () => { Admin.go('tokens'); setTimeout(() => Admin.focusGenCount(), 80); }, kbd: 'g t → n' },
+      { lab: 'Push announcement', group: 'Actions', act: () => { Admin.go('overview'); setTimeout(() => document.getElementById('annText').focus(), 80); }, kbd: '' },
+      { lab: 'Sign out', group: 'Actions', act: () => Admin.signOut(), kbd: '' }
+    ];
+    let userMatches = [];
+    let tokenMatches = [];
+    if (ql) {
+      userMatches = (this.data.users || []).filter(u => {
+        const hay = ((u.id || '') + ' ' + (u.email || '') + ' ' + (u.name || '') + ' ' + (u.cohort || '')).toLowerCase();
+        return hay.indexOf(ql) !== -1;
+      }).slice(0, 8).map(u => ({
+        lab: (u.email || u.name || u.id) + (u.cohort ? '  [' + u.cohort + ']' : ''),
+        group: 'Users',
+        act: () => { Admin.go('users'); setTimeout(() => { const idx = Admin.data.users.indexOf(u); if (idx >= 0) Admin.openUserPanel(idx); }, 100); },
+        kbd: ''
+      }));
+      tokenMatches = (this.data.tokens || []).filter(t => {
+        const hay = ((t.code || '') + ' ' + (t.note || '') + ' ' + (t.cohort || '')).toLowerCase();
+        return hay.indexOf(ql) !== -1;
+      }).slice(0, 8).map(t => ({
+        lab: t.code + '  ' + (t.cohort ? '[' + t.cohort + ']' : '') + (t.status ? '  (' + t.status + ')' : ''),
+        group: 'Tokens',
+        act: () => { Admin.copy(t.code); Admin.go('tokens'); },
+        kbd: ''
+      }));
+    }
+    let allItems;
+    if (!ql) {
+      allItems = navItems.concat(actionItems);
+    } else {
+      const filteredNav = navItems.concat(actionItems).filter(it => it.lab.toLowerCase().indexOf(ql) !== -1);
+      allItems = userMatches.concat(tokenMatches).concat(filteredNav);
+    }
+    this._paletteItems = allItems;
     this._paletteFocus = 0;
     const list = document.getElementById('paletteList');
-    if (!filtered.length) { list.innerHTML = '<div class="empty" style="padding:24px;">No matches</div>'; return; }
-    list.innerHTML = filtered.map((it, i) =>
-      '<button type="button" data-pidx="' + i + '" class="' + (i === 0 ? 'focused' : '') + '"><span>' + esc(it.lab) + '</span><span class="kbd">' + esc(it.kbd) + '</span></button>'
-    ).join('');
+    if (!allItems.length) { list.innerHTML = '<div class="empty" style="padding:24px;">No matches</div>'; return; }
+    let lastGroup = null;
+    list.innerHTML = allItems.map((it, i) => {
+      let groupHeader = '';
+      if (it.group && it.group !== lastGroup) {
+        groupHeader = '<div class="group-label">' + esc(it.group) + '</div>';
+        lastGroup = it.group;
+      }
+      return groupHeader + '<button type="button" data-pidx="' + i + '" class="' + (i === 0 ? 'focused' : '') + '"><span>' + esc(it.lab) + '</span><span class="kbd">' + esc(it.kbd) + '</span></button>';
+    }).join('');
     list.querySelectorAll('button').forEach(b => {
       b.addEventListener('click', () => {
         const idx = Number(b.getAttribute('data-pidx'));
@@ -998,6 +1254,13 @@ const Admin = {
 
     // ? help
     if (e.key === '?') { e.preventDefault(); this.openHelp(); return; }
+
+    // n — focus generate count input when on Tokens tab.
+    if (e.key === 'n' && this.page === 'tokens' && !this._kbdPrefix) {
+      e.preventDefault();
+      this.focusGenCount();
+      return;
+    }
 
     // g <letter>
     if (this._kbdPrefix === 'g') {
