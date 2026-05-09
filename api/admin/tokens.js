@@ -5,6 +5,7 @@ import { getAdminSession } from '../../lib/auth.js';
 import { createToken, listTokens, revokeToken } from '../../lib/tokens.js';
 import { getKv } from '../../lib/kv.js';
 import { readJson, json } from '../../lib/rate-limit.js';
+import { logAudit, actorFromSession } from './_audit.js';
 
 const ALLOWED_COHORTS = ['friends', 'investors', 'press', 'waitlist', 'custom'];
 
@@ -17,6 +18,7 @@ function sanitizeCohort(raw) {
 export default async function handler(req, res) {
   const s = await getAdminSession(req);
   if (!s) return json(res, 401, { error: 'unauthenticated' });
+  const actor = actorFromSession(s);
 
   if (req.method === 'GET') {
     const tokens = await listTokens();
@@ -50,6 +52,12 @@ export default async function handler(req, res) {
       }
       created.push(tok);
     }
+    await logAudit({
+      action: 'token.generate',
+      actor,
+      target: { type: 'tokens', count: created.length, tier, cohort: cohort || null },
+      meta: { note: note ? String(note).slice(0, 120) : null }
+    });
     return json(res, 200, { ok: true, tokens: created });
   }
   if (req.method === 'DELETE') {
@@ -58,6 +66,11 @@ export default async function handler(req, res) {
     if (!code) return json(res, 400, { error: 'missing_code' });
     const t = await revokeToken(code);
     if (!t) return json(res, 404, { error: 'not_found' });
+    await logAudit({
+      action: 'token.revoke',
+      actor,
+      target: { type: 'token', code }
+    });
     return json(res, 200, { ok: true, token: t });
   }
   return json(res, 405, { error: 'method_not_allowed' });

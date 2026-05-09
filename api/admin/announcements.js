@@ -7,6 +7,7 @@
 import { getAdminSession } from '../../lib/auth.js';
 import { getKv } from '../../lib/kv.js';
 import { readJson, json } from '../../lib/rate-limit.js';
+import { logAudit, actorFromSession } from './_audit.js';
 
 const KEY = 'announcement:current';
 const SEVEN_DAYS_SEC = 60 * 60 * 24 * 7;
@@ -14,6 +15,7 @@ const SEVEN_DAYS_SEC = 60 * 60 * 24 * 7;
 export default async function handler(req, res) {
   const s = await getAdminSession(req);
   if (!s) return json(res, 401, { error: 'unauthenticated' });
+  const actor = actorFromSession(s);
   const kv = await getKv();
 
   if (req.method === 'GET') {
@@ -37,11 +39,22 @@ export default async function handler(req, res) {
     };
     await kv.set(KEY, announcement);
     try { await kv.expire(KEY, SEVEN_DAYS_SEC); } catch {}
+    await logAudit({
+      action: 'announcement.push',
+      actor,
+      target: { type: 'announcement' },
+      meta: { priority, length: t.length }
+    });
     return json(res, 200, { ok: true, announcement });
   }
 
   if (req.method === 'DELETE') {
     await kv.del(KEY).catch(() => null);
+    await logAudit({
+      action: 'announcement.clear',
+      actor,
+      target: { type: 'announcement' }
+    });
     return json(res, 200, { ok: true });
   }
 
