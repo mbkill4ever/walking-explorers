@@ -1,0 +1,43 @@
+# Walking Explorers — robots.txt
+# https://walkingexplorers.com
+
+User-agent: *
+Allow: /
+Allow: /privacy
+Allow: /terms
+Allow: /walks/
+Allow: /neighborhoods/
+Allow: /guides/
+
+Disallow: /admin
+Disallow: /admin/
+Disallow: /beta/app/
+Disallow: /api/
+
+# AI / LLM crawlers — explicitly welcome at the documented endpoints
+User-agent: GPTBot
+Allow: /
+Allow: /llms.txt
+Disallow: /admin
+Disallow: /beta/app/
+Disallow: /api/
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /llms.txt
+Disallow: /admin
+Disallow: /beta/app/
+Disallow: /api/
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /llms.txt
+Disallow: /admin
+Disallow: /beta/app/
+Disallow: /api/
+
+User-agent: Google-Extended
+Allow: /
+Allow: /llms.txt
+
+Sitemap: https://walkingexplorers.com/sitemap.xml
