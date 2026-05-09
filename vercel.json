@@ -9,12 +9,6 @@
     { "source": "/privacy",  "destination": "/privacy.html" },
     { "source": "/terms",    "destination": "/terms.html" }
   ],
-  "functions": {
-    "api/og/loop.js": {
-      "runtime": "edge",
-      "maxDuration": 5
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
