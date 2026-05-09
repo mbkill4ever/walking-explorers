@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="xMidYEnd slice" role="img" aria-label="NYC skyline">
+  <title>NYC skyline — Walking Explorers</title>
+  <!--
+    Wide refined skyline for /beta gate hero.
+    Two layers:
+      1. Buildings: navy (#091226) at default; recolor by changing fill on .we-buildings
+      2. Window lights: gold (#E0B341)
+    Background is transparent so the gradient behind shows through.
+  -->
+  <g class="we-buildings" fill="#091226">
+    <!-- Far-left towers -->
+    <rect x="30" y="180" width="36" height="140"/>
+    <rect x="66" y="195" width="30" height="125"/>
+    <rect x="96" y="170" width="34" height="150"/>
+
+    <!-- 1WTC proxy -->
+    <polygon points="140,320 140,140 165,110 190,140 190,320"/>
+    <rect x="162" y="70" width="6" height="40"/>
+    <rect x="164" y="40" width="2" height="30"/>
+
+    <!-- Tribeca block -->
+    <rect x="200" y="195" width="24" height="125"/>
+    <rect x="224" y="175" width="30" height="145"/>
+    <rect x="254" y="205" width="22" height="115"/>
+    <rect x="276" y="185" width="28" height="135"/>
+
+    <!-- Tall slim tower -->
+    <rect x="315" y="95" width="18" height="225"/>
+
+    <!-- Mid-block fill -->
+    <rect x="345" y="190" width="32" height="130"/>
+    <rect x="377" y="170" width="28" height="150"/>
+    <rect x="405" y="200" width="24" height="120"/>
+
+    <!-- Empire State Building proxy: stepped + spire -->
+    <rect x="440" y="180" width="60" height="140"/>
+    <rect x="452" y="130" width="36" height="50"/>
+    <rect x="460" y="95" width="20" height="35"/>
+    <rect x="466" y="60" width="8" height="35"/>
+    <rect x="469" y="30" width="2" height="30"/>
+
+    <!-- Mid-block sub -->
+    <rect x="510" y="195" width="30" height="125"/>
+    <rect x="540" y="175" width="26" height="145"/>
+    <rect x="566" y="200" width="22" height="120"/>
+
+    <!-- Chrysler Building proxy: stepped pyramid crown + needle -->
+    <rect x="600" y="190" width="54" height="130"/>
+    <polygon points="600,190 627,120 654,190"/>
+    <polygon points="609,150 627,95 645,150"/>
+    <polygon points="617,120 627,75 637,120"/>
+    <rect x="626" y="40" width="2" height="35"/>
+
+    <!-- Mid-block towers -->
+    <rect x="662" y="165" width="30" height="155"/>
+    <rect x="692" y="185" width="26" height="135"/>
+    <rect x="718" y="170" width="32" height="150"/>
+
+    <!-- Met Life clock tower proxy -->
+    <rect x="760" y="100" width="34" height="220"/>
+    <polygon points="760,100 777,60 794,100"/>
+
+    <!-- More mid-block -->
+    <rect x="800" y="180" width="28" height="140"/>
+    <rect x="828" y="165" width="32" height="155"/>
+    <rect x="860" y="195" width="26" height="125"/>
+    <rect x="886" y="175" width="30" height="145"/>
+    <rect x="916" y="190" width="24" height="130"/>
+
+    <!-- Williamsburg Savings Bank tower proxy -->
+    <rect x="955" y="125" width="26" height="195"/>
+    <polygon points="955,125 968,90 981,125"/>
+
+    <!-- Brooklyn Bridge: two towers + cables -->
+    <rect x="1010" y="185" width="14" height="135"/>
+    <rect x="1170" y="185" width="14" height="135"/>
+    <!-- Roadway deck -->
+    <rect x="990" y="260" width="215" height="5"/>
+    <!-- Cable curves -->
+    <path d="M 1024 185 Q 1097 280 1170 185 L 1170 190 Q 1097 285 1024 190 Z"/>
+    <path d="M 1024 185 Q 1097 240 1170 185 L 1170 188 Q 1097 243 1024 188 Z"/>
+
+    <!-- Right-edge towers -->
+    <rect x="1230" y="195" width="30" height="125"/>
+    <rect x="1260" y="175" width="34" height="145"/>
+    <rect x="1294" y="205" width="26" height="115"/>
+    <rect x="1320" y="185" width="30" height="135"/>
+    <rect x="1350" y="210" width="24" height="110"/>
+    <rect x="1374" y="190" width="28" height="130"/>
+    <rect x="1402" y="215" width="22" height="105"/>
+  </g>
+
+  <!-- Window lights — gold dots scattered through the buildings -->
+  <g class="we-lights" fill="#E0B341" opacity="0.85">
+    <rect x="42" y="230" width="3" height="4"/>
+    <rect x="78" y="245" width="3" height="4"/>
+    <rect x="110" y="215" width="3" height="4"/>
+    <rect x="160" y="180" width="3" height="4"/>
+    <rect x="165" y="230" width="3" height="4"/>
+    <rect x="230" y="220" width="3" height="4"/>
+    <rect x="285" y="235" width="3" height="4"/>
+    <rect x="322" y="160" width="3" height="4"/>
+    <rect x="322" y="230" width="3" height="4"/>
+    <rect x="385" y="215" width="3" height="4"/>
+    <rect x="468" y="160" width="3" height="4"/>
+    <rect x="472" y="230" width="3" height="4"/>
+    <rect x="522" y="240" width="3" height="4"/>
+    <rect x="574" y="245" width="3" height="4"/>
+    <rect x="627" y="230" width="3" height="4"/>
+    <rect x="675" y="200" width="3" height="4"/>
+    <rect x="730" y="215" width="3" height="4"/>
+    <rect x="775" y="160" width="3" height="4"/>
+    <rect x="775" y="230" width="3" height="4"/>
+    <rect x="840" y="210" width="3" height="4"/>
+    <rect x="898" y="220" width="3" height="4"/>
+    <rect x="965" y="175" width="3" height="4"/>
+    <rect x="965" y="240" width="3" height="4"/>
+    <rect x="1245" y="230" width="3" height="4"/>
+    <rect x="1305" y="215" width="3" height="4"/>
+    <rect x="1335" y="235" width="3" height="4"/>
+    <rect x="1385" y="225" width="3" height="4"/>
+  </g>
+</svg>

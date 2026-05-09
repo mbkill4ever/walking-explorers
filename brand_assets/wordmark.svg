@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 50" role="img" aria-label="Walking Explorers wordmark" fill="currentColor">
+  <title>Walking Explorers</title>
+  <!--
+    Wordmark: "walking.explorers" set in Inter Black (800).
+    The text uses currentColor so CSS can recolor.
+    The gold dot is hard-coded #E0B341 — it should NEVER recolor.
+  -->
+  <style>
+    .we-word {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-weight: 800;
+      font-size: 38px;
+      letter-spacing: -0.025em;
+    }
+  </style>
+  <text x="0" y="36" class="we-word">walking</text>
+  <circle cx="148" cy="32" r="4.5" fill="#E0B341"/>
+  <text x="158" y="36" class="we-word">explorers</text>
+</svg>
