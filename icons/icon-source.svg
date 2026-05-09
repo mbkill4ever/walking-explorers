@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Walking Explorers app icon source.
+  Designed at 512x512 with a maskable-safe inner zone (centered ~410x410 disc, ~80% diameter).
+  Convert to PNG with one of:
+    npx svg2png-cli ./icons/icon-source.svg --width=512 --output=./icons/icon-512.png
+    npx svg2png-cli ./icons/icon-source.svg --width=192 --output=./icons/icon-192.png
+    npx svg2png-cli ./icons/icon-source.svg --width=180 --output=./icons/icon-180.png
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Walking Explorers app icon">
+  <title>Walking Explorers</title>
+  <rect width="512" height="512" fill="#FAF7F2"/>
+  <circle cx="256" cy="256" r="200" fill="none" stroke="#1F3864" stroke-width="6" stroke-opacity="0.10"/>
+  <g fill="#1F3864">
+    <rect x="96" y="332" width="320" height="6"/>
+    <rect x="104" y="280" width="22" height="52"/>
+    <rect x="130" y="252" width="28" height="80"/>
+    <rect x="162" y="208" width="34" height="124"/>
+    <rect x="170" y="194" width="18" height="14"/>
+    <rect x="176" y="172" width="6"  height="22"/>
+    <rect x="178" y="156" width="2"  height="16"/>
+    <rect x="200" y="262" width="26" height="70"/>
+    <rect x="230" y="240" width="22" height="92"/>
+    <polygon points="262,332 262,176 274,176 274,332"/>
+    <polygon points="268,176 264,140 272,140"/>
+    <rect x="282" y="248" width="24" height="84"/>
+    <rect x="310" y="226" width="30" height="106"/>
+    <rect x="318" y="210" width="14" height="16"/>
+    <rect x="344" y="266" width="22" height="66"/>
+    <rect x="370" y="244" width="28" height="88"/>
+    <rect x="402" y="284" width="18" height="48"/>
+  </g>
+  <circle cx="358" cy="172" r="14" fill="#C9A961"/>
+</svg>

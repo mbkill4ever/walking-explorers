@@ -1,10 +1,20 @@
 {
   "name": "walking-explorers",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
-  "description": "Walking Explorers — NYC private beta. AI walking discovery + city memory + local promotions.",
-  "engines": { "node": ">=20" },
-  "dependencies": {
-    "@vercel/kv": "^2.0.0"
-  }
+  "description": "Walking Explorers — AI-guided walking discovery in NYC. Token-gated beta on Vercel + KV.",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod",
+    "icons": "npx --yes svg2png-cli ./icons/icon-source.svg --width=512 --output=./icons/icon-512.png && npx --yes svg2png-cli ./icons/icon-source.svg --width=192 --output=./icons/icon-192.png && npx --yes svg2png-cli ./icons/icon-source.svg --width=180 --output=./icons/icon-180.png"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mbkill4ever/walking-explorers.git"
+  },
+  "license": "UNLICENSED",
+  "author": "Walking Explorers"
 }

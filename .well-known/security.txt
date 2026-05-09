@@ -1,0 +1,4 @@
+Contact: mailto:mbkill4ever@gmail.com
+Expires: 2027-05-09T00:00:00Z
+Preferred-Languages: en, es
+Canonical: https://walkingexplorers.com/.well-known/security.txt

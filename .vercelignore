@@ -1,0 +1,13 @@
+# Confidential business materials — never publicly deploy
+*.docx
+*.xlsx
+*.pptx
+.~lock.*
+
+# Internal agent / planning artifacts — never publicly deploy
+agent_reports/
+Walking_Explorers_Audit_Plan_v1.md
+Walking_Explorers_Invite_Tokens_Batch01.md
+
+# Icon source (SVG ships fine, but README is internal)
+icons/README.md

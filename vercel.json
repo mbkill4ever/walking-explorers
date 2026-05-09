@@ -2,23 +2,59 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    { "source": "/",         "destination": "/Walking_Explorers_Landing.html" },
+    { "source": "/beta",     "destination": "/beta/index.html" },
+    { "source": "/loop/:id", "destination": "/loop.html?id=:id" },
+    { "source": "/privacy",  "destination": "/privacy.html" },
+    { "source": "/terms",    "destination": "/terms.html" }
+  ],
   "functions": {
-    "api/**/*.js": { "maxDuration": 10 }
+    "api/og/loop.js": {
+      "runtime": "edge",
+      "maxDuration": 5
+    }
   },
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options",        "value": "SAMEORIGIN" },
-        { "key": "Referrer-Policy",        "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy",     "value": "geolocation=(self), camera=(self), microphone=(), payment=()" }
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://us.i.posthog.com https://us-assets.i.posthog.com https://unpkg.com https://js.stripe.com; style-src 'self' 'unsafe-inline' https://unpkg.com https://fonts.googleapis.com; img-src 'self' data: blob: https: ; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self' https://us.i.posthog.com https://api.stripe.com; frame-src https://js.stripe.com; manifest-src 'self'; worker-src 'self'"
+        },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        { "key": "X-Content-Type-Options",    "value": "nosniff" },
+        { "key": "X-Frame-Options",           "value": "SAMEORIGIN" },
+        { "key": "Referrer-Policy",           "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy",        "value": "geolocation=(self), camera=(self), microphone=(), payment=(self), interest-cohort=()" }
       ]
     },
     {
-      "source": "/api/(.*)",
+      "source": "/service-worker.js",
       "headers": [
-        { "key": "Cache-Control", "value": "no-store" }
+        { "key": "Cache-Control",       "value": "public, max-age=0, must-revalidate" },
+        { "key": "Service-Worker-Allowed", "value": "/" }
+      ]
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        { "key": "Content-Type",  "value": "application/manifest+json; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/.well-known/security.txt",
+      "headers": [
+        { "key": "Content-Type",  "value": "text/plain; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    },
+    {
+      "source": "/icons/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
     }
   ]
