@@ -1,0 +1,389 @@
+/* ==========================================================================
+   Walking Explorers v0.7.9 — polish.css
+   Purely additive global refinement. Load AFTER all existing stylesheets.
+   Uses token-bridge vars from beta/app/index.html:
+     --navy --navy-deep --gold --gold-soft --gold-dark
+     --cream --cream-2 --ink --ink-2 --line --mute
+   ========================================================================== */
+
+/* ---------- 0. Color-scheme hook (no dark mode yet, just prep) ---------- */
+:root { color-scheme: light; }
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Reserved for v0.8 — intentionally empty to keep light mode stable. */
+  }
+}
+
+/* ---------- 1. Typography micro-fixes ---------- */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01", "cv11", "kern";
+  font-variant-ligatures: common-ligatures;
+}
+
+h1, h2, h3, h4, h5, h6,
+.fb-title, .route-card__title, .spot-card__title, .screen-title {
+  text-wrap: balance;
+  letter-spacing: -0.01em;
+}
+
+p, .fb-body, .route-card__desc, .spot-card__desc, .empty__body {
+  text-wrap: pretty;
+}
+
+/* Tabular numbers wherever stats live */
+.we-countup,
+.stat-value,
+.route-card__stat,
+.fb-card__stat,
+.profile-stat__num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum", "cv11";
+  letter-spacing: 0;
+}
+
+/* ---------- 2. Selection + caret ---------- */
+::selection {
+  background: var(--gold-soft, #f4e4b8);
+  color: var(--navy, #0b2545);
+}
+::-moz-selection {
+  background: var(--gold-soft, #f4e4b8);
+  color: var(--navy, #0b2545);
+}
+
+input, textarea, [contenteditable] {
+  caret-color: var(--navy, #0b2545);
+}
+
+/* ---------- 3. Focus rings — gold, not browser-blue ---------- */
+:where(button, [role="button"], a, input, textarea, select, [tabindex]):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--gold-soft, #f4e4b8),
+              0 0 0 4px var(--gold, #d4a64a);
+  border-radius: 10px;
+  transition: box-shadow 120ms ease-out;
+}
+
+input:focus-visible,
+textarea:focus-visible {
+  box-shadow: 0 0 0 3px var(--gold-soft, #f4e4b8);
+  border-color: var(--gold, #d4a64a) !important;
+}
+
+/* ---------- 4. Link hover refinement ---------- */
+a:not(.btn):not([class*="card"]) {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-thickness 120ms ease-out, color 120ms ease-out;
+}
+@media (hover: hover) {
+  a:not(.btn):not([class*="card"]):hover {
+    text-decoration-thickness: 2px;
+  }
+}
+
+/* ---------- 5. Card hover/press (route, fb, spot, offer) ---------- */
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+  .route-card,
+  .fb-card,
+  .spot-card,
+  .offer-card {
+    transition:
+      transform 180ms cubic-bezier(.2,.7,.2,1),
+      box-shadow 180ms cubic-bezier(.2,.7,.2,1);
+    will-change: transform;
+  }
+  .route-card:hover,
+  .fb-card:hover,
+  .spot-card:hover,
+  .offer-card:hover {
+    transform: translateY(-2px) scale(1.005);
+    box-shadow:
+      0 12px 28px -10px rgba(11, 37, 69, 0.22),
+      0 2px 6px -2px rgba(11, 37, 69, 0.10);
+  }
+  .route-card:active,
+  .fb-card:active,
+  .spot-card:active,
+  .offer-card:active {
+    transform: translateY(0) scale(0.995);
+    box-shadow:
+      0 2px 6px -2px rgba(11, 37, 69, 0.14);
+    transition-duration: 80ms;
+  }
+}
+
+/* ---------- 6. Image fade-in (lazy/async) ---------- */
+img[loading="lazy"],
+img[decoding="async"],
+.cover-art img,
+.spot-card__img,
+.route-card__img {
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+}
+img.loaded,
+img[loading="lazy"].loaded,
+img[decoding="async"].loaded {
+  opacity: 1;
+}
+/* :has() shortcut for browsers that support it — image flips visible the moment
+   it reports complete via the complete attribute (set by integrator JS or natural load). */
+@supports selector(:has(*)) {
+  picture:has(> img[src]),
+  .cover-art:has(> img[src]) img,
+  .route-card:has(img.is-ready) img,
+  .spot-card:has(img.is-ready) img {
+    opacity: 1;
+  }
+}
+/* Respect reduced motion — show instantly */
+@media (prefers-reduced-motion: reduce) {
+  img[loading="lazy"],
+  img[decoding="async"],
+  .cover-art img { opacity: 1; transition: none; }
+}
+
+/* ---------- 7. Buttons ---------- */
+.btn-primary,
+button.btn-primary,
+[data-btn="primary"] {
+  background: var(--navy, #0b2545);
+  color: var(--cream, #faf6ee);
+  transition: background 160ms ease-out, transform 120ms ease-out, box-shadow 160ms ease-out;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .btn-primary:hover,
+  button.btn-primary:hover,
+  [data-btn="primary"]:hover {
+    background: linear-gradient(180deg, var(--navy, #0b2545) 0%, var(--navy-deep, #06182f) 100%);
+    box-shadow: 0 6px 18px -6px rgba(11, 37, 69, 0.45);
+  }
+  .btn-primary:active { transform: translateY(1px); }
+}
+
+/* ---------- 8. Tab pills (Feature/Bug et al.) ---------- */
+.tab-pill,
+[role="tab"].pill,
+.fb-tabs__pill {
+  position: relative;
+  transition: color 160ms ease-out, transform 160ms ease-out;
+}
+.tab-pill[aria-selected="true"],
+.tab-pill.is-active,
+[role="tab"][aria-selected="true"].pill,
+.fb-tabs__pill.is-active {
+  color: var(--navy, #0b2545);
+  font-weight: 600;
+}
+.tab-pill[aria-selected="true"]::after,
+.tab-pill.is-active::after,
+[role="tab"][aria-selected="true"].pill::after,
+.fb-tabs__pill.is-active::after {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: -4px;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold, #d4a64a), var(--gold-dark, #b08530));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tab-pill[aria-selected="true"],
+  .tab-pill.is-active,
+  .fb-tabs__pill.is-active {
+    transform: translateY(-1px) scale(1.02);
+  }
+}
+
+/* ---------- 9. Toast ---------- */
+.toast,
+.we-toast,
+[role="status"].toast {
+  background: var(--navy, #0b2545);
+  color: var(--cream, #faf6ee);
+  border: 1px solid var(--navy-deep, #06182f);
+  border-radius: 14px;
+  padding: 12px 16px 12px 14px;
+  box-shadow:
+    0 12px 32px -12px rgba(11, 37, 69, 0.55),
+    0 2px 6px -2px rgba(11, 37, 69, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+}
+.toast__icon,
+.we-toast__icon {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold, #d4a64a);
+}
+
+/* ---------- 10. Map containers ---------- */
+.map,
+.map-container,
+.we-map,
+.route-map,
+[data-map] {
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+}
+.map::after,
+.map-container::after,
+.we-map::after,
+.route-map::after,
+[data-map]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(11, 37, 69, 0.14);
+  border-radius: 16px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ---------- 11. Scrollbars (Win/desktop visible) ---------- */
+@media (pointer: fine) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold, #d4a64a) transparent;
+  }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--gold, #d4a64a), var(--gold-dark, #b08530));
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: var(--gold-dark, #b08530);
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+}
+
+/* ---------- 12. iOS overscroll bounce ---------- */
+html, body {
+  background-color: var(--cream, #faf6ee);
+  overscroll-behavior-y: contain;
+}
+
+/* ---------- 13. Heart-save burst (save spot interaction) ---------- */
+.heart-save,
+.btn-save,
+.save-toggle {
+  position: relative;
+  transition: transform 200ms cubic-bezier(.2,.8,.2,1.4);
+  transform-origin: center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .heart-save.is-bursting,
+  .btn-save.is-bursting,
+  .save-toggle.is-bursting {
+    animation: we-heart-burst 360ms cubic-bezier(.2,.8,.2,1.4) both;
+  }
+  .heart-save.is-bursting::before,
+  .btn-save.is-bursting::before,
+  .save-toggle.is-bursting::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle 3px at 50% 0%,   var(--gold, #d4a64a) 99%, transparent 100%),
+      radial-gradient(circle 3px at 100% 50%, var(--gold, #d4a64a) 99%, transparent 100%),
+      radial-gradient(circle 3px at 50% 100%, var(--gold, #d4a64a) 99%, transparent 100%),
+      radial-gradient(circle 3px at 0% 50%,   var(--gold, #d4a64a) 99%, transparent 100%),
+      radial-gradient(circle 2px at 85% 15%,  var(--gold-dark, #b08530) 99%, transparent 100%),
+      radial-gradient(circle 2px at 15% 15%,  var(--gold-dark, #b08530) 99%, transparent 100%),
+      radial-gradient(circle 2px at 85% 85%,  var(--gold-dark, #b08530) 99%, transparent 100%),
+      radial-gradient(circle 2px at 15% 85%,  var(--gold-dark, #b08530) 99%, transparent 100%);
+    animation: we-heart-particles 480ms ease-out both;
+    pointer-events: none;
+  }
+}
+@keyframes we-heart-burst {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.4); }
+  70%  { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+@keyframes we-heart-particles {
+  0%   { transform: scale(0.6); opacity: 0; }
+  35%  { opacity: 1; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+
+/* ---------- 14. Page transition shadow ---------- */
+.screen { position: relative; }
+.screen.exiting,
+.screen[data-state="exiting"] {
+  z-index: 3;
+  box-shadow: -12px 0 32px -12px rgba(11, 37, 69, 0.28);
+  pointer-events: none;
+}
+.screen.entering,
+.screen[data-state="entering"] {
+  z-index: 2;
+}
+@media (prefers-reduced-motion: reduce) {
+  .screen.exiting,
+  .screen[data-state="exiting"] { box-shadow: none; }
+}
+
+/* ---------- 15. Pull-to-refresh styling ---------- */
+.we-ptr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  margin-top: -56px;
+  transition: margin-top 240ms cubic-bezier(.2,.7,.2,1), opacity 240ms ease-out;
+  opacity: 0;
+  color: var(--navy, #0b2545);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.we-ptr.is-active {
+  margin-top: 0;
+  opacity: 1;
+}
+.we-ptr__spinner {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--gold-soft, #f4e4b8);
+  border-top-color: var(--gold, #d4a64a);
+  margin-right: 10px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .we-ptr.is-active .we-ptr__spinner {
+    animation: we-spin 900ms linear infinite;
+  }
+}
+@keyframes we-spin { to { transform: rotate(360deg); } }
+
+/* ---------- 16. Reduced-motion master kill switch ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

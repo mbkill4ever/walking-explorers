@@ -1,0 +1,291 @@
+/* ==========================================================================
+   Walking Explorers v0.7.9 — skeletons.css
+   Reusable loading skeleton system. Load AFTER existing styles.
+   Integrator: replace existing spinners/empties during load with these.
+   ========================================================================== */
+
+.we-skel {
+  --skel-base: #eee6d6;          /* cream-2-ish */
+  --skel-hilite: #faf6ee;        /* cream */
+  position: relative;
+  display: block;
+  background: var(--skel-base);
+  border-radius: 10px;
+  overflow: hidden;
+  isolation: isolate;
+  color: transparent;
+  user-select: none;
+  pointer-events: none;
+}
+
+.we-skel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    100deg,
+    transparent 0%,
+    transparent 30%,
+    var(--skel-hilite) 50%,
+    transparent 70%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  background-position: -100% 0;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .we-skel::after {
+    animation: we-skel-shimmer 1400ms linear infinite;
+  }
+}
+
+@keyframes we-skel-shimmer {
+  0%   { background-position: -100% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* ---------- Primitives ---------- */
+.we-skel--text-line {
+  height: 12px;
+  border-radius: 6px;
+  margin: 6px 0;
+}
+.we-skel--text-line.is-short { width: 40%; }
+.we-skel--text-line.is-medium { width: 65%; }
+.we-skel--text-line.is-long { width: 92%; }
+
+.we-skel--circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.we-skel--circle.is-lg { width: 64px; height: 64px; }
+.we-skel--circle.is-xl { width: 96px; height: 96px; }
+
+.we-skel--block {
+  width: 100%;
+  height: 120px;
+  border-radius: 12px;
+}
+
+/* ---------- Route Card Skeleton ---------- */
+.we-skel--card {
+  width: 100%;
+  max-width: 360px;
+  height: 200px;
+  border-radius: 16px;
+  background: var(--skel-base);
+  display: grid;
+  grid-template-rows: 110px auto;
+  gap: 10px;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+.we-skel--card .we-skel__img {
+  background: linear-gradient(135deg, #e9dec6 0%, #f4e9d2 100%);
+  position: relative;
+  overflow: hidden;
+}
+.we-skel--card .we-skel__img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    100deg,
+    transparent 0%,
+    transparent 30%,
+    rgba(255,255,255,0.55) 50%,
+    transparent 70%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  background-position: -100% 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .we-skel--card .we-skel__img::after {
+    animation: we-skel-shimmer 1400ms linear infinite;
+  }
+}
+.we-skel--card .we-skel__body {
+  padding: 10px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.we-skel--card .we-skel__line {
+  height: 12px;
+  border-radius: 6px;
+  background: #e9dec6;
+}
+.we-skel--card .we-skel__line.is-title { width: 70%; height: 16px; }
+.we-skel--card .we-skel__line.is-meta  { width: 45%; height: 10px; }
+
+/* ---------- Spot Card Skeleton ---------- */
+.we-skel--spot {
+  width: 100%;
+  max-width: 320px;
+  height: 92px;
+  border-radius: 14px;
+  background: var(--skel-base);
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 12px;
+  padding: 10px;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+.we-skel--spot .we-skel__thumb {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #e9dec6 0%, #f4e9d2 100%);
+}
+.we-skel--spot .we-skel__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.we-skel--spot .we-skel__lines > span {
+  display: block;
+  height: 10px;
+  border-radius: 5px;
+  background: #e9dec6;
+}
+.we-skel--spot .we-skel__lines > span:nth-child(1) { width: 70%; height: 13px; }
+.we-skel--spot .we-skel__lines > span:nth-child(2) { width: 50%; }
+.we-skel--spot .we-skel__lines > span:nth-child(3) { width: 35%; }
+
+/* ---------- Stop List Item Skeleton ---------- */
+.we-skel--stop {
+  width: 100%;
+  min-height: 56px;
+  border-radius: 12px;
+  background: var(--skel-base);
+  display: grid;
+  grid-template-columns: 28px 1fr 48px;
+  gap: 12px;
+  padding: 12px;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  margin: 6px 0;
+}
+.we-skel--stop .we-skel__num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: #e9dec6;
+}
+.we-skel--stop .we-skel__txt {
+  height: 12px;
+  width: 80%;
+  border-radius: 6px;
+  background: #e9dec6;
+}
+.we-skel--stop .we-skel__chip {
+  width: 48px; height: 22px;
+  border-radius: 999px;
+  background: #e9dec6;
+}
+
+/* ---------- Profile / Stat Skeleton ---------- */
+.we-skel--profile {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  grid-template-rows: auto auto;
+  gap: 6px 14px;
+  align-items: center;
+  background: transparent;
+  padding: 8px 0;
+}
+.we-skel--profile .we-skel__avatar {
+  grid-row: 1 / span 2;
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: var(--skel-base);
+  position: relative;
+  overflow: hidden;
+}
+.we-skel--profile .we-skel__name {
+  height: 14px; width: 55%;
+  border-radius: 6px;
+  background: var(--skel-base);
+}
+.we-skel--profile .we-skel__meta {
+  height: 11px; width: 35%;
+  border-radius: 6px;
+  background: var(--skel-base);
+}
+
+.we-skel--stat {
+  display: inline-block;
+  height: 26px;
+  width: 64px;
+  border-radius: 8px;
+  background: var(--skel-base);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------- Map Skeleton ---------- */
+.we-skel--map {
+  width: 100%;
+  height: 220px;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 60% 40% at 30% 50%, rgba(212,166,74,0.18), transparent 70%),
+    radial-gradient(ellipse 50% 30% at 70% 60%, rgba(11,37,69,0.10), transparent 70%),
+    linear-gradient(135deg, #ece2cf 0%, #f4ead4 50%, #e6dac0 100%);
+}
+.we-skel--map::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(transparent 49.5%, rgba(11,37,69,0.06) 50%, transparent 50.5%),
+    linear-gradient(90deg, transparent 49.5%, rgba(11,37,69,0.06) 50%, transparent 50.5%);
+  background-size: 32px 32px;
+  opacity: 0.6;
+}
+.we-skel--map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    100deg,
+    transparent 0%,
+    transparent 30%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 70%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  background-position: -100% 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .we-skel--map::after {
+    animation: we-skel-shimmer 1800ms linear infinite;
+  }
+}
+
+/* ---------- Grouped wrapper helper ---------- */
+.we-skel-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.we-skel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+/* ---------- A11y: announce loading state via aria-busy on container ---------- */
+[aria-busy="true"] > .we-skel,
+[aria-busy="true"] .we-skel { /* no-op, just documenting the pattern */ }
