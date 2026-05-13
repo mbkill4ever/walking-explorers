@@ -1,0 +1,181 @@
+<!--
+  Walking Explorers v0.7 — AI Route Generator
+  Self-contained markup. Mounted by ai-route.js into a container element.
+  Owned by: ai-route agent (v07_03).
+  No external dependencies. Inter is assumed available; fallback in CSS.
+-->
+<div class="we-air" role="dialog" aria-modal="true" aria-labelledby="we-air-title" data-step="1">
+
+  <!-- Skyline silhouette decoration (top-left) -->
+  <svg class="we-air__skyline" viewBox="0 0 320 120" aria-hidden="true" focusable="false">
+    <path d="M0,120 L0,80 L18,80 L18,60 L34,60 L34,90 L52,90 L52,40 L60,40 L60,30 L68,30 L68,40 L84,40 L84,70 L102,70 L102,50 L120,50 L120,75 L138,75 L138,35 L146,35 L146,20 L154,20 L154,35 L172,35 L172,65 L190,65 L190,85 L208,85 L208,55 L226,55 L226,80 L244,80 L244,45 L262,45 L262,70 L280,70 L280,90 L300,90 L300,60 L320,60 L320,120 Z"/>
+  </svg>
+
+  <!-- Step indicator -->
+  <div class="we-air__steps" aria-hidden="true">
+    <span class="we-air__step is-on" data-dot="1"></span>
+    <span class="we-air__step" data-dot="2"></span>
+    <span class="we-air__step" data-dot="3"></span>
+    <span class="we-air__step" data-dot="4"></span>
+  </div>
+
+  <!-- Back button (hidden on step 1) -->
+  <button type="button" class="we-air__back" data-action="back" aria-label="Go back" hidden>
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+      <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Back</span>
+  </button>
+
+  <!-- Close button -->
+  <button type="button" class="we-air__close" data-action="close" aria-label="Close">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+      <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </button>
+
+  <div class="we-air__stage">
+
+    <!-- ============== STEP 1 — Time available ============== -->
+    <section class="we-air__panel is-active" data-panel="1" aria-labelledby="we-air-h1">
+      <div class="we-air__inner">
+        <p class="we-air__eyebrow">STEP 1 OF 4</p>
+        <h1 id="we-air-h1" class="we-air__h1">How much time do you have?</h1>
+        <p class="we-air__sub">Pick one. We&rsquo;ll size the route to fit.</p>
+
+        <div class="we-air__chips" role="radiogroup" aria-label="Time available">
+          <button type="button" class="we-air__chip" role="radio" aria-checked="false" data-time="30">30 min</button>
+          <button type="button" class="we-air__chip" role="radio" aria-checked="false" data-time="60">60 min</button>
+          <button type="button" class="we-air__chip" role="radio" aria-checked="false" data-time="90">90 min</button>
+          <button type="button" class="we-air__chip" role="radio" aria-checked="false" data-time="120">2 h</button>
+          <button type="button" class="we-air__chip we-air__chip--wide" role="radio" aria-checked="false" data-time="flexible">I&rsquo;ll decide as I walk</button>
+        </div>
+
+        <div class="we-air__cta-row">
+          <button type="button" class="we-air__btn we-air__btn--primary" data-action="next" data-needs="time" disabled>Continue &rarr;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== STEP 2 — Mood pills ============== -->
+    <section class="we-air__panel" data-panel="2" aria-labelledby="we-air-h2" hidden>
+      <div class="we-air__inner">
+        <p class="we-air__eyebrow">STEP 2 OF 4</p>
+        <h1 id="we-air-h2" class="we-air__h1">What&rsquo;s your mood today?</h1>
+        <p class="we-air__sub">Pick a few. We&rsquo;ll lean the route that way.</p>
+
+        <div class="we-air__pills" role="group" aria-label="Walking moods">
+          <button type="button" class="we-air__pill" data-mood="coffee">Coffee</button>
+          <button type="button" class="we-air__pill" data-mood="hidden_gems">Hidden gems</button>
+          <button type="button" class="we-air__pill" data-mood="photo_spots">Photo spots</button>
+          <button type="button" class="we-air__pill" data-mood="architecture">Architecture</button>
+          <button type="button" class="we-air__pill" data-mood="food">Food</button>
+          <button type="button" class="we-air__pill" data-mood="art">Art</button>
+          <button type="button" class="we-air__pill" data-mood="nature">Nature</button>
+          <button type="button" class="we-air__pill" data-mood="books">Books</button>
+          <button type="button" class="we-air__pill" data-mood="sunset">Sunset</button>
+          <button type="button" class="we-air__pill" data-mood="date">Date-worthy</button>
+        </div>
+
+        <div class="we-air__cta-row">
+          <button type="button" class="we-air__btn we-air__btn--primary" data-action="next" data-needs="mood" disabled>Continue &rarr;</button>
+        </div>
+        <button type="button" class="we-air__link" data-action="skip-step">Skip</button>
+      </div>
+    </section>
+
+    <!-- ============== STEP 3 — Starting point ============== -->
+    <section class="we-air__panel" data-panel="3" aria-labelledby="we-air-h3" hidden>
+      <div class="we-air__inner">
+        <p class="we-air__eyebrow">STEP 3 OF 4</p>
+        <h1 id="we-air-h3" class="we-air__h1">Where are you starting?</h1>
+        <p class="we-air__sub">Your location stays on your device. We&rsquo;ll use it to plan the loop.</p>
+
+        <div class="we-air__origin">
+          <button type="button" class="we-air__origin-btn is-on" data-origin-mode="geo">
+            <span class="we-air__origin-icon" aria-hidden="true">
+              <span class="we-air__pin-dot"></span>
+              <span class="we-air__pin-ring"></span>
+            </span>
+            <span class="we-air__origin-text">
+              <strong>Use my current location</strong>
+              <em data-origin-status>We&rsquo;ll ask your browser when you continue</em>
+            </span>
+          </button>
+
+          <button type="button" class="we-air__origin-btn" data-origin-mode="nbhd">
+            <span class="we-air__origin-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20"><path d="M3 21V8l9-5 9 5v13M9 21v-7h6v7" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="we-air__origin-text">
+              <strong>Pick a neighborhood</strong>
+              <em>Choose from the dropdown below</em>
+            </span>
+          </button>
+
+          <label class="we-air__nbhd-wrap" data-nbhd-wrap hidden>
+            <span class="we-air__nbhd-label">Starting neighborhood</span>
+            <select class="we-air__nbhd-select" data-nbhd>
+              <option value="">Choose a neighborhood&hellip;</option>
+              <option value="soho">SoHo</option>
+              <option value="ev">East Village</option>
+              <option value="westvillage">West Village</option>
+              <option value="chelsea">Chelsea</option>
+              <option value="williamsburg">Williamsburg</option>
+              <option value="dumbo">DUMBO</option>
+              <option value="centralpark">Central Park / Upper Manhattan</option>
+              <option value="les">Lower East Side</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="we-air__cta-row">
+          <button type="button" class="we-air__btn we-air__btn--primary" data-action="next" data-needs="origin">Continue &rarr;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== STEP 4 — Final twist ============== -->
+    <section class="we-air__panel" data-panel="4" aria-labelledby="we-air-h4" hidden>
+      <div class="we-air__inner">
+        <p class="we-air__eyebrow">STEP 4 OF 4</p>
+        <h1 id="we-air-h4" class="we-air__h1">Anything else?</h1>
+        <p class="we-air__sub">Optional. One line. We&rsquo;ll factor it in.</p>
+
+        <label class="we-air__field">
+          <span class="we-air__field-label">Add a twist (optional)</span>
+          <input type="text" class="we-air__input" data-freetext maxlength="240" placeholder="e.g. avoid crowds, dog-friendly, looking for vinyl shops" />
+        </label>
+
+        <div class="we-air__cta-row">
+          <button type="button" class="we-air__btn we-air__btn--primary we-air__btn--generate" data-action="generate">
+            <span class="we-air__btn-label">Generate my walk &rarr;</span>
+          </button>
+        </div>
+        <button type="button" class="we-air__link" data-action="generate">Skip &mdash; just generate</button>
+      </div>
+    </section>
+
+    <!-- ============== Loading overlay ============== -->
+    <section class="we-air__panel we-air__panel--loading" data-panel="loading" aria-live="polite" hidden>
+      <div class="we-air__loader">
+        <div class="we-air__sun" aria-hidden="true"></div>
+        <p class="we-air__loader-line">Reading the city for you<span class="we-air__dots"><span>.</span><span>.</span><span>.</span></span></p>
+        <p class="we-air__loader-sub" data-loader-sub>Picking stops near you</p>
+      </div>
+    </section>
+
+    <!-- ============== Error state ============== -->
+    <section class="we-air__panel we-air__panel--error" data-panel="error" hidden>
+      <div class="we-air__inner">
+        <p class="we-air__eyebrow we-air__eyebrow--warn">SOMETHING BROKE</p>
+        <h1 class="we-air__h1">We couldn&rsquo;t draft your walk.</h1>
+        <p class="we-air__sub" data-error-msg>Network glitch &mdash; try once more.</p>
+        <div class="we-air__cta-row">
+          <button type="button" class="we-air__btn we-air__btn--primary" data-action="retry">Try again</button>
+        </div>
+        <button type="button" class="we-air__link" data-action="close">Close</button>
+      </div>
+    </section>
+  </div>
+</div>
