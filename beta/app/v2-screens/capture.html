@@ -1,0 +1,328 @@
+<!--
+  Walking Explorers v2 — Photo Capture Screen
+  Owned exclusively by the photo-capture redesign agent.
+  This markup is injected (or included) into the app shell and controlled by
+  /beta/app/v2-screens/capture.js. Do NOT edit from any other agent.
+
+  Flow: Capture -> Edit (filter/sticker/caption) -> Tag (mood/rating/GPS) -> Save.
+  Style tokens are inherited from the v2 design-system / motion layer.
+  Animations gated by prefers-reduced-motion in capture.css.
+-->
+<div
+  class="capture-screen"
+  id="captureV2"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="capV2Title"
+  aria-describedby="capV2Sub"
+  aria-hidden="true"
+  hidden
+>
+  <!-- ─────────────────────────────────────────────────────────────────────
+       Top bar — close + title + step indicator
+       ───────────────────────────────────────────────────────────────────── -->
+  <header class="capture-topbar">
+    <button
+      type="button"
+      class="capture-close"
+      id="capV2Close"
+      aria-label="Close capture"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <div class="capture-title-block">
+      <h1 class="capture-title" id="capV2Title">Save this spot</h1>
+      <p class="capture-sub" id="capV2Sub">
+        <span class="capture-stop-name" id="capV2StopName">—</span>
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="capture-skip-photo"
+      id="capV2SkipPhoto"
+      aria-label="Save without photo"
+    >Skip</button>
+  </header>
+
+  <!-- ─────────────────────────────────────────────────────────────────────
+       Photo preview area (4:5 aspect, fills available space)
+       ───────────────────────────────────────────────────────────────────── -->
+  <section class="capture-photo-area" aria-label="Photo preview">
+
+    <!-- Empty state: tap to capture -->
+    <label
+      class="capture-empty-state"
+      id="capV2EmptyState"
+      for="capV2FileInput"
+    >
+      <span class="capture-empty-ring" aria-hidden="true">
+        <svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M4 7h3l2-2h6l2 2h3a1 1 0 011 1v11a1 1 0 01-1 1H4a1 1 0 01-1-1V8a1 1 0 011-1z" stroke="currentColor" stroke-width="1.6" fill="none"/>
+          <circle cx="12" cy="13" r="3.5" stroke="currentColor" stroke-width="1.6" fill="none"/>
+        </svg>
+      </span>
+      <span class="capture-empty-label">Tap to capture</span>
+      <span class="capture-empty-hint">A single photo is enough</span>
+    </label>
+
+    <!-- Filled state: photo preview with filter applied via CSS class -->
+    <div class="capture-photo-frame filter-none" id="capV2PhotoFrame" hidden>
+      <img
+        class="capture-photo-img"
+        id="capV2PhotoImg"
+        alt="Captured spot photo"
+        decoding="async"
+      />
+      <!-- Sticker overlay layer -->
+      <div
+        class="capture-sticker-layer"
+        id="capV2StickerLayer"
+        aria-label="Stickers on photo"
+        role="group"
+      ></div>
+      <!-- Success glow border (animated) -->
+      <div class="capture-success-glow" id="capV2SuccessGlow" aria-hidden="true"></div>
+      <!-- Sparkle burst svg holder -->
+      <div class="capture-sparkle-burst" id="capV2SparkleBurst" aria-hidden="true"></div>
+    </div>
+
+    <!-- Camera flash overlay (re-used from motion.css .capture-flash) -->
+    <div class="capture-flash" id="capV2Flash" aria-hidden="true"></div>
+
+    <!-- Hidden file input (drives the capture). Real camera open via capture attr. -->
+    <input
+      type="file"
+      id="capV2FileInput"
+      class="capture-file-input"
+      accept="image/*"
+      capture="environment"
+      aria-label="Photo file"
+    />
+
+    <!-- Top-right photo actions (only when a photo is present) -->
+    <div class="capture-photo-actions" id="capV2PhotoActions" hidden>
+      <button
+        type="button"
+        class="capture-icon-btn"
+        id="capV2Retake"
+        aria-label="Retake photo"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M20 11a8 8 0 10-2.3 5.6M20 4v6h-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="capture-icon-btn"
+        id="capV2StickerToggle"
+        aria-label="Add sticker"
+        aria-expanded="false"
+        aria-controls="capV2StickerTray"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <circle cx="9.5" cy="10.5" r="1" fill="currentColor"/>
+          <circle cx="14.5" cy="10.5" r="1" fill="currentColor"/>
+          <path d="M9 15c.8.9 1.9 1.4 3 1.4S14.2 15.9 15 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Sticker tray (popover over photo) -->
+    <div
+      class="capture-sticker-tray"
+      id="capV2StickerTray"
+      role="menu"
+      aria-label="Choose a sticker"
+      hidden
+    >
+      <button type="button" class="sticker-opt" data-sticker="nbhd" role="menuitem">
+        <span class="sticker-glyph" aria-hidden="true">🗽</span>
+        <span class="sticker-label">Nbhd</span>
+      </button>
+      <button type="button" class="sticker-opt" data-sticker="route" role="menuitem">
+        <span class="sticker-glyph" aria-hidden="true">🧭</span>
+        <span class="sticker-label">Route</span>
+      </button>
+      <button type="button" class="sticker-opt" data-sticker="weather" role="menuitem">
+        <span class="sticker-glyph" aria-hidden="true">☀️</span>
+        <span class="sticker-label">Sunny</span>
+      </button>
+      <button type="button" class="sticker-opt" data-sticker="time" role="menuitem">
+        <span class="sticker-glyph" aria-hidden="true">🌇</span>
+        <span class="sticker-label">Golden</span>
+      </button>
+      <button type="button" class="sticker-opt" data-sticker="heart" role="menuitem">
+        <span class="sticker-glyph" aria-hidden="true">💛</span>
+        <span class="sticker-label">Love</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────────────
+       Filter strip (sits above the bottom sheet, glass-blur background)
+       ───────────────────────────────────────────────────────────────────── -->
+  <div
+    class="capture-filters"
+    id="capV2Filters"
+    role="radiogroup"
+    aria-label="Photo filter"
+  >
+    <button
+      type="button"
+      class="filter-chip selected"
+      role="radio"
+      aria-checked="true"
+      data-filter="none"
+    >
+      <span class="thumb filter-none" aria-hidden="true"></span>
+      <span class="label">None</span>
+    </button>
+    <button
+      type="button"
+      class="filter-chip"
+      role="radio"
+      aria-checked="false"
+      data-filter="navy"
+    >
+      <span class="thumb filter-navy" aria-hidden="true"></span>
+      <span class="label">Navy</span>
+    </button>
+    <button
+      type="button"
+      class="filter-chip"
+      role="radio"
+      aria-checked="false"
+      data-filter="editorial"
+    >
+      <span class="thumb filter-editorial" aria-hidden="true"></span>
+      <span class="label">Editorial</span>
+    </button>
+    <button
+      type="button"
+      class="filter-chip"
+      role="radio"
+      aria-checked="false"
+      data-filter="cream"
+    >
+      <span class="thumb filter-cream" aria-hidden="true"></span>
+      <span class="label">Cream</span>
+    </button>
+    <button
+      type="button"
+      class="filter-chip"
+      role="radio"
+      aria-checked="false"
+      data-filter="punch"
+    >
+      <span class="thumb filter-punch" aria-hidden="true"></span>
+      <span class="label">Punch</span>
+    </button>
+  </div>
+
+  <!-- ─────────────────────────────────────────────────────────────────────
+       Bottom sheet — caption + moods + rating + GPS strip + Save
+       ───────────────────────────────────────────────────────────────────── -->
+  <section
+    class="capture-sheet"
+    id="capV2Sheet"
+    aria-label="Tag this spot"
+  >
+    <button
+      type="button"
+      class="capture-sheet-handle"
+      id="capV2SheetHandle"
+      aria-label="Expand or collapse details"
+      aria-expanded="true"
+      aria-controls="capV2SheetBody"
+    >
+      <span class="handle-bar" aria-hidden="true"></span>
+    </button>
+
+    <div class="capture-sheet-body" id="capV2SheetBody">
+
+      <!-- Caption input -->
+      <label class="capture-caption-label" for="capV2Caption">
+        <span class="visually-hidden">Caption</span>
+        <textarea
+          id="capV2Caption"
+          class="capture-caption"
+          rows="2"
+          maxlength="240"
+          placeholder="Quick note about this spot…"
+          aria-label="Quick note about this spot"
+        ></textarea>
+        <span class="capture-caption-count" id="capV2CaptionCount" aria-live="polite">0 / 240</span>
+      </label>
+
+      <!-- GPS + time strip -->
+      <div class="capture-meta-strip" aria-label="Location and time">
+        <div class="meta-chip" id="capV2GpsChip" data-state="pending">
+          <span class="meta-icon" aria-hidden="true">📍</span>
+          <span class="meta-text" id="capV2GpsText">Locating…</span>
+        </div>
+        <div class="meta-chip" id="capV2TimeChip">
+          <span class="meta-icon" aria-hidden="true">🕐</span>
+          <span class="meta-text" id="capV2TimeText">—</span>
+        </div>
+      </div>
+
+      <!-- Mood pills -->
+      <fieldset class="capture-mood-group" id="capV2MoodGroup">
+        <legend class="capture-section-label">Mood</legend>
+        <div class="mood-pills" role="group" aria-label="Mood tags">
+          <button type="button" class="mood-pill" data-mood="Photogenic" aria-pressed="false">Photogenic</button>
+          <button type="button" class="mood-pill" data-mood="Cozy" aria-pressed="false">Cozy</button>
+          <button type="button" class="mood-pill" data-mood="Quiet" aria-pressed="false">Quiet</button>
+          <button type="button" class="mood-pill" data-mood="Buzzy" aria-pressed="false">Buzzy</button>
+          <button type="button" class="mood-pill" data-mood="Hidden gem" aria-pressed="false">Hidden gem</button>
+          <button type="button" class="mood-pill" data-mood="Worth a return" aria-pressed="false">Worth a return</button>
+          <button type="button" class="mood-pill" data-mood="Friend would love" aria-pressed="false">Friend would love</button>
+        </div>
+      </fieldset>
+
+      <!-- Rating row -->
+      <fieldset class="capture-rating-group">
+        <legend class="capture-section-label">Revisit</legend>
+        <div class="rating-pills" role="radiogroup" aria-label="Revisit rating" id="capV2Rating">
+          <button type="button" class="rating-pill rating-1" role="radio" aria-checked="false" data-rating="1" aria-label="One star, low priority">★</button>
+          <button type="button" class="rating-pill rating-2" role="radio" aria-checked="false" data-rating="2" aria-label="Two stars">★★</button>
+          <button type="button" class="rating-pill rating-3" role="radio" aria-checked="false" data-rating="3" aria-label="Three stars, good">★★★</button>
+          <button type="button" class="rating-pill rating-4" role="radio" aria-checked="false" data-rating="4" aria-label="Four stars, must return">★★★★</button>
+        </div>
+      </fieldset>
+
+      <!-- Save block -->
+      <div class="capture-save-block">
+        <button
+          type="button"
+          class="capture-save-btn"
+          id="capV2Save"
+          data-motion="btn"
+        >
+          Save to my city
+        </button>
+
+        <label class="capture-archive-toggle">
+          <input
+            type="checkbox"
+            id="capV2ArchiveToggle"
+            checked
+            aria-describedby="capV2ArchiveHint"
+          />
+          <span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span>
+          <span class="toggle-text">Add to my route's archive</span>
+          <span class="visually-hidden" id="capV2ArchiveHint">When on, this spot is also pinned to the current route's archive.</span>
+        </label>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Polite live region for screen-reader announcements -->
+  <div class="visually-hidden" aria-live="polite" id="capV2Live"></div>
+</div>
