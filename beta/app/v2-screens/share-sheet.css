@@ -1,0 +1,419 @@
+/* ==========================================================================
+   Walking Explorers v0.7 — Social Share Sheet
+   --------------------------------------------------------------------------
+   Owner: social-sharing agent (v07_07)
+   Path:  /beta/app/v2-screens/share-sheet.css
+   Tokens: /tokens.css — never inline navy/gold/cream/eases here.
+   Scope:  everything under .we-share — no global resets.
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   1. Root container (covers viewport when open)
+   -------------------------------------------------------------------------- */
+
+.we-share {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--color-navy-100);
+}
+
+.we-share[hidden] { display: none !important; }
+
+
+/* --------------------------------------------------------------------------
+   2. Backdrop — dark dim, click-to-close
+   -------------------------------------------------------------------------- */
+
+.we-share__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 19, 32, 0.55);
+  opacity: 0;
+  transition: opacity 200ms var(--ease-out);
+  -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
+}
+.we-share.is-open .we-share__backdrop { opacity: 1; }
+
+
+/* --------------------------------------------------------------------------
+   3. The sheet itself — slides up from bottom
+   -------------------------------------------------------------------------- */
+
+.we-share__sheet {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  max-height: 92vh;
+  background: var(--color-cream);
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  box-shadow: var(--shadow-3);
+  padding:
+    var(--space-3)
+    var(--space-5)
+    max(env(safe-area-inset-bottom), var(--space-5));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  transform: translateY(100%);
+  transition: transform 260ms var(--ease-out);
+  isolation: isolate;
+}
+.we-share.is-open .we-share__sheet { transform: translateY(0); }
+
+
+/* --------------------------------------------------------------------------
+   4. Drag handle
+   -------------------------------------------------------------------------- */
+
+.we-share__handle {
+  display: block;
+  width: 100%;
+  padding: var(--space-2) 0;
+  margin: 0 0 var(--space-2);
+  background: transparent;
+  border: none;
+  cursor: grab;
+  touch-action: none;
+}
+.we-share__handle span {
+  display: block;
+  width: 48px;
+  height: 5px;
+  margin: 0 auto;
+  background: var(--color-mute-2);
+  border-radius: var(--r-pill);
+  opacity: 0.55;
+}
+.we-share__handle:active { cursor: grabbing; }
+.we-share__handle:focus-visible span {
+  background: var(--color-gold);
+  opacity: 1;
+}
+
+
+/* --------------------------------------------------------------------------
+   5. Header
+   -------------------------------------------------------------------------- */
+
+.we-share__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-4);
+}
+
+.we-share__title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-navy-100);
+  margin: 0;
+
+  /* Truncate ridiculously long titles */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1;
+}
+
+.we-share__close {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-pill);
+  background: rgba(31, 56, 100, 0.08);
+  color: var(--color-navy-100);
+  border: none;
+  cursor: pointer;
+  transition: background-color 160ms var(--ease-out);
+}
+.we-share__close:hover  { background: rgba(31, 56, 100, 0.14); }
+.we-share__close:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+
+/* --------------------------------------------------------------------------
+   6. Preview card
+   -------------------------------------------------------------------------- */
+
+.we-share__preview {
+  margin: 0 0 var(--space-5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.we-share__preview-img {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: var(--color-navy-300);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-2);
+  border: 1px solid rgba(31, 56, 100, 0.08);
+}
+.we-share__preview-img[hidden] { display: none; }
+
+.we-share__preview-cap {
+  font-size: var(--text-sm);
+  color: var(--color-mute);
+  text-align: center;
+  margin: 0;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* --------------------------------------------------------------------------
+   7. Platform grid
+   -------------------------------------------------------------------------- */
+
+.we-share__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  margin: 0 0 var(--space-5);
+}
+
+.we-share__tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 96px;
+  padding: var(--space-3);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--color-line);
+  border-radius: var(--r-md);
+  color: var(--color-navy-100);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    transform 120ms var(--ease-out),
+    background-color 160ms var(--ease-out),
+    border-color 160ms var(--ease-out),
+    box-shadow 200ms var(--ease-out);
+}
+.we-share__tile[hidden] { display: none !important; }
+.we-share__tile:hover {
+  background: #fff;
+  border-color: var(--color-gold-soft);
+  box-shadow: var(--shadow-1);
+}
+.we-share__tile:active { transform: scale(0.97); }
+.we-share__tile:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+.we-share__tile-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-pill);
+  background: var(--color-cream-2);
+  color: var(--color-navy-100);
+}
+
+.we-share__tile-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-navy-100);
+}
+
+/* Brand color washes for instantly-recognizable tiles */
+.we-share__tile--ig    .we-share__tile-icon {
+  background: linear-gradient(135deg, #F58529 0%, #DD2A7B 50%, #8134AF 100%);
+  color: #fff;
+}
+.we-share__tile--x     .we-share__tile-icon {
+  background: var(--color-ink);
+  color: #fff;
+}
+.we-share__tile--wa    .we-share__tile-icon {
+  background: #25D366;
+  color: #fff;
+}
+.we-share__tile--native .we-share__tile-icon,
+.we-share__tile--copy   .we-share__tile-icon,
+.we-share__tile--email  .we-share__tile-icon {
+  background: var(--color-gold);
+  color: var(--color-navy-300);
+}
+
+
+/* --------------------------------------------------------------------------
+   8. Referral block
+   -------------------------------------------------------------------------- */
+
+.we-share__refer {
+  padding: var(--space-4);
+  background: rgba(31, 56, 100, 0.06);
+  border: 1px solid rgba(31, 56, 100, 0.1);
+  border-radius: var(--r-md);
+}
+
+.we-share__refer-label {
+  font-size: var(--text-base);
+  font-weight: 700;
+  margin: 0 0 var(--space-1);
+  color: var(--color-navy-100);
+}
+
+.we-share__refer-hint {
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  margin: 0 0 var(--space-3);
+  color: var(--color-ink-2);
+}
+
+.we-share__refer-row {
+  display: flex;
+  gap: var(--space-2);
+  align-items: stretch;
+}
+
+.we-share__refer-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 var(--space-3);
+  height: 44px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--r-sm);
+  background: #fff;
+  color: var(--color-navy-100);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+.we-share__refer-input:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(224, 179, 65, 0.2);
+}
+
+.we-share__refer-btn {
+  flex: none;
+  padding: 0 var(--space-4);
+  min-height: 44px;
+  background: var(--color-gold);
+  color: var(--color-navy-300);
+  border: none;
+  border-radius: var(--r-sm);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 160ms var(--ease-out),
+    transform 120ms var(--ease-out);
+}
+.we-share__refer-btn:hover  { background: var(--color-gold-soft); }
+.we-share__refer-btn:active { transform: scale(0.97); }
+.we-share__refer-btn:focus-visible {
+  outline: 2px solid var(--color-navy-100);
+  outline-offset: 2px;
+}
+
+
+/* --------------------------------------------------------------------------
+   9. Toast
+   -------------------------------------------------------------------------- */
+
+.we-share__toast {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
+  transform: translate(-50%, 20px);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-navy-300);
+  color: var(--color-cream);
+  border-radius: var(--r-pill);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  box-shadow: var(--shadow-2);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 200ms var(--ease-out),
+    transform 200ms var(--ease-out);
+}
+.we-share__toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+
+/* --------------------------------------------------------------------------
+   10. Responsive — desktop sees a centered modal, not a bottom sheet
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 360px) {
+  .we-share__grid { grid-template-columns: repeat(2, 1fr); }
+  .we-share__tile { min-height: 88px; }
+}
+
+@media (min-width: 768px) {
+  .we-share {
+    align-items: center;
+  }
+  .we-share__sheet {
+    max-width: 460px;
+    border-radius: var(--r-lg);
+    transform: translateY(20px) scale(0.96);
+    opacity: 0;
+    transition:
+      transform 240ms var(--ease-out),
+      opacity   200ms var(--ease-out);
+  }
+  .we-share.is-open .we-share__sheet {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  .we-share__handle { display: none; }
+  .we-share__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+
+/* --------------------------------------------------------------------------
+   11. Reduced motion — kill transitions, instant in/out
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .we-share__backdrop,
+  .we-share__sheet,
+  .we-share__tile,
+  .we-share__toast,
+  .we-share__close,
+  .we-share__refer-btn {
+    transition: none !important;
+  }
+  .we-share__sheet {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
