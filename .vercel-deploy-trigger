@@ -1,7 +1,9 @@
-Deploy trigger marker — last touched 2026-05-13 to nudge Vercel after auto-pause.
+Last touched: 2026-05-13 post-reconnect.
 
-History:
-- 2026-05-08: 3 deploys failed due to invalid runtime in vercel.json
-- 2026-05-08: vercel.json fixed (commit beaba512)
-- 2026-05-13: 15 v2 graphical-polish commits landed (84 photos, motion, icons, illustrations, microcopy, map, loop completion, capture v2, right now card)
-- 2026-05-13: This file added to trigger fresh deploy
+Vercel deploy history:
+- 2026-05-08 14:16: 3 ERROR deploys (679a53b, 6521260, 3b95f5e) — invalid 'runtime: edge' in vercel.json
+- 2026-05-08 14:33: vercel.json fixed (commit beaba512) — not deployed
+- 2026-05-13 04:51-05:17: 15 v2 commits (84 NYC photos, motion, icons, illustrations, microcopy, map, loop completion, capture v2, right now) — not deployed
+- 2026-05-13 05:25: first trigger commit (45330f74) — not deployed
+- 2026-05-13: GitHub integration reconnected by Nova
+- 2026-05-13: This commit — forces fresh deploy from current HEAD
