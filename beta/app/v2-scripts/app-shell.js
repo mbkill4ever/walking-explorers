@@ -342,17 +342,137 @@ const App = {
           ]);
         } catch (e) {}
       }
-      document.getElementById('boot').style.display = 'none';
-      Render.exploreFeed();
-      Nav.switchTab('explore');
-      // Expose state for v2 modules.
+      { const b = document.getElementById('boot'); if (b) b.style.display = 'none'; }
+      // Expose state for v2 modules BEFORE any of them mount.
       window.State = State;
       window.ROUTES = ROUTES;
+      window.PROMOTIONS = PROMOTIONS;
       window.NEIGHBORHOODS = NEIGHBORHOODS;
       window.Nav = Nav;
+      window.Walk = Walk;
+      window.Archive = Archive;
+      window.Render = Render;
       window.Telemetry = Telemetry;
+      window.esc = esc;
+
+      // v0.7 — mount Tab Bar v2 (replaces legacy nav). Failures are tolerated — legacy nav stays as fallback.
+      try { await App._mountTabBar(); }
+      catch (e) { try { console.warn('[v0.7] TabBar v2 mount failed; legacy tab bar enabled', e); } catch(_){} ; try { document.getElementById('tabbar').classList.remove('hidden'); } catch(_){} }
+
+      // v0.7 — Onboarding gate (first-launch only).
+      let didOnboard = false;
+      try {
+        const obMod = await import('/beta/app/v2-screens/onboarding.js').catch(() => null);
+        const Ob = obMod && (obMod.default || obMod.Onboarding);
+        if (Ob && typeof Ob.shouldShow === 'function' && Ob.shouldShow()) {
+          didOnboard = true;
+          Render._track('onboarding_shown', {});
+          const target = document.getElementById('onboarding');
+          if (target) {
+            await Ob.mount(target, {
+              onComplete: () => {
+                try { localStorage.setItem('we_onboarded', '1'); } catch (_) {}
+                Render._track('onboarding_completed', {});
+                Render.exploreFeed();
+                Nav.switchTab('explore');
+              }
+            });
+            // Show the onboarding screen.
+            Nav.go('onboarding');
+          }
+        }
+      } catch (e) { try { console.warn('[v0.7] onboarding failed', e); } catch(_){} }
+
+      Render.exploreFeed();
+      if (!didOnboard) Nav.switchTab('explore');
+
+      // v0.7 — global event wiring (TabBar emits these; AI Route mounts on demand).
+      App._wireV07Events();
     } catch (e) { /* will redirect via API client */ }
   },
+
+  /* v0.7 — Tab Bar v2 mount with full event wiring back into legacy Nav. */
+  async _mountTabBar() {
+    const tbMod = await import('/beta/app/v2-screens/tab-bar-v2.js').catch((e) => { throw e; });
+    const TabBar = tbMod && (tbMod.default || tbMod.TabBar);
+    if (!TabBar || typeof TabBar.mount !== 'function') throw new Error('TabBar module missing');
+    const mountEl = document.getElementById('we-tabbar');
+    if (!mountEl) throw new Error('we-tabbar container missing');
+    TabBar.mount(mountEl, {
+      initialTab: 'explore',
+      onTabChange: (name, meta) => {
+        // Map v2 tab names → legacy Nav targets.
+        if (name === 'explore')      return Nav.switchTab('explore');
+        if (name === 'around')       return Nav.switchTab('around');
+        if (name === 'saved')        return Nav.switchTab('archive');
+        if (name === 'profile')      return; // sheet handled by TabBar itself.
+        if (name === 'walk')         return; // handled via we:start-walk / we:resume-walk
+      },
+      profileActions: {
+        onOffers:    () => Nav.switchTab('offers'),
+        onFeedback:  () => Nav.switchTab('feedback'),
+        onChangelog: () => Nav.switchTab('changelog'),
+        onSettings:  () => { try { Toast && Toast.show('Settings coming soon'); } catch (_) {} },
+        onSignOut:   () => App.signOut()
+      }
+    });
+    window.TabBarV2 = TabBar;
+  },
+
+  /* v0.7 — global custom-event wiring (TabBar/profile-sheet/window-level intents). */
+  _wireV07Events() {
+    // FAB "Start a walk" → AI Route Generator.
+    window.addEventListener('we:start-walk', () => {
+      Render._track('ai_route_opened', { source: 'fab' });
+      Nav.go('airoute');
+    });
+    // FAB "Resume walk" → back into the in-progress walk if we have a current route.
+    window.addEventListener('we:resume-walk', () => {
+      if (State.currentRoute) Nav.go('walk');
+      else Nav.switchTab('explore');
+    });
+    // Profile-sheet event bridges (used when no override given).
+    window.addEventListener('we:open-changelog', () => Nav.switchTab('changelog'));
+    window.addEventListener('we:open-offers',    () => Nav.switchTab('offers'));
+    window.addEventListener('we:open-settings',  () => { try { Toast.show('Settings coming soon'); } catch(_){} });
+
+    // Loop-completion v2 share-button intercept: prefer the new Share module.
+    document.addEventListener('click', async (ev) => {
+      const btn = ev.target && ev.target.closest && ev.target.closest('[data-action="share"]');
+      if (!btn) return;
+      // Only intercept inside the v2 loop-completion screen.
+      const inLoop = !!(btn.closest('.loop-screen') || btn.closest('#loop-v2') || btn.closest('#loop'));
+      if (!inLoop) return;
+      try {
+        const shareMod = await import('/beta/app/v2-scripts/share.js').catch(() => null);
+        const Share = shareMod && (shareMod.default || shareMod.Share);
+        if (!Share || typeof Share.open !== 'function') return; // let native handler run
+        ev.preventDefault();
+        ev.stopPropagation();
+        const r = State.currentRoute || {};
+        const nbhd = NEIGHBORHOODS.find(n => n.id === r.nbhd);
+        const loopData = {
+          title: r.title || 'A Walking Explorers loop',
+          slug: r.id || 'loop',
+          neighborhood: nbhd ? nbhd.name : 'NYC',
+          stops: (r.stops || []).map(s => ({ name: s.name, lat: s.lat, lng: s.lon })),
+          miles: Number(r.miles) || 0,
+          duration: (Number(r.minutes) || 0) * 60
+        };
+        let imageBlob = null;
+        try { imageBlob = await Share.cardFromLoop(loopData); } catch (_) {}
+        await Share.open({
+          title: loopData.title,
+          text: `Just finished "${loopData.title}" — ${loopData.stops.length} stops, ${loopData.miles} mi.`,
+          url: 'https://walkingexplorers.com/beta/app',
+          imageBlob: imageBlob,
+          hashtags: ['walkingexplorers','nyc']
+        });
+        Render._track('loop_shared', { route_id: r.id });
+      } catch (e) { try { console.warn('[v0.7] share intercept failed', e); } catch(_){} }
+    }, true);
+  },
+
   async signOut() {
     try { await API.signOut(); } catch {}
     location.href = '/beta';
@@ -505,6 +625,7 @@ const Capture = {
       await API.spotsSave(body);
       State.walkPhotos++;
       Telemetry.track('spot_saved', { route_id: body.routeId, neighborhood: body.neighborhood, rating: body.rating });
+      try { Render._track && Render._track('spot_saved', { route_id: body.routeId, neighborhood: body.neighborhood, rating: body.rating }); } catch (_) {}
       this.close();
       Toast.show((window.T ? window.T('toasts.spot_saved', 'Spot saved to your Archive') : 'Spot saved to your Archive'));
       // Reload spots, THEN refresh tab badges (fixes race)
@@ -551,6 +672,34 @@ const Archive = {
       if (!confirm('Delete this spot from your Archive?')) return;
       try { await API.spotsDelete(id); State.spots = State.spots.filter(x => x.id !== id); this.closeSpot(); Render.archive(); Render.tabBadges(); Toast.show((window.T ? window.T('toasts.spot_deleted', 'Spot deleted') : 'Spot deleted')); }
       catch { Toast.show((window.T ? window.T('toasts.spot_delete_failed','Failed to delete') : 'Failed to delete')); }
+    };
+    // v0.7 — Share button (dynamically inject if not present yet).
+    let shareBtn = document.getElementById('spotShareBtn');
+    if (!shareBtn) {
+      shareBtn = document.createElement('button');
+      shareBtn.id = 'spotShareBtn';
+      shareBtn.className = 'btn btn-outline btn-block';
+      shareBtn.innerHTML = 'Share this spot';
+      const deleteBtn = document.getElementById('spotDeleteBtn');
+      if (deleteBtn && deleteBtn.parentNode) deleteBtn.parentNode.insertBefore(shareBtn, deleteBtn);
+    }
+    shareBtn.onclick = async () => {
+      try {
+        const mod = await import('/beta/app/v2-scripts/share.js').catch(() => null);
+        const Share = mod && (mod.default || mod.Share);
+        if (!Share) { Toast.show('Share is unavailable'); return; }
+        const spotData = { stopName: s.stopName, neighborhood: (NEIGHBORHOODS.find(n => n.id === s.neighborhood) || {}).name || 'NYC', rating: s.rating, tags: s.tags || [], photo: s.photo, lat: s.lat, lon: s.lon };
+        let imageBlob = null;
+        try { imageBlob = await Share.cardFromSpot(spotData); } catch (_) {}
+        await Share.open({
+          title: spotData.stopName,
+          text: `Found this in ${spotData.neighborhood}: ${spotData.stopName}. Saved on Walking Explorers.`,
+          url: 'https://walkingexplorers.com/beta/app',
+          imageBlob: imageBlob,
+          hashtags: ['walkingexplorers','nyc']
+        });
+        Render._track('spot_shared', { spot_id: id });
+      } catch (e) { try { console.warn('[v0.7] spot share failed', e); } catch(_){} }
     };
     ModalLock.open(document.getElementById('spotModal'));
   },
@@ -617,10 +766,65 @@ const Promotions = {
 
 /* ===== Walk ===== */
 const Walk = {
+  /* v0.7 — live GPS tracker instance (null when not active). */
+  _tracker: null,
+  _trackerSummary: null,
   start() {
     State.walkIdx = 0; State.walkPhotos = 0;
     Telemetry.track('walk_started', { route_id: State.currentRoute && State.currentRoute.id });
+    Render._track('walk_started', { route_id: State.currentRoute && State.currentRoute.id });
+    // Mark active-walk in localStorage so TabBar FAB shows resume mode.
+    try { if (State.currentRoute) localStorage.setItem('we_active_walk_id', State.currentRoute.id); } catch (_) {}
+    try { window.dispatchEvent(new CustomEvent('we:active-walk-changed')); } catch (_) {}
     Nav.go('walk');
+    // Kick off live tracker — non-blocking. If geolocation is denied, the tracker
+    // returns a stub and we silently continue with the legacy stop-by-stop flow.
+    Walk._startTracker();
+  },
+  async _startTracker() {
+    if (Walk._tracker) { try { Walk._tracker.stop(); } catch (_) {} Walk._tracker = null; }
+    const route = State.currentRoute;
+    if (!route || !route.stops || !route.stops.length) return;
+    try {
+      const mod = await import('/beta/app/v2-scripts/walk-tracker.js').catch((e) => { throw e; });
+      const wt = mod && mod.default && mod.default.start;
+      if (typeof wt !== 'function') return;
+      // Make sure Leaflet is loaded (the tracker requires window.L).
+      try { await LeafletLoader.load(); } catch (_) { return; }
+      const mapEl = document.getElementById('wMap');
+      if (!mapEl) return;
+      mapEl.style.display = '';
+      const result = await wt({
+        route: route,
+        mapElement: mapEl,
+        onProximity: (stopIdx, dist) => {
+          Render._track('walk_proximity', { route_id: route.id, stop_idx: stopIdx, dist_m: Math.round(dist) });
+        },
+        onArrival: (stopIdx) => {
+          Render._track('walk_stop_advanced', { route_id: route.id, stop_idx: stopIdx, source: 'tracker' });
+          if (stopIdx > State.walkIdx) { State.walkIdx = stopIdx; Walk.renderStop(); }
+          const flash = document.querySelector('.stop-photo-frame .flash');
+          if (flash) { flash.classList.add('on'); setTimeout(() => flash.classList.remove('on'), 240); }
+        },
+        onProgress: (summary) => { Walk._trackerSummary = summary; },
+        onPositionUpdate: () => { /* reserved */ }
+      });
+      // result is the public api when ok:true, or a stub when ok:false.
+      if (result && result.ok) { Walk._tracker = result; }
+      else { Walk._tracker = result || null; mapEl.style.display = 'none'; }
+    } catch (e) {
+      try { console.warn('[v0.7] walk-tracker start failed', e); } catch(_){}
+      const mapEl = document.getElementById('wMap'); if (mapEl) mapEl.style.display = 'none';
+    }
+  },
+  _stopTracker() {
+    if (!Walk._tracker) return;
+    try { Walk._trackerSummary = Walk._tracker.getSummary && Walk._tracker.getSummary(); } catch (_) {}
+    try { Walk._tracker.stop && Walk._tracker.stop(); } catch (_) {}
+    Walk._tracker = null;
+    try { localStorage.removeItem('we_active_walk_id'); } catch (_) {}
+    try { window.dispatchEvent(new CustomEvent('we:active-walk-changed')); } catch (_) {}
+    const mapEl = document.getElementById('wMap'); if (mapEl) mapEl.style.display = 'none';
   },
   renderStop() {
     const r = State.currentRoute; if (!r) return Nav.switchTab('explore');
@@ -650,17 +854,26 @@ const Walk = {
   async next() {
     const r = State.currentRoute;
     if (State.walkIdx === r.stops.length - 1) {
+      Render._track('walk_stop_advanced', { route_id: r.id, stop_idx: State.walkIdx, source: 'manual', final: true });
+      Walk._stopTracker();
       try { await API.loopsSave({ routeId:r.id, routeTitle:r.title, nbhd:r.nbhd, stops:r.stops.length, miles:r.miles, minutes:r.minutes, photos:State.walkPhotos }); } catch {}
       Telemetry.track('loop_completed', { route_id: r.id, photos: State.walkPhotos });
+      Render._track('loop_completed', { route_id: r.id, photos: State.walkPhotos, tracker_summary: Walk._trackerSummary || null });
       // bump locally so Right Now disappears immediately
       if (State.user) State.user.loops_completed = (State.user.loops_completed || 0) + 1;
       Nav.go('loop');
       const nbhd = NEIGHBORHOODS.find(n => n.id === r.nbhd);
       document.getElementById('loopTitle').textContent = 'Your '+(nbhd ? nbhd.name : 'NYC')+' Loop';
       document.getElementById('loopMeta').textContent = r.title+' · '+r.stops.length+' stops · '+r.miles+' mi';
-    } else { State.walkIdx++; this.renderStop(); }
+    } else {
+      State.walkIdx++;
+      Render._track('walk_stop_advanced', { route_id: r.id, stop_idx: State.walkIdx, source: 'manual' });
+      this.renderStop();
+    }
   },
-  exit() { if (confirm('Exit this walk?')) Nav.switchTab('explore'); }
+  exit() {
+    if (confirm('Exit this walk?')) { Walk._stopTracker(); Nav.switchTab('explore'); }
+  }
 };
 
 /* ===== Feedback ===== */
@@ -698,24 +911,72 @@ const Feedback = {
 
 /* ===== Render ===== */
 const Render = {
+  /* v0.7 — hardened exploreFeed. Even when greeting/RightNow throws (e.g. RightNowV2
+     promise rejection, microcopy partial state, weather API timeout), the 12-card
+     route grid still renders. Each card has its own try/catch so one broken record
+     can't blank the whole feed. */
   exploreFeed() {
-    const greet = document.getElementById('greeting');
-    const hour = new Date().getHours();
-    let g = 'Good morning'; if (hour >= 12 && hour < 17) g = 'Good afternoon'; else if (hour >= 17) g = 'Good evening';
-    greet.textContent = (window.T && window.WE_V2 && window.WE_V2.microcopy) ? window.T('greetings.' + (hour<12?'morning':hour<17?'afternoon':hour<21?'evening':'night'), g + ', explorer') : (g + ', explorer');
-    {const ey = document.getElementById('greetingEyebrow'); if (ey && window.T) ey.textContent = window.T('right_now.eyebrow', 'Today in NYC');}
-    document.getElementById('greetingSub').textContent = (window.T ? window.T('app.tagline', '12 hand-curated NYC routes') : '12 hand-curated NYC routes');
-    RightNow.render();
-    const all = document.getElementById('allList'); all.innerHTML = '';
-    ROUTES.forEach(r => all.appendChild(this._routeCard(r)));
+    // 1) Greeting / right-now. Wrapped in try/catch so it CANNOT block route render.
+    try {
+      const greet = document.getElementById('greeting');
+      if (greet) {
+        const hour = new Date().getHours();
+        let g = 'Good morning'; if (hour >= 12 && hour < 17) g = 'Good afternoon'; else if (hour >= 17) g = 'Good evening';
+        greet.textContent = (window.T && window.WE_V2 && window.WE_V2.microcopy)
+          ? window.T('greetings.' + (hour<12?'morning':hour<17?'afternoon':hour<21?'evening':'night'), g + ', explorer')
+          : (g + ', explorer');
+      }
+      const ey = document.getElementById('greetingEyebrow');
+      if (ey && window.T) ey.textContent = window.T('right_now.eyebrow', 'Today in NYC');
+      const gs = document.getElementById('greetingSub');
+      if (gs) gs.textContent = (window.T ? window.T('app.tagline', '12 hand-curated NYC routes') : '12 hand-curated NYC routes');
+    } catch (e) { try { console.warn('[explore] greeting failed', e); } catch(_){} }
+    try { RightNow.render(); } catch (e) { try { console.warn('[explore] RightNow.render failed', e); } catch(_){} }
+
+    // 2) Route list — the load-bearing render. ALWAYS run, isolate per-card errors.
+    const all = document.getElementById('allList');
+    if (!all) return;
+    try { all.innerHTML = ''; } catch (_) {}
+    let rendered = 0;
+    for (let i = 0; i < ROUTES.length; i++) {
+      try {
+        const card = this._routeCard(ROUTES[i]);
+        if (card) { all.appendChild(card); rendered++; }
+      } catch (e) {
+        try { console.warn('[explore] _routeCard failed for ' + ROUTES[i].id, e); } catch (_) {}
+        // Fallback: minimal text-only card so the user still has SOMETHING to tap.
+        try {
+          const r = ROUTES[i];
+          const fb = document.createElement('div');
+          fb.className = 'route-card motion-fade-up';
+          fb.style.padding = '16px 18px';
+          fb.innerHTML = '<div class="title" style="font-size:17px;font-weight:700;letter-spacing:-0.01em;">'+esc(r.title)+'</div>' +
+            '<div class="desc" style="color:var(--ink-2);font-size:13.5px;margin-top:6px;">'+esc(r.desc || '')+'</div>';
+          fb.onclick = () => { State.currentRoute = r; Render._track('route_viewed', { route_id:r.id, source:'feed_fallback' }); Nav.go('detail'); };
+          all.appendChild(fb); rendered++;
+        } catch (_) {}
+      }
+    }
+    // Dynamic count label (replaces hard-coded "12 routes").
+    const countEl = document.getElementById('countAll');
+    if (countEl) countEl.textContent = rendered + (rendered === 1 ? ' route' : ' routes');
+  },
+  /* v0.7 — track() bridge: prefers WE_T (PostHog v2 module) but always
+     forwards to the legacy Telemetry stub so existing dashboards keep working. */
+  _track(event, props) {
+    try { if (window.WE_T && typeof window.WE_T.track === 'function') window.WE_T.track(event, props || {}); } catch (_) {}
+    try { Telemetry.track(event, props); } catch (_) {}
   },
   _routeCard(r) {
     const nbhd = NEIGHBORHOODS.find(n => n.id === r.nbhd);
     const el = document.createElement('div'); el.className = 'route-card motion-fade-up';
-    const hero = (window.WE_V2 && window.WE_V2.heroFor) ? window.WE_V2.heroFor(r.id) : null;
-    const coverHtml = hero
-      ? '<img class="cover-art" src="' + esc(hero.url) + '" alt="' + esc(hero.alt || r.title) + '" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;">'
-      : '<div class="cover-art" style="' + coverArt(r) + '"></div>';
+    let hero = null;
+    try { hero = (window.WE_V2 && window.WE_V2.heroFor) ? window.WE_V2.heroFor(r.id) : null; } catch (_) {}
+    let coverStyle = '';
+    try { coverStyle = coverArt(r); } catch (_) { coverStyle = 'background:linear-gradient(135deg,#1F3864,#2E75B6);'; }
+    const coverHtml = (hero && hero.url)
+      ? '<img class="cover-art" src="' + esc(hero.url) + '" alt="' + esc(hero.alt || r.title) + '" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\';this.parentNode.style.cssText+=\';'+esc(coverStyle)+'\';">'
+      : '<div class="cover-art" style="' + coverStyle + '"></div>';
     el.innerHTML =
       '<div class="route-cover">' +
         coverHtml +
@@ -731,7 +992,7 @@ const Render = {
       '</div>';
     el.onclick = () => {
       State.currentRoute = r;
-      Telemetry.track('route_viewed', { route_id: r.id, source: 'feed' });
+      Render._track('route_viewed', { route_id: r.id, source: 'feed' });
       Nav.go('detail');
     };
     return el;
@@ -848,6 +1109,17 @@ const Render = {
   },
   changelog() {
     const releases = [
+      { v:'v0.7 — Discovery, generation, social', date:'May 13, 2026', items:[
+        'NEW: Around Me — live GPS map with nearby curated stops and promotional offers',
+        'NEW: AI Route Generator — 4-question flow that generates a personalized walk from the Walk FAB',
+        'NEW: Walk Tracker — live GPS tracking with proximity alerts and auto-advance at each stop',
+        'NEW: Share — IG Stories / X / Web Share API, canvas-rendered share cards for loops and spots',
+        'NEW: Search — mood + duration + neighborhood filters across the curated route library',
+        'NEW: 5-tab navigation with center FAB (Explore / Around / Walk / Saved / Profile)',
+        'NEW: First-launch Onboarding flow — mood, time/distance preferences, optional location',
+        'FIX: Empty Explore feed — Render.exploreFeed now isolates greeting/RightNow errors so the 12 cards always render',
+        'INTERNAL: PostHog + Sentry instrumented via dedicated v2 modules with safe fallbacks'
+      ]},
       { v:'v0.6.1 — Graphical polish & editorial voice', date:'May 13, 2026', items:[
         'Real NYC photography on every route — 84 lazy-loaded images replacing gradient placeholders',
         'Custom SVG icon set (50+) and editorial illustrations (18) replace generic emojis and feather icons',
@@ -915,19 +1187,48 @@ const Render = {
     });
   },
   tabBadges() {
+    // Legacy tab bar (kept for fallback).
     const archiveBtn = document.querySelector('.tabbar button[data-tab="archive"]');
     if (archiveBtn) archiveBtn.classList.toggle('has-dot', !!(State.spots && State.spots.length > 0));
+    // v0.7 — Tab Bar v2 uses "saved" tab name + numeric/dot badge.
+    try {
+      if (window.TabBarV2 && typeof window.TabBarV2.setBadge === 'function') {
+        const n = (State.spots && State.spots.length) || 0;
+        window.TabBarV2.setBadge('saved', n > 0 ? n : null);
+      }
+    } catch (_) {}
   }
 };
 
 /* ===== Navigation ===== */
 const Nav = {
+  /* v0.7 — track which v2 screen module is currently mounted so we can destroy
+     it on tab switch (Around Me, AI Route, Search). */
+  _mounted: { around: false, airoute: false, search: false },
+
   go(id) {
+    // v0.7 — destroy any previously-mounted v2 screen when switching AWAY.
+    try { Nav._unmountV07Modules(id); } catch (_) {}
+
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     const el = document.getElementById(id);
     if (el) el.classList.add('active');
     const tabbar = document.getElementById('tabbar');
-    if (el && el.classList.contains('no-tab')) tabbar.classList.add('hidden'); else tabbar.classList.remove('hidden');
+    if (tabbar) {
+      if (el && el.classList.contains('no-tab')) tabbar.classList.add('hidden'); else tabbar.classList.remove('hidden');
+    }
+    // v0.7 — mirror visibility on the v2 tab bar.
+    const v2bar = document.getElementById('we-tabbar');
+    if (v2bar) v2bar.style.display = (el && el.classList.contains('no-tab')) ? 'none' : '';
+
+    // Map main-tab id → v2 tab-bar name for active highlight.
+    try {
+      if (window.TabBarV2 && typeof window.TabBarV2.setActive === 'function') {
+        const tabMap = { explore:'explore', around:'around', archive:'saved' };
+        if (tabMap[id]) window.TabBarV2.setActive(tabMap[id]);
+      }
+    } catch (_) {}
+
     if (id === 'detail' && State.currentRoute) Render.detail(State.currentRoute);
     if (id === 'walk') Walk.renderStop();
     if (id === 'explore') Render.exploreFeed();
@@ -935,11 +1236,102 @@ const Nav = {
     if (id === 'offers') Render.offers();
     if (id === 'feedback') { Feedback.setType(State.fbType); }
     if (id === 'changelog') Render.changelog();
+    // v0.7 — mount-on-demand for new screens.
+    if (id === 'around')   Nav._mountAround();
+    if (id === 'airoute')  Nav._mountAIRoute();
+    if (id === 'search')   Nav._mountSearch();
     Render.tabBadges();
+    Render._track('tab_switched', { tab: id });
   },
   switchTab(tabId) {
     document.querySelectorAll('.tabbar button').forEach(b => b.classList.toggle('active', b.dataset.tab === tabId));
     this.go(tabId);
+  },
+
+  /* ---------- v0.7 dynamic screen mounts ---------- */
+  async _mountAround() {
+    const host = document.getElementById('around');
+    if (!host) return;
+    try {
+      const mod = await import('/beta/app/v2-screens/around-me.js').catch((e) => { throw e; });
+      const AroundMe = mod && (mod.default || mod.AroundMe);
+      if (!AroundMe || typeof AroundMe.mount !== 'function') throw new Error('AroundMe missing');
+      // Always re-mount fresh so GPS watchers + map start from a clean slate.
+      try { AroundMe.destroy(); } catch (_) {}
+      AroundMe.mount(host);
+      Nav._mounted.around = true;
+      Render._track('around_me_opened', {});
+    } catch (e) {
+      try { console.warn('[v0.7] Around Me mount failed', e); } catch(_){}
+      host.innerHTML = '<div class="archive-empty" style="padding:60px 28px;text-align:center;"><h3>Around Me is loading…</h3><p>Live map is taking longer than expected. Please retry.</p><button class="btn btn-primary" onclick="Nav.switchTab(\'explore\')">Back to Explore</button></div>';
+    }
+  },
+  async _mountAIRoute() {
+    const host = document.getElementById('airoute');
+    if (!host) return;
+    try {
+      const mod = await import('/beta/app/v2-screens/ai-route.js').catch((e) => { throw e; });
+      const AIRoute = mod && (mod.default || mod.AIRoute);
+      if (!AIRoute || typeof AIRoute.mount !== 'function') throw new Error('AIRoute missing');
+      try { AIRoute.destroy(); } catch (_) {}
+      await AIRoute.mount(host, {
+        onGenerated: (route) => {
+          if (!route) return;
+          State.currentRoute = route;
+          try { AIRoute.destroy(); } catch (_) {}
+          Render._track('ai_route_generated', { route_id: route.id || null, stops: (route.stops || []).length });
+          Nav.go('detail');
+        },
+        onClose: () => { try { AIRoute.destroy(); } catch (_) {}; Nav.switchTab('explore'); }
+      });
+      Nav._mounted.airoute = true;
+    } catch (e) {
+      try { console.warn('[v0.7] AI Route mount failed', e); } catch(_){}
+      host.innerHTML = '<div class="archive-empty" style="padding:60px 28px;text-align:center;"><h3>AI Route is unavailable</h3><p>Try again in a moment, or pick a curated route.</p><button class="btn btn-primary" onclick="Nav.switchTab(\'explore\')">Pick a route</button></div>';
+    }
+  },
+  async _mountSearch() {
+    const host = document.getElementById('search');
+    if (!host) return;
+    try {
+      const mod = await import('/beta/app/v2-screens/search.js').catch((e) => { throw e; });
+      const Search = mod && (mod.default || mod.Search);
+      if (!Search || typeof Search.mount !== 'function') throw new Error('Search missing');
+      try { Search.destroy(); } catch (_) {}
+      Search.mount(host, {
+        routes: ROUTES,
+        neighborhoods: NEIGHBORHOODS,
+        promotions: PROMOTIONS,
+        onPick: (route /*, stop */) => {
+          if (!route) return;
+          State.currentRoute = route;
+          try { Search.destroy(); } catch (_) {}
+          Render._track('search_route_picked', { route_id: route.id || null });
+          Nav.go('detail');
+        }
+      });
+      Nav._mounted.search = true;
+    } catch (e) {
+      try { console.warn('[v0.7] Search mount failed', e); } catch(_){}
+      host.innerHTML = '<div class="archive-empty" style="padding:60px 28px;text-align:center;"><h3>Search is loading…</h3><button class="btn btn-primary" onclick="Nav.switchTab(\'explore\')">Back to Explore</button></div>';
+    }
+  },
+
+  _unmountV07Modules(nextId) {
+    // Destroy any mounted module when switching to a DIFFERENT screen.
+    if (Nav._mounted.around && nextId !== 'around') {
+      try { window.AroundMe && window.AroundMe.destroy && window.AroundMe.destroy(); } catch (_) {}
+      Nav._mounted.around = false;
+    }
+    if (Nav._mounted.airoute && nextId !== 'airoute') {
+      // ai-route.js doesn't expose destroy on window; best-effort dynamic import.
+      import('/beta/app/v2-screens/ai-route.js').then(m => { try { (m.default || m).destroy(); } catch(_){} }).catch(()=>{});
+      Nav._mounted.airoute = false;
+    }
+    if (Nav._mounted.search && nextId !== 'search') {
+      try { window.Search && window.Search.destroy && window.Search.destroy(); } catch (_) {}
+      Nav._mounted.search = false;
+    }
   }
 };
 
@@ -986,7 +1378,8 @@ const Nav = {
           });
           // Hide the legacy loop screen but keep nav consistency.
           document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-          document.getElementById('tabbar').classList.add('hidden');
+          { const tb = document.getElementById('tabbar'); if (tb) tb.classList.add('hidden'); }
+          { const v2tb = document.getElementById('we-tabbar'); if (v2tb) v2tb.style.display = 'none'; }
           return;
         } catch (e) { console.warn('[v2 LoopCompletion] failed, falling back', e); }
       }
