@@ -1,0 +1,141 @@
+<!-- ============================================================
+   Walking Explorers v0.7 — Social Share Sheet
+   ------------------------------------------------------------
+   Owner: social-sharing agent (v07_07)
+   Path:  /beta/app/v2-screens/share-sheet.html
+   Loaded by share.js via fetch() and mounted into <body>.
+   Pairs with share-sheet.css. No inline scripts/styles.
+   data-* hooks consumed by share.js:
+     [data-share-close]        click to close
+     [data-share-handle]       drag-to-dismiss handle
+     [data-share-platform]     value: instagram | x | whatsapp | native | copy | email
+     [data-share-preview]      <img> showing rendered card
+     [data-share-caption]      caption under preview
+     [data-share-refer-input]  read-only referral URL input
+     [data-share-refer-copy]   copy referral URL button
+     [data-share-toast]        live region for "Link copied" toasts
+   data-mobile-only / data-native-only — applied to tiles that
+   share.js may hide based on platform support.
+   ============================================================ -->
+<div class="we-share" role="dialog" aria-modal="true" aria-labelledby="we-share-title" hidden>
+
+  <div class="we-share__backdrop" data-share-close></div>
+
+  <div class="we-share__sheet" role="document">
+
+    <button class="we-share__handle" type="button" aria-label="Drag down to dismiss" data-share-handle>
+      <span></span>
+    </button>
+
+    <header class="we-share__head">
+      <h2 class="we-share__title" id="we-share-title">Share this walk</h2>
+      <button class="we-share__close" type="button" aria-label="Close share sheet" data-share-close>
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </header>
+
+    <figure class="we-share__preview">
+      <img class="we-share__preview-img" alt="Share card preview" data-share-preview hidden />
+      <figcaption class="we-share__preview-cap" data-share-caption></figcaption>
+    </figure>
+
+    <div class="we-share__grid" role="group" aria-label="Share to platform">
+
+      <!-- Instagram Stories — mobile-only -->
+      <button class="we-share__tile we-share__tile--ig" type="button"
+              data-share-platform="instagram" data-mobile-only>
+        <span class="we-share__tile-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="we-share__tile-label">Instagram</span>
+      </button>
+
+      <!-- X (Twitter) -->
+      <button class="we-share__tile we-share__tile--x" type="button"
+              data-share-platform="x">
+        <span class="we-share__tile-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </span>
+        <span class="we-share__tile-label">X</span>
+      </button>
+
+      <!-- WhatsApp -->
+      <button class="we-share__tile we-share__tile--wa" type="button"
+              data-share-platform="whatsapp">
+        <span class="we-share__tile-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.6 6.31A8 8 0 0 0 4.5 16l-1 4 4.1-1.07a8 8 0 0 0 12-9.79 8 8 0 0 0-2-2.83zm-5.6 12.2a6.65 6.65 0 0 1-3.4-.92l-.24-.15-2.43.64.65-2.37-.16-.25a6.65 6.65 0 1 1 12.18-3.65 6.6 6.6 0 0 1-6.6 6.7zm3.62-4.97c-.2-.1-1.18-.58-1.36-.65s-.32-.1-.45.1-.52.65-.64.78-.24.15-.44.05a5.4 5.4 0 0 1-1.6-.99 6 6 0 0 1-1.1-1.37c-.12-.2 0-.3.09-.4l.3-.35a1.4 1.4 0 0 0 .2-.33.36.36 0 0 0 0-.35c-.05-.1-.45-1.08-.62-1.48s-.33-.34-.45-.34h-.38a.74.74 0 0 0-.53.25 2.23 2.23 0 0 0-.7 1.65 3.86 3.86 0 0 0 .81 2.06 8.86 8.86 0 0 0 3.4 3 11.4 11.4 0 0 0 1.14.42 2.74 2.74 0 0 0 1.25.08 2.05 2.05 0 0 0 1.34-.95 1.66 1.66 0 0 0 .12-.95c-.05-.08-.18-.13-.38-.23z"/>
+          </svg>
+        </span>
+        <span class="we-share__tile-label">WhatsApp</span>
+      </button>
+
+      <!-- Native Web Share API -->
+      <button class="we-share__tile we-share__tile--native" type="button"
+              data-share-platform="native" data-native-only>
+        <span class="we-share__tile-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v12"/>
+            <path d="M8 7l4-4 4 4"/>
+            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/>
+          </svg>
+        </span>
+        <span class="we-share__tile-label">More</span>
+      </button>
+
+      <!-- Copy link -->
+      <button class="we-share__tile we-share__tile--copy" type="button"
+              data-share-platform="copy">
+        <span class="we-share__tile-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M10 14a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11.41 5.41"/>
+            <path d="M14 10a5 5 0 0 0-7.07 0L4.1 12.83a5 5 0 0 0 7.07 7.07L12.59 18.59"/>
+          </svg>
+        </span>
+        <span class="we-share__tile-label">Copy link</span>
+      </button>
+
+      <!-- Email -->
+      <button class="we-share__tile we-share__tile--email" type="button"
+              data-share-platform="email">
+        <span class="we-share__tile-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="14" rx="2"/>
+            <path d="M3 7l9 6 9-6"/>
+          </svg>
+        </span>
+        <span class="we-share__tile-label">Email</span>
+      </button>
+
+    </div>
+
+    <section class="we-share__refer" aria-labelledby="we-share-refer-label">
+      <h3 class="we-share__refer-label" id="we-share-refer-label">Refer a friend</h3>
+      <p class="we-share__refer-hint">
+        Send this link. They get the app, you both get goodies when referrals ship in v0.8.
+      </p>
+      <div class="we-share__refer-row">
+        <input class="we-share__refer-input"
+               type="text"
+               readonly
+               data-share-refer-input
+               aria-label="Your referral link"
+               value="https://walkingexplorers.com/beta?ref=" />
+        <button class="we-share__refer-btn" type="button" data-share-refer-copy>
+          Copy
+        </button>
+      </div>
+    </section>
+
+    <div class="we-share__toast" role="status" aria-live="polite" data-share-toast></div>
+
+  </div>
+</div>
