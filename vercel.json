@@ -89,7 +89,7 @@
       ]
     },
     {
-      "source": "/(.*)\\.(?:js|css|woff2|woff|ttf|otf|eot|svg|png|jpg|jpeg|gif|webp|avif|ico)",
+      "source": "/:path*.:ext(js|css|woff2|woff|ttf|otf|eot|svg|png|jpg|jpeg|gif|webp|avif|ico)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=86400" }
       ]
