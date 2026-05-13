@@ -156,8 +156,15 @@
       color: var(--error);
       border: 1px solid rgba(179, 38, 30, 0.25);
       border-radius: 8px;
-      padding: 10px 12px;
+      padding: 12px 14px;
       font-size: 14px;
+      line-height: 1.5;
+    }
+    .error-msg strong { display: block; margin-bottom: 4px; font-weight: 600; }
+    .error-msg a {
+      color: var(--error);
+      text-decoration: underline;
+      font-weight: 600;
     }
     .footer {
       text-align: center;
@@ -296,13 +303,91 @@
         welcome.textContent = 'Welcome.';
       }
 
-      function setError(msg) {
-        if (!msg) { errorArea.innerHTML = ''; return; }
-        var div = document.createElement('div');
-        div.className = 'error-msg';
-        div.textContent = msg;
+      var ADMIN_MAILTO_BASE = 'mailto:hello@walkingexplorers.com';
+
+      // Maps API { error } codes to user-facing copy + optional admin CTA.
+      // The shape is { title, body, requestNew (bool) } per case.
+      var ERROR_COPY = {
+        invalid_code: {
+          title: "That code doesn’t look right.",
+          body: "Double-check what you typed — codes are 22 characters, case-sensitive, with no spaces.",
+          requestNew: true
+        },
+        revoked: {
+          title: "This code was revoked.",
+          body: "It can’t be used anymore. If you think this is a mistake, reach out for a fresh one.",
+          requestNew: true
+        },
+        already_claimed: {
+          title: "This invite has already been used.",
+          body: "Each code works once. If you’re already in, you’re probably signed in on another device — otherwise request a new one.",
+          requestNew: true
+        },
+        expired: {
+          title: "This invite has expired.",
+          body: "Codes have an expiry window. Request a fresh one and you’re back in.",
+          requestNew: true
+        },
+        missing_code: {
+          title: "Please enter a code first.",
+          body: "Paste your 22-character invite into the field above.",
+          requestNew: false
+        },
+        bad_code: {
+          title: "That code isn’t the right length.",
+          body: "Valid invites are exactly 22 characters. Re-check the email or message it came in.",
+          requestNew: true
+        },
+        too_many_attempts: {
+          title: "Too many attempts.",
+          body: "For your security we paused this for a minute. Try again shortly.",
+          requestNew: false
+        }
+      };
+
+      var DEFAULT_ERROR = {
+        title: "Couldn’t verify the code.",
+        body: "Try once more. If it keeps failing, reach out and we’ll get you a working invite.",
+        requestNew: true
+      };
+
+      function buildAdminLink(codeAttempted) {
+        var subject = 'Beta invite — need a new code';
+        var bodyLines = [
+          'Hi team,',
+          '',
+          'I tried to claim a beta invite at walkingexplorers.com/beta and it didn’t work.',
+          '',
+          'Code I attempted: ' + (codeAttempted || '(unspecified)'),
+          'Page: https://walkingexplorers.com/beta',
+          '',
+          'Could you send me a fresh code?',
+          '',
+          'Thanks!'
+        ].join('\n');
+        return ADMIN_MAILTO_BASE +
+          '?subject=' + encodeURIComponent(subject) +
+          '&body=' + encodeURIComponent(bodyLines);
+      }
+
+      function setError(copy, codeAttempted) {
+        if (!copy) { errorArea.innerHTML = ''; return; }
         errorArea.innerHTML = '';
-        errorArea.appendChild(div);
+        var box = document.createElement('div');
+        box.className = 'error-msg';
+        var title = document.createElement('strong');
+        title.textContent = copy.title;
+        box.appendChild(title);
+        var body = document.createElement('span');
+        body.textContent = copy.body + ' ';
+        box.appendChild(body);
+        if (copy.requestNew) {
+          var a = document.createElement('a');
+          a.href = buildAdminLink(codeAttempted);
+          a.textContent = 'Request a new code';
+          box.appendChild(a);
+        }
+        errorArea.appendChild(box);
       }
 
       var isSubmitting = false;
@@ -314,7 +399,7 @@
       }
 
       input.addEventListener('input', function () {
-        if (errorArea.firstChild) setError('');
+        if (errorArea.firstChild) setError(null);
         updateCounter();
       });
 
@@ -331,15 +416,15 @@
         }
       }
 
-      function messageForStatus(status) {
-        if (status === 401) return 'Invalid code. Double-check and try again.';
-        if (status === 403) return 'This code has been revoked. Contact hello@walkingexplorers.com.';
-        if (status === 404) return 'No matching invite code found.';
-        if (status === 409) return 'Code already claimed.';
-        if (status === 410) return 'This invite has expired.';
-        if (status === 429) return 'Too many attempts. Please wait a minute and try again.';
-        if (status >= 500) return 'Something went wrong on our end. Please try again in a moment.';
-        return 'Could not verify the code. Please try again.';
+      function copyForResponse(status, payload) {
+        // Prefer the API’s structured error code, fall back to status-based copy.
+        var errKey = payload && payload.error;
+        if (errKey && ERROR_COPY[errKey]) return ERROR_COPY[errKey];
+        if (status === 429) return ERROR_COPY.too_many_attempts;
+        if (status >= 500) {
+          return { title: 'Something went wrong on our end.', body: 'Please try again in a moment.', requestNew: false };
+        }
+        return DEFAULT_ERROR;
       }
 
       form.addEventListener('submit', function (ev) {
@@ -347,11 +432,11 @@
         if (isSubmitting) return;
         var code = input.value.trim();
         if (code.length !== 22) {
-          setError('Invite codes are 22 characters.');
+          setError({ title: 'Codes are exactly 22 characters.', body: 'You entered ' + code.length + '. Please paste the full code.', requestNew: false }, code);
           input.focus();
           return;
         }
-        setError('');
+        setError(null);
         setLoading(true);
 
         var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
@@ -361,26 +446,32 @@
           method: 'POST',
           credentials: 'same-origin',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ token: code }),
+          body: JSON.stringify({ code: code }),
           signal: ctrl ? ctrl.signal : undefined
         }).then(function (res) {
           clearTimeout(timeoutId);
-          if (res.ok) {
+          return res.json().catch(function () { return {}; }).then(function (payload) {
+            return { res: res, payload: payload };
+          });
+        }).then(function (result) {
+          var res = result.res;
+          var payload = result.payload;
+          if (res.ok && payload && payload.ok) {
             try { localStorage.setItem('we_seen', '1'); } catch (e) {}
             window.location.assign('/beta/app');
             return;
           }
           setLoading(false);
-          setError(messageForStatus(res.status));
+          setError(copyForResponse(res.status, payload), code);
           input.focus();
           input.select && input.select();
         }).catch(function (err) {
           clearTimeout(timeoutId);
           setLoading(false);
           if (err && err.name === 'AbortError') {
-            setError('Request timed out. Check your connection and try again.');
+            setError({ title: 'Request timed out.', body: 'Check your connection and try again.', requestNew: false }, code);
           } else {
-            setError('Network error. Check your connection and try again.');
+            setError({ title: 'Network error.', body: 'Check your connection and try again.', requestNew: false }, code);
           }
         });
       });
