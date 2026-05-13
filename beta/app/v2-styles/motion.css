@@ -1,0 +1,404 @@
+/* ============================================================================
+   Walking Explorers v2 — Motion System
+   Owned by: motion-system agent
+   References: Linear, Arc, Things 3, Headspace, Apple Maps, Stripe, Polarsteps
+
+   Philosophy: restraint is the brand voice. Every motion should feel earned.
+   ALL animations are gated by prefers-reduced-motion: no-preference.
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   Tokens — easings & durations
+   ---------------------------------------------------------------------------- */
+:root {
+  /* Easings — physics-inspired, not linear */
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);     /* anticipate-and-settle */
+  --ease-spring:   cubic-bezier(0.5, 1.5, 0.5, 1);    /* slight overshoot */
+  --ease-snap:     cubic-bezier(0.85, 0, 0.15, 1);    /* fast in and out */
+  --ease-glide:    cubic-bezier(0.25, 0.46, 0.45, 0.94); /* gentle */
+
+  /* Durations */
+  --t-instant:   80ms;
+  --t-quick:    160ms;
+  --t-base:     260ms;
+  --t-relaxed:  420ms;
+  --t-cinematic: 700ms;
+
+  /* Brand colour hooks — fallbacks if not provided by the design-system layer */
+  --good-green: #2EBD6B;
+  --good-green-glow: rgba(46, 189, 107, 0.35);
+  --shadow-rest:  0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.05);
+  --shadow-lift:  0 6px 16px rgba(15, 23, 42, 0.10), 0 2px 4px rgba(15, 23, 42, 0.06);
+  --shadow-press: 0 1px 1px rgba(15, 23, 42, 0.08);
+}
+
+/* ----------------------------------------------------------------------------
+   Reduced motion default — every animated affordance opts in via the
+   no-preference query below. This block is the safe baseline.
+   ---------------------------------------------------------------------------- */
+.motion-fade-up,
+.motion-stagger > * {
+  opacity: 1;
+  transform: none;
+}
+
+.parallax-hero {
+  will-change: auto;
+}
+
+/* ============================================================================
+   Animated affordances — only active when the user hasn't requested reduced motion
+   ============================================================================ */
+@media (prefers-reduced-motion: no-preference) {
+
+  /* --------------------------------------------------------------------------
+     1. Page transitions — slide-from-right (forward) / slide-from-left (back)
+     -------------------------------------------------------------------------- */
+  .page {
+    will-change: transform, opacity;
+  }
+  .page-enter-forward {
+    animation: pageEnterForward var(--t-relaxed) var(--ease-out-soft) both;
+  }
+  .page-exit-forward {
+    animation: pageExitForward var(--t-relaxed) var(--ease-out-soft) both;
+  }
+  .page-enter-back {
+    animation: pageEnterBack var(--t-relaxed) var(--ease-out-soft) both;
+  }
+  .page-exit-back {
+    animation: pageExitBack var(--t-relaxed) var(--ease-out-soft) both;
+  }
+  @keyframes pageEnterForward {
+    from { opacity: 0; transform: translate3d(24px, 0, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+  @keyframes pageExitForward {
+    from { opacity: 1; transform: translate3d(0, 0, 0); }
+    to   { opacity: 0; transform: translate3d(-12px, 0, 0); }
+  }
+  @keyframes pageEnterBack {
+    from { opacity: 0; transform: translate3d(-24px, 0, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+  @keyframes pageExitBack {
+    from { opacity: 1; transform: translate3d(0, 0, 0); }
+    to   { opacity: 0; transform: translate3d(12px, 0, 0); }
+  }
+
+  /* --------------------------------------------------------------------------
+     2. Card entries — staggered fade-up. JS sets --motion-delay per child.
+     -------------------------------------------------------------------------- */
+  .motion-fade-up {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+    transition:
+      opacity var(--t-relaxed) var(--ease-out-soft),
+      transform var(--t-relaxed) var(--ease-out-soft);
+    transition-delay: var(--motion-delay, 0ms);
+    will-change: transform, opacity;
+  }
+  .motion-fade-up.is-in {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  /* --------------------------------------------------------------------------
+     3. Card hover — translateY -2px + shadow lift
+     4. Card press — scale 0.985 + shadow compress
+     -------------------------------------------------------------------------- */
+  .card,
+  [data-motion="card"] {
+    transition:
+      transform var(--t-quick) var(--ease-glide),
+      box-shadow var(--t-quick) var(--ease-glide);
+    box-shadow: var(--shadow-rest);
+    will-change: transform;
+  }
+  .card:hover,
+  [data-motion="card"]:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: var(--shadow-lift);
+  }
+  .card:active,
+  [data-motion="card"]:active {
+    transform: scale(0.985);
+    box-shadow: var(--shadow-press);
+    transition-duration: var(--t-instant);
+  }
+
+  /* --------------------------------------------------------------------------
+     5. Photo parallax — hero photos translate at 0.4x scroll speed.
+        Native: animation-timeline: scroll(); fallback handled in motion.js.
+     -------------------------------------------------------------------------- */
+  .parallax-hero {
+    will-change: transform;
+    transform: translate3d(0, var(--parallax-y, 0px), 0);
+  }
+  @supports (animation-timeline: scroll()) {
+    .parallax-hero {
+      animation: parallaxRise linear both;
+      animation-timeline: scroll(nearest);
+      animation-range: entry 0% exit 100%;
+    }
+    @keyframes parallaxRise {
+      from { transform: translate3d(0, 40px, 0); }
+      to   { transform: translate3d(0, -40px, 0); }
+    }
+  }
+
+  /* --------------------------------------------------------------------------
+     6. Button states — press scale, success pulse
+     -------------------------------------------------------------------------- */
+  .btn,
+  [data-motion="btn"] {
+    transition:
+      transform var(--t-quick) var(--ease-snap),
+      background-color var(--t-quick) var(--ease-glide),
+      box-shadow var(--t-quick) var(--ease-glide);
+    will-change: transform;
+  }
+  .btn:active,
+  [data-motion="btn"]:active {
+    transform: scale(0.96);
+    transition-duration: var(--t-instant);
+  }
+  .btn.is-success,
+  [data-motion="btn"].is-success {
+    animation: btnSuccess 600ms var(--ease-spring) both;
+  }
+  @keyframes btnSuccess {
+    0%   { transform: scale(1);    background-color: var(--btn-bg, currentColor); }
+    35%  { transform: scale(1.06); background-color: var(--good-green); }
+    65%  { transform: scale(0.98); background-color: var(--good-green); }
+    100% { transform: scale(1);    background-color: var(--good-green); }
+  }
+
+  /* --------------------------------------------------------------------------
+     7. Tab bar — active indicator slides between tabs, icon outline -> filled
+     -------------------------------------------------------------------------- */
+  .tabbar {
+    position: relative;
+  }
+  .tabbar__indicator {
+    position: absolute;
+    transition:
+      transform var(--t-base) var(--ease-spring),
+      width var(--t-base) var(--ease-spring);
+    will-change: transform, width;
+  }
+  .tab__icon-outline,
+  .tab__icon-filled {
+    transition: opacity var(--t-base) var(--ease-glide),
+                transform var(--t-base) var(--ease-spring);
+  }
+  .tab__icon-filled { opacity: 0; transform: scale(0.85); }
+  .tab.is-active .tab__icon-outline { opacity: 0; transform: scale(0.85); }
+  .tab.is-active .tab__icon-filled  { opacity: 1; transform: scale(1); }
+
+  /* --------------------------------------------------------------------------
+     8. Modal sheet — slide up + backdrop fade. Drag-to-dismiss via motion.js.
+     -------------------------------------------------------------------------- */
+  .modal-sheet {
+    transform: translate3d(0, 100%, 0);
+    transition: transform var(--t-relaxed) var(--ease-out-soft);
+    will-change: transform;
+  }
+  .modal-sheet.is-open    { transform: translate3d(0, 0, 0); }
+  .modal-sheet.is-dragging { transition: none; } /* live-track touch */
+  .modal-backdrop {
+    opacity: 0;
+    transition: opacity var(--t-base) var(--ease-glide);
+    pointer-events: none;
+  }
+  .modal-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* --------------------------------------------------------------------------
+     9. Toast — slide down from top, auto-dismiss with exit
+     -------------------------------------------------------------------------- */
+  .toast {
+    opacity: 0;
+    transform: translate3d(0, -16px, 0);
+    transition:
+      opacity var(--t-base) var(--ease-out-soft),
+      transform var(--t-base) var(--ease-out-soft);
+    will-change: transform, opacity;
+  }
+  .toast.is-in {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  .toast.is-out {
+    opacity: 0;
+    transform: translate3d(0, -8px, 0);
+  }
+
+  /* --------------------------------------------------------------------------
+     10. Loading shimmer — skeleton gradient sweep (1.4s)
+     -------------------------------------------------------------------------- */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: rgba(15, 23, 42, 0.06);
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.55) 50%,
+      rgba(255,255,255,0) 100%
+    );
+    transform: translate3d(-100%, 0, 0);
+    animation: shimmerSweep 1.4s var(--ease-glide) infinite;
+  }
+  @keyframes shimmerSweep {
+    to { transform: translate3d(100%, 0, 0); }
+  }
+
+  /* --------------------------------------------------------------------------
+     11. Pull-to-refresh — rubber-band stretch, spinner reveal at 80px
+         JS sets --ptr-y (0..1+); spinner shows when --ptr-progress >= 1.
+     -------------------------------------------------------------------------- */
+  .ptr-container {
+    --ptr-y: 0px;
+    --ptr-progress: 0;
+    transform: translate3d(0, var(--ptr-y), 0);
+  }
+  .ptr-container.is-snapping {
+    transition: transform var(--t-relaxed) var(--ease-spring);
+    transform: translate3d(0, 0, 0);
+  }
+  .ptr-spinner {
+    opacity: var(--ptr-progress, 0);
+    transform: rotate(calc(var(--ptr-progress, 0) * 360deg)) scale(calc(0.6 + var(--ptr-progress, 0) * 0.4));
+    transition: opacity var(--t-quick) var(--ease-glide);
+  }
+  .ptr-spinner.is-spinning {
+    animation: ptrSpin 0.9s linear infinite;
+  }
+  @keyframes ptrSpin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* --------------------------------------------------------------------------
+     12. Photo capture flash — full-screen white 0 -> 0.95 -> 0 over 220ms
+     -------------------------------------------------------------------------- */
+  .capture-flash {
+    position: fixed;
+    inset: 0;
+    background: #fff;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9999;
+  }
+  .capture-flash.is-firing {
+    animation: captureFlash 220ms var(--ease-snap) both;
+  }
+  @keyframes captureFlash {
+    0%   { opacity: 0; }
+    40%  { opacity: 0.95; }
+    100% { opacity: 0; }
+  }
+
+  /* --------------------------------------------------------------------------
+     13. Success confetti — tiny rotating + falling shapes (Loop completion)
+         JS injects N .confetti-piece children with random --c-x and --c-hue.
+     -------------------------------------------------------------------------- */
+  .confetti-burst {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: visible;
+  }
+  .confetti-piece {
+    position: absolute;
+    top: 0; left: 50%;
+    width: 8px; height: 12px;
+    background: hsl(var(--c-hue, 150), 80%, 60%);
+    border-radius: 2px;
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    animation: confettiFall 1200ms var(--ease-out-soft) forwards;
+    animation-delay: var(--c-delay, 0ms);
+  }
+  @keyframes confettiFall {
+    0%   { opacity: 0; transform: translate3d(0, -10px, 0) rotate(0deg); }
+    10%  { opacity: 1; }
+    100% {
+      opacity: 0;
+      transform: translate3d(var(--c-x, 0px), 220px, 0) rotate(var(--c-rot, 540deg));
+    }
+  }
+
+  /* --------------------------------------------------------------------------
+     14. Heart/save burst — bookmark icon scales 1->1.4->1 + colour burst
+     -------------------------------------------------------------------------- */
+  .save-burst {
+    animation: saveBurst 520ms var(--ease-spring) both;
+  }
+  @keyframes saveBurst {
+    0%   { transform: scale(1);   filter: drop-shadow(0 0 0 var(--good-green-glow)); }
+    40%  { transform: scale(1.4); filter: drop-shadow(0 0 10px var(--good-green-glow)); }
+    70%  { transform: scale(0.94); }
+    100% { transform: scale(1);   filter: drop-shadow(0 0 0 var(--good-green-glow)); }
+  }
+
+  /* --------------------------------------------------------------------------
+     15. AI-thinking ellipsis — three dots bouncing in sequence
+     -------------------------------------------------------------------------- */
+  .ai-ellipsis {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .ai-ellipsis > span {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.5;
+    animation: aiBounce 1100ms var(--ease-out-soft) infinite;
+  }
+  .ai-ellipsis > span:nth-child(2) { animation-delay: 160ms; }
+  .ai-ellipsis > span:nth-child(3) { animation-delay: 320ms; }
+  @keyframes aiBounce {
+    0%, 60%, 100% { transform: translateY(0);   opacity: 0.4; }
+    30%           { transform: translateY(-4px); opacity: 1; }
+  }
+
+} /* end @media (prefers-reduced-motion: no-preference) */
+
+/* ----------------------------------------------------------------------------
+   16. Reduced motion — explicit overrides for users who opt out.
+        Instant transitions, no parallax, no confetti.
+   ---------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .motion-fade-up,
+  .motion-stagger > *,
+  .page-enter-forward, .page-exit-forward,
+  .page-enter-back,    .page-exit-back,
+  .modal-sheet, .modal-backdrop,
+  .toast, .skeleton::after,
+  .ptr-container, .ptr-spinner,
+  .capture-flash, .save-burst,
+  .ai-ellipsis > span,
+  .tabbar__indicator, .tab__icon-outline, .tab__icon-filled,
+  .card, [data-motion="card"],
+  .btn, [data-motion="btn"] {
+    animation: none !important;
+    transition: none !important;
+  }
+  .parallax-hero {
+    transform: none !important;
+    animation: none !important;
+  }
+  .confetti-burst { display: none !important; }
+  .motion-fade-up { opacity: 1; transform: none; }
+  .modal-sheet.is-open { transform: translate3d(0, 0, 0); }
+  .modal-backdrop.is-open { opacity: 1; }
+  .toast.is-in { opacity: 1; transform: none; }
+}
