@@ -1,10 +1,14 @@
 {
   "name": "walking-explorers",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "private": true,
+  "type": "module",
   "description": "Walking Explorers — AI-guided walking discovery in NYC. Token-gated beta on Vercel + KV.",
   "engines": {
     "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@vercel/kv": "^2.0.0"
   },
   "scripts": {
     "dev": "vercel dev",
