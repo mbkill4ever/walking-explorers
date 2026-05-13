@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#1F3864" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Walking Explorers — Search</title>
+
+<!--
+  ============================================================================
+  Walking Explorers v0.7 — Search & Filter screen
+  Owned by: Search & Filter agent
+
+  This file is BOTH the production fragment (loaded by app-shell.js when the
+  user enters the search tab) AND a standalone test harness. Open it directly
+  in a browser, paste your ROUTES + PROMOTIONS + NEIGHBORHOODS arrays into a
+  window.* global, hit reload, and the screen Just Works.
+
+  Markup contract:
+    #weSearchScreen   — root container (production code mounts inside this)
+      .we-search__topbar       — search input + cancel
+      .we-search__filters      — horizontally scrollable filter chip groups
+      .we-search__active       — active-filter chip strip + result count
+      .we-search__results      — list of route cards (+ matching stop cards)
+      .we-search__empty        — empty state (hidden by default)
+      .we-search__suggest      — recent + suggested searches
+
+  Integrator wiring (in beta/app/index.html / app-shell.js):
+    1.  <link rel="stylesheet" href="/beta/app/v2-screens/search.css">
+    2.  <script type="module">
+          import Search from '/beta/app/v2-screens/search.js';
+          Search.mount(document.getElementById('searchTab'), {
+            routes: ROUTES,
+            promotions: PROMOTIONS,
+            onPick: (route, stop) => {
+              State.currentRoute = route;
+              Nav.go('detail');
+              if (stop) { /* scroll-to-stop hook for the detail screen */ }
+            }
+          });
+        </script>
+  ============================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="./search.css">
+
+<style>
+  /* Harness-only chrome — production wraps this fragment in the v2 app shell.
+     These styles ONLY apply when this file is loaded standalone. */
+  html, body { margin: 0; padding: 0; background: var(--cream, #FAF7F2); }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--ink, #0E1320); }
+  .harness-banner {
+    background: var(--navy, #1F3864);
+    color: #fff;
+    font-size: 12px;
+    padding: 6px 12px;
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+  .harness-banner code { background: rgba(255,255,255,0.12); padding: 1px 6px; border-radius: 4px; }
+  /* The brand tokens — duplicated here so the harness can render solo. The
+     production app already defines these on :root in index.html. */
+  :root {
+    --navy: #1F3864; --navy-2: #162B4A; --navy-3: #0E1B30;
+    --blue: #2E75B6; --blue-soft: #5C9FE0;
+    --gold: #E0B341; --gold-soft: #F2D67D; --gold-dark: #B8941F;
+    --cream: #FAF7F2; --cream-2: #F4EFE6;
+    --ink: #0E1320; --ink-2: #2C3142;
+    --mute: #6B7280; --mute-2: #9CA3AF;
+    --line: #E8E2D6; --line-2: #F1ECDF;
+    --good: #15803D; --love: #DC2626; --warn: #C2410C;
+    --ease-glide: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+</style>
+</head>
+<body>
+
+<div class="harness-banner">
+  Standalone harness — paste <code>window.ROUTES</code>, <code>window.NEIGHBORHOODS</code>, <code>window.PROMOTIONS</code> into devtools, then reload.
+</div>
+
+<!-- ============================================================================
+     The Search screen fragment
+     This is what app-shell.js mounts. When app-shell builds the search tab it
+     can either (a) clone this whole #weSearchScreen subtree, or (b) just call
+     Search.mount(emptyDiv, {...}) and the JS will inject the same markup.
+     ============================================================================ -->
+<section
+  id="weSearchScreen"
+  class="we-search"
+  role="region"
+  aria-label="Search routes, stops, neighborhoods"
+>
+  <!-- Top bar: input + cancel ------------------------------------------------- -->
+  <header class="we-search__topbar">
+    <label class="we-search__inputwrap" for="weSearchInput">
+      <svg
+        class="we-search__icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <circle cx="11" cy="11" r="7" />
+        <line x1="20" y1="20" x2="16.65" y2="16.65" />
+      </svg>
+      <input
+        id="weSearchInput"
+        class="we-search__input"
+        type="search"
+        autocomplete="off"
+        autocapitalize="off"
+        autocorrect="off"
+        spellcheck="false"
+        enterkeyhint="search"
+        inputmode="search"
+        placeholder="Search routes, stops, neighborhoods"
+        aria-label="Search routes, stops, neighborhoods"
+      />
+      <button
+        type="button"
+        class="we-search__clear"
+        id="weSearchClear"
+        hidden
+        aria-label="Clear search"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" focusable="false">
+          <line x1="6" y1="6" x2="18" y2="18" />
+          <line x1="18" y1="6" x2="6" y2="18" />
+        </svg>
+      </button>
+    </label>
+    <button
+      type="button"
+      class="we-search__cancel"
+      id="weSearchCancel"
+      aria-label="Cancel and return"
+    >Cancel</button>
+  </header>
+
+  <!-- Filter chips: horizontally scrollable, multi-select per category -------- -->
+  <div
+    class="we-search__filters"
+    id="weSearchFilters"
+    role="region"
+    aria-label="Filter routes"
+  >
+    <!-- JS renders the three groups (duration / neighborhood / mood) here. -->
+  </div>
+
+  <!-- Result count + active-filter chips ------------------------------------- -->
+  <div class="we-search__active" id="weSearchActive" hidden></div>
+
+  <!-- Recent + suggested searches (only when input empty & no filters) -------- -->
+  <section class="we-search__suggest" id="weSearchSuggest" aria-label="Suggested searches">
+    <!-- JS renders recent + suggested lists when appropriate. -->
+  </section>
+
+  <!-- Results list ---------------------------------------------------------- -->
+  <div class="we-search__results" id="weSearchResults" role="list"></div>
+
+  <!-- Empty state ---------------------------------------------------------- -->
+  <div class="we-search__empty" id="weSearchEmpty" hidden role="status">
+    <div class="we-search__empty-art" aria-hidden="true">
+      <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg" focusable="false">
+        <defs>
+          <linearGradient id="weSearchEmptyGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1F3864" />
+            <stop offset="60%" stop-color="#162B4A" />
+            <stop offset="100%" stop-color="#0E1B30" />
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="200" height="140" rx="18" fill="url(#weSearchEmptyGrad)" />
+        <circle cx="86" cy="62" r="26" fill="none" stroke="#F2D67D" stroke-width="3" />
+        <line x1="106" y1="82" x2="132" y2="108" stroke="#F2D67D" stroke-width="4" stroke-linecap="round" />
+        <circle cx="86" cy="62" r="3" fill="#F2D67D" />
+      </svg>
+    </div>
+    <h2 class="we-search__empty-title">No walks match those filters</h2>
+    <p class="we-search__empty-sub">Try a different keyword, drop a chip, or start over.</p>
+    <button type="button" class="we-search__empty-cta" id="weSearchShowAll">Show me everything</button>
+  </div>
+</section>
+
+<!-- Module loader. Production code imports search.js as a module from the
+     index.html shell. The harness loads it the same way. -->
+<script type="module">
+  import Search from './search.js';
+  // Bind a tiny harness around Search.mount. In production, app-shell.js
+  // calls Search.mount(searchTabEl, {...}) on tab-enter and Search.destroy()
+  // on tab-leave.
+  const screen = document.getElementById('weSearchScreen');
+  Search.mount(screen, {
+    routes: (window.ROUTES || []),
+    promotions: (window.PROMOTIONS || []),
+    neighborhoods: (window.NEIGHBORHOODS || []),
+    onPick: (route, stop) => {
+      // Harness: just log. Production wires this to State + Nav.
+      console.log('[search] picked', route && route.id, 'stop:', stop && stop.name);
+      alert('Picked ' + (route ? route.title : 'route') + (stop ? ' → ' + stop.name : ''));
+    },
+    onCancel: () => {
+      console.log('[search] cancel — production hook returns to previous tab');
+    }
+  });
+  // Expose for devtools poking.
+  window.WE_Search = Search;
+</script>
+
+</body>
+</html>
