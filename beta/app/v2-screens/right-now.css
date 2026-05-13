@@ -1,0 +1,337 @@
+/* ============================================================================
+   Walking Explorers v2 — Right Now contextual card
+   Owned by: right-now agent
+
+   The hero card that replaces the generic greeting. Photo backdrop + slow
+   Ken Burns zoom, gold eyebrow, navy headline, prominent gold CTA. Uses
+   the brand tokens defined in index.html (--gold, --navy, --cream, etc.).
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   Layout shell
+   ---------------------------------------------------------------------------- */
+.right-now-card {
+  position: relative;
+  margin: 8px 18px 18px;
+  padding: 22px 22px 20px;
+  min-height: 300px;
+  border-radius: 20px;
+  overflow: hidden;
+  isolation: isolate;                 /* keeps scrim and photo from leaking */
+  color: #fff;
+  background: linear-gradient(135deg, var(--navy, #1F3864) 0%, var(--navy-2, #162B4A) 100%);
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.18),
+    0 6px 14px rgba(15, 23, 42, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+.right-now-card[data-state="loading"] .right-now-card__strip,
+.right-now-card[data-state="loading"] .right-now-card__headline,
+.right-now-card[data-state="loading"] .right-now-card__reason,
+.right-now-card[data-state="loading"] .right-now-card__cta {
+  opacity: 0.6;
+}
+
+/* Tablet+ : a bit more breathing room. */
+@media (min-width: 720px) {
+  .right-now-card {
+    min-height: 400px;
+    padding: 28px 30px 26px;
+    margin: 12px 24px 22px;
+    border-radius: 24px;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Photo backdrop — slow Ken Burns zoom + readability scrim
+   ---------------------------------------------------------------------------- */
+.right-now-card__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.right-now-card__photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform-origin: 50% 50%;
+  transform: scale(1.0);
+  will-change: transform;
+}
+.right-now-card__scrim {
+  position: absolute;
+  inset: 0;
+  /* Dark navy at the top (for the strip), even darker at bottom (for the CTA). */
+  background:
+    linear-gradient(180deg,
+      rgba(14, 27, 48, 0.55) 0%,
+      rgba(14, 27, 48, 0.30) 40%,
+      rgba(14, 27, 48, 0.65) 80%,
+      rgba(14, 27, 48, 0.85) 100%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .right-now-card__photo {
+    animation: rightNowKenBurns 12s var(--ease-glide, ease-in-out) infinite alternate;
+  }
+  @keyframes rightNowKenBurns {
+    from { transform: scale(1.0)  translate3d(0, 0, 0); }
+    to   { transform: scale(1.05) translate3d(-1.5%, -1%, 0); }
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Content stack
+   ---------------------------------------------------------------------------- */
+.right-now-card__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+/* ----------------------------------------------------------------------------
+   Context strip — "RIGHT NOW · SAT 4 PM · 68°F · CLEAR"
+   ---------------------------------------------------------------------------- */
+.right-now-card__strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-soft, #F2D67D);
+  margin-bottom: auto;
+}
+.right-now-card__label {
+  color: var(--gold, #E0B341);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+.right-now-card__dot {
+  opacity: 0.55;
+  font-weight: 400;
+}
+.right-now-card__when,
+.right-now-card__temp,
+.right-now-card__condition {
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* ----------------------------------------------------------------------------
+   Headline + reason
+   ---------------------------------------------------------------------------- */
+.right-now-card__headline {
+  margin: 18px 0 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: #fff;
+  /* Subtle text shadow for readability over any photo. */
+  text-shadow: 0 1px 2px rgba(14, 19, 32, 0.45);
+  /* Clamp to ~2 lines on mobile. */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (min-width: 720px) {
+  .right-now-card__headline {
+    font-size: 26px;
+    line-height: 1.2;
+  }
+}
+
+.right-now-card__reason {
+  margin: 4px 0 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.86);
+  text-shadow: 0 1px 2px rgba(14, 19, 32, 0.35);
+  max-width: 36em;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (min-width: 720px) {
+  .right-now-card__reason {
+    font-size: 15px;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Primary CTA — full-width gold pill on navy
+   ---------------------------------------------------------------------------- */
+.right-now-card__cta {
+  margin-top: 16px;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border: 0;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 15.5px;
+  font-weight: 800;
+  letter-spacing: -0.005em;
+  color: var(--navy, #1F3864);
+  background: var(--gold, #E0B341);
+  cursor: pointer;
+  box-shadow:
+    0 10px 22px rgba(224, 179, 65, 0.32),
+    0 2px 4px rgba(15, 23, 42, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  transition:
+    transform 160ms var(--ease-glide, cubic-bezier(0.25, 0.46, 0.45, 0.94)),
+    background-color 160ms var(--ease-glide, cubic-bezier(0.25, 0.46, 0.45, 0.94)),
+    box-shadow 160ms var(--ease-glide, cubic-bezier(0.25, 0.46, 0.45, 0.94));
+}
+.right-now-card__cta:hover {
+  background: var(--gold-soft, #F2D67D);
+}
+.right-now-card__cta:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+.right-now-card__cta:active {
+  transform: scale(0.985);
+  box-shadow:
+    0 4px 10px rgba(224, 179, 65, 0.24),
+    inset 0 1px 1px rgba(15, 23, 42, 0.10);
+}
+.right-now-card__cta-arrow {
+  width: 18px;
+  height: 18px;
+  transition: transform 200ms var(--ease-out-soft, cubic-bezier(0.16, 1, 0.3, 1));
+}
+.right-now-card__cta:hover .right-now-card__cta-arrow {
+  transform: translateX(2px);
+}
+
+@media (min-width: 720px) {
+  .right-now-card__cta {
+    width: auto;
+    align-self: flex-start;
+    padding: 14px 22px;
+    font-size: 16px;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Secondary link — "Or pick from the 11 other routes ↓"
+   ---------------------------------------------------------------------------- */
+.right-now-card__secondary {
+  margin-top: 12px;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: color 160ms var(--ease-glide, ease);
+}
+.right-now-card__secondary:hover {
+  color: var(--gold-soft, #F2D67D);
+}
+.right-now-card__secondary:focus-visible {
+  outline: 2px solid var(--gold-soft, #F2D67D);
+  outline-offset: 3px;
+  color: #fff;
+}
+.right-now-card__secondary svg {
+  width: 14px;
+  height: 14px;
+  opacity: 0.8;
+  transition: transform 200ms var(--ease-out-soft, ease);
+}
+.right-now-card__secondary:hover svg {
+  transform: translateY(2px);
+}
+
+/* ----------------------------------------------------------------------------
+   Skip-link — visible only when focused (a11y)
+   ---------------------------------------------------------------------------- */
+.right-now-card__skiplink {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  transform: translateY(-200%);
+  background: var(--gold, #E0B341);
+  color: var(--navy, #1F3864);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  z-index: 2;
+  transition: transform 200ms var(--ease-out-soft, ease);
+}
+.right-now-card__skiplink:focus,
+.right-now-card__skiplink:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ----------------------------------------------------------------------------
+   Loading skeleton state (data-state="loading")
+   ---------------------------------------------------------------------------- */
+.right-now-card[data-state="loading"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0) 100%);
+  animation: rightNowShimmer 1.4s linear infinite;
+  pointer-events: none;
+}
+@keyframes rightNowShimmer {
+  from { transform: translate3d(-100%, 0, 0); }
+  to   { transform: translate3d(100%,  0, 0); }
+}
+
+/* ----------------------------------------------------------------------------
+   Reduced motion overrides
+   ---------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .right-now-card__photo,
+  .right-now-card__cta,
+  .right-now-card__cta-arrow,
+  .right-now-card__secondary svg,
+  .right-now-card__skiplink {
+    animation: none !important;
+    transition: none !important;
+  }
+  .right-now-card[data-state="loading"]::after {
+    animation: none !important;
+    display: none !important;
+  }
+}

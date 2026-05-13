@@ -1,0 +1,84 @@
+<!--
+  Walking Explorers v2 — Right Now contextual card (template / static reference)
+  Owned by: right-now agent
+
+  This file is the canonical HTML structure for the Right Now hero card.
+  The live card is injected by right-now.js into a host container (typically
+  the slot above the route list in #explore). This file is kept as:
+    1. A reference snapshot of the markup contract for design + QA review
+    2. A static fallback that can be <iframe>d or fetched if JS fails
+    3. A documented surface so the integration agent + a11y agent know the
+       exact ARIA shape they are wiring into.
+
+  CSS tokens come from index.html (--gold, --navy, --ink, etc.).
+  Card-specific styles live in right-now.css.
+-->
+<section
+  class="right-now-card"
+  id="rightNowCard"
+  aria-labelledby="rightNowTitle"
+  aria-live="polite"
+  aria-atomic="true"
+  data-state="loading"
+>
+  <!-- Photo backdrop (Ken Burns zoom) + readability gradient. -->
+  <div class="right-now-card__bg" aria-hidden="true">
+    <div class="right-now-card__photo" data-photo></div>
+    <div class="right-now-card__scrim"></div>
+  </div>
+
+  <!-- Foreground content. -->
+  <div class="right-now-card__content">
+    <!-- Context strip: RIGHT NOW · {DAY} {TIME} · {TEMP} · {CONDITION} -->
+    <div class="right-now-card__strip" data-context-strip>
+      <span class="right-now-card__label">Right Now</span>
+      <span class="right-now-card__dot" aria-hidden="true">·</span>
+      <span class="right-now-card__when" data-when>Sat 4:00 PM</span>
+      <span class="right-now-card__dot" aria-hidden="true">·</span>
+      <span class="right-now-card__temp" data-temp>68°F</span>
+      <span class="right-now-card__dot" aria-hidden="true">·</span>
+      <span class="right-now-card__condition" data-condition>Clear</span>
+    </div>
+
+    <!-- Editorial headline (1–2 lines, conversational). -->
+    <h2 class="right-now-card__headline" id="rightNowTitle" data-headline>
+      Williamsburg sunsets start at 7:42 PM.
+    </h2>
+
+    <!-- Reason microcopy (1 sentence, specific, observational). -->
+    <p class="right-now-card__reason" data-reason>
+      Domino Park has the best Manhattan view from the East side.
+    </p>
+
+    <!-- Primary CTA. -->
+    <button
+      type="button"
+      class="right-now-card__cta"
+      data-motion="btn"
+      data-action="start"
+      data-route-id=""
+      aria-describedby="rightNowTitle"
+    >
+      <span class="right-now-card__cta-label" data-cta-label>Walk Williamsburg Sunset</span>
+      <svg class="right-now-card__cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </button>
+
+    <!-- Secondary link — keep the menu within reach. -->
+    <a
+      class="right-now-card__secondary"
+      href="#allList"
+      data-action="browse"
+    >
+      <span>Or pick from the 11 other routes</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- Skip-link target id so a screen-reader user can jump past the hero. -->
+  <a class="right-now-card__skiplink" href="#allList">Skip to all routes</a>
+</section>
