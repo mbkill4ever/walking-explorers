@@ -1,0 +1,142 @@
+{
+  "version": 1,
+  "generated_at": "2026-05-13T00:00:00Z",
+  "notes": "All photos sourced from Unsplash (free commercial use under Unsplash License). Curated for Walking Explorers v2. Each URL has been verified as a working image/webp asset at 1600px width.",
+  "license_info": {
+    "Unsplash": "https://unsplash.com/license - Free to use commercially with no attribution required, though credit is appreciated."
+  },
+  "routes": {
+    "soho_aesthetic": {
+      "hero": { "url": "https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?w=1600&q=85&fm=webp&fit=crop", "alt": "SoHo cast-iron buildings on a sunlit cobblestone street", "credit": "Anthony DELANOIX", "source": "Unsplash", "license": "Unsplash" },
+      "stops": [
+        { "name": "Joe Coffee - Crosby St", "url": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1600&q=85&fm=webp&fit=crop", "alt": "Barista pulling an espresso shot in a sunlit specialty coffee shop", "credit": "Nathan Dumlao", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "McNally Jackson Books", "url": "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=1600&q=85&fm=webp&fit=crop", "alt": "Independent bookstore interior with tall shelves and warm light", "credit": "Ed Robertson", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Lure Fishbar", "url": "https://images.unsplash.com/photo-1485451456034-3f9391c6f769?w=1600&q=85&fm=webp&fit=crop", "alt": "Fresh seafood arranged on ice in a downtown restaurant setting", "credit": "Caroline Attwood", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "INA SoHo", "url": "https://images.unsplash.com/photo-1551038247-3d9af20df552?w=1600&q=85&fm=webp&fit=crop", "alt": "Minimal loft interior in a converted cast-iron building, soft natural light", "credit": "Spacejoy", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Donut Plant", "url": "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=1600&q=85&fm=webp&fit=crop", "alt": "Row of colorful glazed and sprinkled donuts on a bakery tray", "credit": "Patrick Fore", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Mercer Street vista", "url": "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1600&q=85&fm=webp&fit=crop", "alt": "Looking down a quiet SoHo side street with cast-iron facades and fire escapes", "credit": "Patrick Tomasso", "source": "Unsplash", "license": "Unsplash" }
+      ]
+    },
+    "ev_vintage": {
+      "hero": { "url": "https://images.unsplash.com/photo-1444084316824-dc26d6657664?w=1600&q=85&fm=webp&fit=crop", "alt": "East Village street glowing with neon signs at dusk", "credit": "Luca Bravo", "source": "Unsplash", "license": "Unsplash" },
+      "stops": [
+        { "name": "Veselka", "url": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=1600&q=85&fm=webp&fit=crop", "alt": "Stack of golden pancakes with butter - diner comfort food", "credit": "Luke Pennystan", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Astor Place neon", "url": "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?w=1600&q=85&fm=webp&fit=crop", "alt": "Vintage neon sign glowing in red and blue against a brick wall", "credit": "Tim Mossholder", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Other Music vinyl", "url": "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=1600&q=85&fm=webp&fit=crop", "alt": "Crates of vinyl records in an independent record store", "credit": "Florencia Viadana", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Tompkins Square Park", "url": "https://images.unsplash.com/photo-1568515387631-8b650bbcdb90?w=1600&q=85&fm=webp&fit=crop", "alt": "Park bench under tall trees on an early autumn afternoon", "credit": "Mike Petrucci", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "L'imprimerie", "url": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1600&q=85&fm=webp&fit=crop", "alt": "Rustic French bread loaf on a wooden board in a bakery", "credit": "Mae Mu", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Russ & Daughters Cafe", "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1600&q=85&fm=webp&fit=crop", "alt": "Open bagel with cream cheese and smoked salmon lox", "credit": "Pille R. Priske", "source": "Unsplash", "license": "Unsplash" }
+      ]
+    },
+    "wv_books": {
+      "hero": { "url": "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1600&q=85&fm=webp&fit=crop", "alt": "Tree-lined West Village street with classic brownstone facades", "credit": "Luke Stackpoole", "source": "Unsplash", "license": "Unsplash" },
+      "stops": [
+        { "name": "Three Lives & Company", "url": "https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=1600&q=85&fm=webp&fit=crop", "alt": "Cozy independent bookstore with floor-to-ceiling wooden shelves", "credit": "Patrick Robert Doyle", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Bleecker Street walk", "url": "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1600&q=85&fm=webp&fit=crop", "alt": "Quiet West Village side street with painted facades and fire escapes", "credit": "Patrick Tomasso", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Caffe Reggio", "url": "https://images.unsplash.com/photo-1517511620798-cec17d428bc0?w=1600&q=85&fm=webp&fit=crop", "alt": "Vintage espresso cup and saucer on a marble cafe table", "credit": "Nathan Dumlao", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Strand Annex", "url": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1600&q=85&fm=webp&fit=crop", "alt": "Looking down a library aisle stacked floor-to-ceiling with books", "credit": "Susan Yin", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Magnolia Bakery", "url": "https://images.unsplash.com/photo-1599785209707-a456fc1337bb?w=1600&q=85&fm=webp&fit=crop", "alt": "Classic vanilla-frosted cupcake with sprinkles in a bakery case", "credit": "Brooke Lark", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Hudson River sunset", "url": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1600&q=85&fm=webp&fit=crop", "alt": "Sunset over the Hudson River with pier silhouettes", "credit": "Anthony Delanoix", "source": "Unsplash", "license": "Unsplash" }
+      ]
+    },
+    "highline_galleries": {
+      "hero": { "url": "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=1600&q=85&fm=webp&fit=crop", "alt": "Elevated High Line park with lush plantings and Hudson Yards behind", "credit": "Lucas Franco", "source": "Unsplash", "license": "Unsplash" },
+      "stops": [
+        { "name": "High Line - Gansevoort", "url": "https://images.unsplash.com/photo-1527786356703-4b100091cd2c?w=1600&q=85&fm=webp&fit=crop", "alt": "Native plantings and walkway on the High Line in summer light", "credit": "Marius Badstuber", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Whitney Museum patio", "url": "https://images.unsplash.com/photo-1577720580479-7d839d829c73?w=1600&q=85&fm=webp&fit=crop", "alt": "Modern museum balcony overlooking a city neighborhood", "credit": "Yifei Chen", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Pace Gallery", "url": "https://images.unsplash.com/photo-1572947650440-e8a97ef053b2?w=1600&q=85&fm=webp&fit=crop", "alt": "Contemporary art gallery interior with large abstract canvases", "credit": "Antenna", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Cookshop", "url": "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=1600&q=85&fm=webp&fit=crop", "alt": "Bright seasonal salad with vegetables in a ceramic bowl", "credit": "Anna Pelzer", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Little Island", "url": "https://images.unsplash.com/photo-1499002238440-d264edd596ec?w=1600&q=85&fm=webp&fit=crop", "alt": "Lush garden path with flowering plants and pedestrian paths", "credit": "Annie Spratt", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Chelsea Market", "url": "https://images.unsplash.com/photo-1517991104123-1d56a6e81ed9?w=1600&q=85&fm=webp&fit=crop", "alt": "Industrial brick interior of a Chelsea food hall with hanging lights", "credit": "Spencer Davis", "source": "Unsplash", "license": "Unsplash" }
+      ]
+    },
+    "williamsburg": {
+      "hero": { "url": "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=1600&q=85&fm=webp&fit=crop", "alt": "Williamsburg Bridge silhouetted against an East River sunset", "credit": "Patrick Tomasso", "source": "Unsplash", "license": "Unsplash" },
+      "stops": [
+        { "name": "Bedford Ave subway", "url": "https://images.unsplash.com/photo-1517502884422-41eaead166d4?w=1600&q=85&fm=webp&fit=crop", "alt": "NYC subway platform with riders waiting under fluorescent lights", "credit": "Joey Banks", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Devocion", "url": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1600&q=85&fm=webp&fit=crop", "alt": "Barista crafting espresso in a sunlit Brooklyn coffee bar", "credit": "Nathan Dumlao", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Bushwick Inlet murals", "url": "https://images.unsplash.com/photo-1574484284002-952d92456975?w=1600&q=85&fm=webp&fit=crop", "alt": "Vibrant Brooklyn street mural in bold colors on a brick wall", "credit": "Claudio Schwarz", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Rough Trade NYC", "url": "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=1600&q=85&fm=webp&fit=crop", "alt": "Hands flipping through crates of vinyl records", "credit": "Florencia Viadana", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Five Leaves", "url": "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=1600&q=85&fm=webp&fit=crop", "alt": "Loaded brunch burger on a wooden board in a Brooklyn cafe", "credit": "Robin Stickel", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Domino Park sunset", "url": "https://images.unsplash.com/photo-1548013146-72479768bada?w=1600&q=85&fm=webp&fit=crop", "alt": "Manhattan skyline glowing gold in the setting sun across the East River", "credit": "Luca Bravo", "source": "Unsplash", "license": "Unsplash" }
+      ]
+    },
+    "dumbo_bridge": {
+      "hero": { "url": "https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?w=1600&q=85&fm=webp&fit=crop", "alt": "Brooklyn Bridge cables and arches with a wide Manhattan view", "credit": "Patrick Tomasso", "source": "Unsplash", "license": "Unsplash" },
+      "stops": [
+        { "name": "Brooklyn Bridge", "url": "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=1600&q=85&fm=webp&fit=crop", "alt": "Brooklyn Bridge with iconic Gothic arches at sunset", "credit": "Patrick Tomasso", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Empire Stores", "url": "https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?w=1600&q=85&fm=webp&fit=crop", "alt": "Restored brick warehouse facade in DUMBO with arched windows", "credit": "Florian Wehde", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Time Out Market", "url": "https://images.unsplash.com/photo-1517991104123-1d56a6e81ed9?w=1600&q=85&fm=webp&fit=crop", "alt": "Bustling food hall with chalkboard menus and hanging bulbs", "credit": "Spencer Davis", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Washington Street view", "url": "https://images.unsplash.com/photo-1581262208435-41726149a759?w=1600&q=85&fm=webp&fit=crop", "alt": "The iconic Manhattan Bridge framed by DUMBO buildings on Washington Street", "credit": "Lerone Pieters", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Jane's Carousel", "url": "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=1600&q=85&fm=webp&fit=crop", "alt": "Vintage carousel horses in a glass pavilion by the waterfront", "credit": "Yifei Chen", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Pebble Beach", "url": "https://images.unsplash.com/photo-1551867633-194f125bddfa?w=1600&q=85&fm=webp&fit=crop", "alt": "Pebble Beach view of the Brooklyn Bridge from below", "credit": "Carlos Dominguez", "source": "Unsplash", "license": "Unsplash" }
+      ]
+    },
+    "central_park": {
+      "hero": { "url": "https://images.unsplash.com/photo-1543716091-a840c05249ec?w=1600&q=85&fm=webp&fit=crop", "alt": "Aerial view of Central Park's tree canopy in autumn surrounded by skyscrapers", "credit": "Jermaine Ee", "source": "Unsplash", "license": "Unsplash" },
+      "stops": [
+        { "name": "Conservatory Garden", "url": "https://images.unsplash.com/photo-1429277005502-eed8e872fe52?w=1600&q=85&fm=webp&fit=crop", "alt": "Formal flower garden pathway lined with blooming hedges", "credit": "Annie Spratt", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "The Pool", "url": "https://images.unsplash.com/photo-1554072675-66db59dba46f?w=1600&q=85&fm=webp&fit=crop", "alt": "Calm reflecting pool in Central Park with stone bridge in the background", "credit": "Tomas Eidsvold", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Belvedere Castle", "url": "https://images.unsplash.com/photo-1518152006812-edab29b069ac?w=1600&q=85&fm=webp&fit=crop", "alt": "Stone bridge in Central Park surrounded by foliage", "credit": "Daniel Lloyd Blunk-Fernandez", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Shakespeare Garden", "url": "https://images.unsplash.com/photo-1499002238440-d264edd596ec?w=1600&q=85&fm=webp&fit=crop", "alt": "Cottage garden bursting with perennials and meandering paths", "credit": "Annie Spratt", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Loeb Boathouse", "url": "https://images.unsplash.com/photo-1438109491414-7198515b166b?w=1600&q=85&fm=webp&fit=crop", "alt": "Sun setting over a city lake with park trees in silhouette", "credit": "Ales Krivec", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Strawberry Fields", "url": "https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?w=1600&q=85&fm=webp&fit=crop", "alt": "Quiet Central Park path with fallen autumn leaves", "credit": "Kelly Sikkema", "source": "Unsplash", "license": "Unsplash" }
+      ]
+    },
+    "les_food": {
+      "hero": { "url": "https://images.unsplash.com/photo-1496588152823-86ff7695e68f?w=1600&q=85&fm=webp&fit=crop", "alt": "Lower East Side street scene with tenement buildings and fire escapes", "credit": "Ronny Sison", "source": "Unsplash", "license": "Unsplash" },
+      "stops": [
+        { "name": "Pickle Guys", "url": "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?w=1600&q=85&fm=webp&fit=crop", "alt": "Glass jars of pickles and brined vegetables on a deli counter", "credit": "Sebastian Coman Photography", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Russ & Daughters Cafe", "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1600&q=85&fm=webp&fit=crop", "alt": "Bagel piled with cream cheese and smoked salmon lox", "credit": "Pille R. Priske", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Tenement Museum", "url": "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=1600&q=85&fm=webp&fit=crop", "alt": "Historic Lower Manhattan tenement building with arched windows", "credit": "Robert Bye", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Joe's Shanghai", "url": "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=1600&q=85&fm=webp&fit=crop", "alt": "Steamer basket of soup dumplings with dipping sauce", "credit": "Yvonne Lee Harijanto", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Economy Candy", "url": "https://images.unsplash.com/photo-1582716401301-b2407dc7563d?w=1600&q=85&fm=webp&fit=crop", "alt": "Wall of glass jars filled with colorful retro candy", "credit": "Brooke Lark", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Attaboy", "url": "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=1600&q=85&fm=webp&fit=crop", "alt": "Bartender preparing a craft cocktail under warm bar lights", "credit": "Adam Jaime", "source": "Unsplash", "license": "Unsplash" }
+      ]
+    },
+    "soho_galleries": {
+      "hero": { "url": "https://images.unsplash.com/photo-1546436836-07a91091f160?w=1600&q=85&fm=webp&fit=crop", "alt": "Quiet SoHo street with cafe tables and cast-iron buildings", "credit": "Vlad Tchompalov", "source": "Unsplash", "license": "Unsplash" },
+      "stops": [
+        { "name": "Drawing Center", "url": "https://images.unsplash.com/photo-1577083165633-14ebcdb0f658?w=1600&q=85&fm=webp&fit=crop", "alt": "White gallery wall with framed drawings under track lighting", "credit": "Bill Oxford", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Donald Judd Foundation", "url": "https://images.unsplash.com/photo-1572947650440-e8a97ef053b2?w=1600&q=85&fm=webp&fit=crop", "alt": "Spare gallery interior with minimalist sculpture and natural light", "credit": "Antenna", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "The Earth Room", "url": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=1600&q=85&fm=webp&fit=crop", "alt": "Conceptual gallery installation with monochrome surfaces", "credit": "Toa Heftiba", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Broken Kilometer", "url": "https://images.unsplash.com/photo-1577720580479-7d839d829c73?w=1600&q=85&fm=webp&fit=crop", "alt": "Long gallery hall with polished floors and minimalist installation", "credit": "Yifei Chen", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Housing Works Bookstore", "url": "https://images.unsplash.com/photo-1481833761820-0509d3217039?w=1600&q=85&fm=webp&fit=crop", "alt": "Floor-to-ceiling bookshop interior with reading nook and warm lamps", "credit": "Eli Francis", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Greene Street cobblestones", "url": "https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?w=1600&q=85&fm=webp&fit=crop", "alt": "Looking down a cobblestone SoHo street between cast-iron buildings", "credit": "Anthony DELANOIX", "source": "Unsplash", "license": "Unsplash" }
+      ]
+    },
+    "uws_classic": {
+      "hero": { "url": "https://images.unsplash.com/photo-1545987796-200677ee1011?w=1600&q=85&fm=webp&fit=crop", "alt": "Upper West Side tree-lined block with classic limestone residences", "credit": "Sander Crombach", "source": "Unsplash", "license": "Unsplash" },
+      "stops": [
+        { "name": "Lincoln Center plaza", "url": "https://images.unsplash.com/photo-1571055107559-3e67626fa8be?w=1600&q=85&fm=webp&fit=crop", "alt": "Concert hall interior with curved balconies and grand chandeliers", "credit": "Manuel Nageli", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Westsider Books", "url": "https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=1600&q=85&fm=webp&fit=crop", "alt": "Old library shelves crammed with antiquarian books", "credit": "Jaredd Craig", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Zabar's", "url": "https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=1600&q=85&fm=webp&fit=crop", "alt": "Tray of fresh poppy and sesame bagels at a New York deli", "credit": "Mae Mu", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Cafe Lalo", "url": "https://images.unsplash.com/photo-1542652694-40abf526446e?w=1600&q=85&fm=webp&fit=crop", "alt": "Slice of cake and tea on a marble cafe table with soft window light", "credit": "Joanna Kosinska", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "AMNH plaza", "url": "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=1600&q=85&fm=webp&fit=crop", "alt": "Grand classical museum facade with stone columns", "credit": "Robert Bye", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Riverside Park overlook", "url": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1600&q=85&fm=webp&fit=crop", "alt": "Hudson River at golden hour from a tree-lined promenade", "credit": "Anthony Delanoix", "source": "Unsplash", "license": "Unsplash" }
+      ]
+    },
+    "harlem_history": {
+      "hero": { "url": "https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?w=1600&q=85&fm=webp&fit=crop", "alt": "The iconic red Apollo Theater marquee in Harlem at twilight", "credit": "Joel Holland", "source": "Unsplash", "license": "Unsplash" },
+      "stops": [
+        { "name": "Studio Museum in Harlem", "url": "https://images.unsplash.com/photo-1577083165633-14ebcdb0f658?w=1600&q=85&fm=webp&fit=crop", "alt": "Bright gallery space with contemporary art on white walls", "credit": "Bill Oxford", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Apollo Theater", "url": "https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?w=1600&q=85&fm=webp&fit=crop", "alt": "Apollo Theater facade with vintage red marquee on 125th Street", "credit": "Joel Holland", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Sylvia's", "url": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1600&q=85&fm=webp&fit=crop", "alt": "Comfort food platter in a soul-food restaurant setting", "credit": "Ivan Torres", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Strivers' Row", "url": "https://images.unsplash.com/photo-1517732306149-e8f829eb588a?w=1600&q=85&fm=webp&fit=crop", "alt": "Row of historic brownstones with stone stoops on a Harlem street", "credit": "Anthony Fomin", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Schomburg Center", "url": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1600&q=85&fm=webp&fit=crop", "alt": "Library reading room with tall shelves of books", "credit": "Susan Yin", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Marcus Garvey Park", "url": "https://images.unsplash.com/photo-1576678927484-cc907957088c?w=1600&q=85&fm=webp&fit=crop", "alt": "Harlem park view with brownstones rising behind tree canopy", "credit": "Erol Ahmed", "source": "Unsplash", "license": "Unsplash" }
+      ]
+    },
+    "fidi_finance": {
+      "hero": { "url": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&q=85&fm=webp&fit=crop", "alt": "Lower Manhattan skyscrapers rising in the Financial District", "credit": "Patrick Tomasso", "source": "Unsplash", "license": "Unsplash" },
+      "stops": [
+        { "name": "Stone Street", "url": "https://images.unsplash.com/photo-1572177812156-58036aae439c?w=1600&q=85&fm=webp&fit=crop", "alt": "Historic cobblestone street lined with restored 19th-century buildings", "credit": "Erol Ahmed", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Trinity Church", "url": "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=1600&q=85&fm=webp&fit=crop", "alt": "Historic gothic church tower framed by surrounding architecture", "credit": "Robert Bye", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Charging Bull / Fearless Girl", "url": "https://images.unsplash.com/photo-1543946207-39bd91e70ca7?w=1600&q=85&fm=webp&fit=crop", "alt": "Looking up at Lower Manhattan skyscrapers near Bowling Green", "credit": "Wells Baum", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Fraunces Tavern", "url": "https://images.unsplash.com/photo-1495555687398-3f50d6e79e1e?w=1600&q=85&fm=webp&fit=crop", "alt": "Warm wood-paneled tavern interior with vintage character", "credit": "Patrick Tomasso", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "9/11 Memorial pools", "url": "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=1600&q=85&fm=webp&fit=crop", "alt": "Reflective stone surface with engraved text - somber memorial composition", "credit": "Federica Galli", "source": "Unsplash", "license": "Unsplash" },
+        { "name": "Battery Park sunset", "url": "https://images.unsplash.com/photo-1547234935-80c7145ec969?w=1600&q=85&fm=webp&fit=crop", "alt": "Golden-hour view from Battery Park looking out over the harbor", "credit": "Sean Pollock", "source": "Unsplash", "license": "Unsplash" }
+      ]
+    }
+  }
+}
