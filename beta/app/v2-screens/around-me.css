@@ -1,0 +1,700 @@
+/* ============================================================
+   Walking Explorers v2 — Around Me screen
+   Owned by: around-me agent
+
+   Palette tokens come from index.html (--navy, --gold, --cream,
+   --ink, --mute, --line). map.css already handles Leaflet
+   internals (tile filter, popup styling, user-dot animation).
+   This file styles ONLY the around-me chrome that sits on top
+   of the map: overlay chips, peek card, bottom sheet, loading
+   skeleton, and the permission-denied empty state.
+   ============================================================ */
+
+/* ---------- 1. Screen root ---------- */
+.am-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
+  background: var(--cream, #FAF7F2);
+  overflow: hidden;
+  font-family: var(--font-sans, 'Inter', sans-serif);
+  color: var(--ink, #0E1320);
+  /* Respect notches / home indicator. */
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* When mounted inside the app shell the host element is sized by the
+   integrator (e.g. flex:1, height: calc(100dvh - tabbar)) — we just fill it. */
+.am-root.am-mounted {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---------- 2. Map node ---------- */
+.am-map {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: var(--cream-2, #F4EFE5);
+}
+
+/* Leaflet defaults can clash with our scrim; force layering. */
+.am-map .leaflet-control-zoom { display: none; } /* zoom UI feels heavy here */
+.am-map .leaflet-control-attribution { font-size: 9px; }
+
+/* ---------- 3. Top overlay chips ---------- */
+.am-overlay--top {
+  position: absolute;
+  top: calc(12px + env(safe-area-inset-top, 0));
+  left: 12px;
+  right: 12px;
+  z-index: 600;            /* above tiles + markers, below popups */
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  pointer-events: none;    /* let map underneath get drags */
+}
+
+.am-chip {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--cream, #FAF7F2);
+  color: var(--navy, #1F3864);
+  border: 1px solid var(--line, #E8E2D6);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  box-shadow: var(--shadow-2, 0 6px 18px rgba(14,19,32,0.10));
+  cursor: pointer;
+  transition: background 120ms ease, transform 120ms var(--ease-out-soft, ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.am-chip:hover { background: white; }
+.am-chip:active { transform: scale(0.97); }
+.am-chip:focus-visible {
+  outline: 2px solid var(--gold, #E0B341);
+  outline-offset: 2px;
+}
+
+.am-chip[aria-pressed="true"] {
+  background: var(--navy, #1F3864);
+  color: var(--gold, #E0B341);
+  border-color: var(--navy, #1F3864);
+}
+
+.am-chip__icon { font-size: 14px; line-height: 1; }
+
+.am-chip--recenter {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  justify-content: center;
+  font-size: 18px;
+}
+
+/* Live "Locating you / Live" pill at top-center. */
+.am-status {
+  pointer-events: none;
+  position: absolute;
+  top: calc(12px + env(safe-area-inset-top, 0));
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(31, 56, 100, 0.92);
+  color: white;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  z-index: 601;
+  box-shadow: var(--shadow-2, 0 6px 18px rgba(14,19,32,0.10));
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.am-status__dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold, #E0B341);
+  box-shadow: 0 0 0 0 rgba(224, 179, 65, 0.55);
+  animation: am-status-pulse 2s ease-in-out infinite;
+}
+
+@keyframes am-status-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(224, 179, 65, 0.55); }
+  50%      { box-shadow: 0 0 0 6px rgba(224, 179, 65, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .am-status__dot { animation: none; }
+}
+
+.am-status[data-state="locating"] { background: rgba(107, 114, 128, 0.92); }
+.am-status[data-state="error"]    { background: rgba(184, 80, 66, 0.92); }
+
+/* ---------- 4. Stop markers (small navy circles) ---------- */
+.am-marker-stop {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--navy, #1F3864);
+  border: 2px solid var(--cream, #FAF7F2);
+  box-shadow: 0 2px 6px rgba(14, 19, 32, 0.28);
+  transition: transform 120ms var(--ease-out-soft, ease-out);
+  cursor: pointer;
+}
+.am-marker-stop:hover { transform: scale(1.18); }
+.am-marker-stop.am-marker-stop--active {
+  background: var(--gold, #E0B341);
+  border-color: var(--navy, #1F3864);
+  transform: scale(1.25);
+}
+
+/* Cluster marker — slightly bigger, with count. */
+.am-marker-cluster {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--navy, #1F3864);
+  color: white;
+  border: 2px solid var(--cream, #FAF7F2);
+  box-shadow: 0 3px 8px rgba(14, 19, 32, 0.30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-sans, 'Inter', sans-serif);
+  cursor: pointer;
+}
+
+/* Promotion (gold pin). */
+.am-marker-promo {
+  width: 18px;
+  height: 18px;
+  border-radius: 50% 50% 50% 0;
+  background: var(--gold, #E0B341);
+  border: 2px solid var(--cream, #FAF7F2);
+  transform: rotate(-45deg);
+  box-shadow: 0 2px 6px rgba(184, 148, 31, 0.4);
+  cursor: pointer;
+}
+
+/* ---------- 5. User location marker (override map.css default
+   to be navy-dot with gold pulsing halo as the spec requested). ---------- */
+.am-user-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--navy, #1F3864);
+  border: 3px solid white;
+  box-shadow:
+    0 2px 8px rgba(14, 19, 32, 0.30),
+    0 0 0 6px rgba(224, 179, 65, 0.22);
+  animation: am-user-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes am-user-pulse {
+  0%, 100% { box-shadow: 0 2px 8px rgba(14,19,32,0.30), 0 0 0 6px  rgba(224,179,65,0.22); }
+  50%      { box-shadow: 0 2px 8px rgba(14,19,32,0.30), 0 0 0 16px rgba(224,179,65,0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .am-user-dot {
+    animation: none;
+    box-shadow:
+      0 2px 8px rgba(14, 19, 32, 0.30),
+      0 0 0 6px rgba(224, 179, 65, 0.22);
+  }
+}
+
+/* Heading-cone (tiny gold wedge under the user dot, optional). */
+.am-user-heading {
+  position: absolute;
+  width: 0; height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 14px solid var(--gold, #E0B341);
+  opacity: 0.7;
+  transform-origin: 50% 100%;
+}
+
+/* ---------- 6. 20-min walk reachable ring ---------- */
+.am-walk-ring {
+  stroke: var(--navy, #1F3864);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+  fill: var(--navy, #1F3864);
+  fill-opacity: 0.06;
+  pointer-events: none;
+}
+
+/* ---------- 7. Peek card (stop preview) ---------- */
+.am-overlay--peek {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0));
+  z-index: 700;
+  background: var(--cream, #FAF7F2);
+  border: 1px solid var(--line, #E8E2D6);
+  border-radius: 18px;
+  box-shadow: var(--shadow-3, 0 12px 32px rgba(14,19,32,0.15));
+  overflow: hidden;
+  transform: translateY(140%);
+  transition: transform 360ms var(--ease-out-soft, cubic-bezier(.22,.61,.36,1));
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 0;
+}
+
+.am-overlay--peek[data-open="true"] {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .am-overlay--peek { transition: none; }
+}
+
+.am-peek__photo {
+  width: 96px;
+  height: 96px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--line, #E8E2D6);
+  flex-shrink: 0;
+}
+
+.am-peek__body {
+  padding: 12px 14px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;       /* allow truncation */
+}
+
+.am-peek__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--ink, #0E1320);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.am-peek__meta {
+  font-size: 11px;
+  color: var(--mute, #6B7280);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.am-peek__route {
+  font-size: 12px;
+  color: var(--navy, #1F3864);
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.am-peek__distance {
+  font-size: 12px;
+  color: var(--gold-dark, #B8941F);
+  font-weight: 700;
+}
+
+.am-peek__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.am-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: -0.005em;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 120ms ease, transform 120ms var(--ease-out-soft, ease-out);
+  white-space: nowrap;
+}
+.am-btn:active { transform: scale(0.97); }
+.am-btn:focus-visible { outline: 2px solid var(--gold, #E0B341); outline-offset: 2px; }
+
+.am-btn--primary {
+  background: var(--navy, #1F3864);
+  color: white;
+}
+.am-btn--primary:hover { background: var(--navy-2, #162B4A); }
+
+.am-btn--secondary {
+  background: white;
+  color: var(--navy, #1F3864);
+  border-color: var(--line, #E8E2D6);
+}
+.am-btn--secondary:hover { background: var(--cream, #FAF7F2); }
+
+.am-btn--accent {
+  background: var(--gold, #E0B341);
+  color: var(--navy, #1F3864);
+}
+.am-btn--accent:hover { background: var(--gold-dark, #B8941F); color: white; }
+
+.am-peek__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(14, 19, 32, 0.6);
+  color: white;
+  border: 0;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.am-peek__close:hover { background: rgba(14, 19, 32, 0.85); }
+
+/* ---------- 8. Bottom sheet (Nearby stops / Nearby routes) ---------- */
+.am-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 650;       /* above peek? No — peek wins. */
+  background: var(--cream, #FAF7F2);
+  border-top-left-radius: 22px;
+  border-top-right-radius: 22px;
+  box-shadow: 0 -8px 28px rgba(14, 19, 32, 0.16);
+  transform: translateY(calc(100% - 76px));   /* show only handle + tabs */
+  transition: transform 360ms var(--ease-out-soft, cubic-bezier(.22,.61,.36,1));
+  max-height: 72dvh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.am-sheet[data-open="true"] {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .am-sheet { transition: none; }
+}
+
+.am-sheet__handle {
+  width: 42px;
+  height: 4px;
+  background: var(--line, #E8E2D6);
+  border-radius: 2px;
+  margin: 8px auto 6px;
+  flex-shrink: 0;
+}
+
+.am-sheet__tabs {
+  display: flex;
+  gap: 6px;
+  padding: 4px 16px 10px;
+  border-bottom: 1px solid var(--line, #E8E2D6);
+  flex-shrink: 0;
+  background: var(--cream, #FAF7F2);
+}
+
+.am-tab {
+  flex: 1;
+  background: none;
+  border: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--mute, #6B7280);
+  cursor: pointer;
+  letter-spacing: -0.01em;
+  transition: background 120ms ease, color 120ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.am-tab:hover { color: var(--ink, #0E1320); }
+.am-tab[aria-selected="true"] {
+  background: var(--navy, #1F3864);
+  color: white;
+}
+.am-tab:focus-visible { outline: 2px solid var(--gold, #E0B341); outline-offset: 2px; }
+
+.am-sheet__body {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 16px 20px;
+  flex: 1;
+}
+
+.am-sheet__empty {
+  padding: 32px 12px;
+  text-align: center;
+  color: var(--mute, #6B7280);
+  font-size: 13px;
+}
+
+/* List items (shared by both panels). */
+.am-list-item {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 4px;
+  border-bottom: 1px solid var(--line, #E8E2D6);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 120ms ease;
+}
+.am-list-item:last-child { border-bottom: 0; }
+.am-list-item:hover { background: rgba(31, 56, 100, 0.04); }
+.am-list-item:focus-visible { outline: 2px solid var(--gold, #E0B341); outline-offset: 2px; border-radius: 8px; }
+
+.am-list-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--line, #E8E2D6);
+  flex-shrink: 0;
+}
+
+.am-list-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.am-list-name {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink, #0E1320);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.am-list-why {
+  font-size: 12px;
+  color: var(--ink-2, #1A2233);
+  opacity: 0.78;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.am-list-meta {
+  font-size: 11px;
+  color: var(--mute, #6B7280);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.am-list-dist {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold-dark, #B8941F);
+  text-align: right;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ---------- 9. Loading skeleton (shimmer pulse) ---------- */
+.am-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 800;
+  background: var(--cream, #FAF7F2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 24px;
+  text-align: center;
+  font-family: inherit;
+}
+
+.am-loading[hidden] { display: none; }
+
+.am-skeleton {
+  width: min(280px, 80%);
+  height: 280px;
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      90deg,
+      var(--line, #E8E2D6) 0%,
+      var(--cream-2, #F4EFE5) 50%,
+      var(--line, #E8E2D6) 100%
+    );
+  background-size: 200% 100%;
+  animation: am-shimmer 1.4s linear infinite;
+  position: relative;
+}
+
+.am-skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 40% 30%;
+  background: var(--gold, #E0B341);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: am-skeleton-dot 1.4s ease-in-out infinite;
+}
+
+@keyframes am-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@keyframes am-skeleton-dot {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50%      { transform: scale(1.15); opacity: 0.55; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .am-skeleton, .am-skeleton::after { animation: none; }
+}
+
+.am-loading__caption {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy, #1F3864);
+  letter-spacing: -0.01em;
+}
+
+.am-loading__caption span {
+  color: var(--mute, #6B7280);
+  font-weight: 500;
+}
+
+/* ---------- 10. Empty state (GPS denied) ---------- */
+.am-empty {
+  position: absolute;
+  inset: 0;
+  z-index: 810;
+  background: linear-gradient(160deg, var(--navy, #1F3864) 0%, var(--navy-3, #0E1B30) 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 32px 24px calc(36px + env(safe-area-inset-bottom, 0));
+  overflow: hidden;
+  text-align: center;
+}
+
+.am-empty[hidden] { display: none; }
+
+.am-empty__skyline {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.32;
+}
+
+.am-empty__skyline svg { width: 100%; height: 100%; display: block; }
+
+.am-empty__title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 10px;
+  z-index: 1;
+}
+
+.am-empty__body {
+  font-size: 15px;
+  color: var(--gold-soft, #F2D67D);
+  margin: 0 0 24px;
+  line-height: 1.45;
+  max-width: 32ch;
+  z-index: 1;
+}
+
+.am-empty__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 340px;
+  z-index: 1;
+}
+
+.am-empty .am-btn--primary {
+  background: var(--gold, #E0B341);
+  color: var(--navy, #1F3864);
+  padding: 14px 18px;
+  font-size: 15px;
+  border-radius: 14px;
+}
+.am-empty .am-btn--primary:hover { background: var(--gold-soft, #F2D67D); }
+
+.am-empty .am-btn--secondary {
+  background: transparent;
+  color: white;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  padding: 12px 16px;
+  font-size: 14px;
+  border-radius: 14px;
+}
+.am-empty .am-btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- 11. Misc helpers ---------- */
+.am-sr {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Reduce motion: kill the long transitions on sheet/peek. */
+@media (prefers-reduced-motion: reduce) {
+  .am-chip:active { transform: none; }
+  .am-list-item { transition: none; }
+}
