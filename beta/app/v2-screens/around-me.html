@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!--
+  Walking Explorers v2 — Around Me (live-location discovery screen)
+  Owned by: around-me agent (v0.7.02)
+
+  STANDALONE-TESTABLE: open /beta/app/v2-screens/around-me.html directly in a
+  browser and the screen mounts itself into <main id="aroundMeRoot"> below.
+
+  INTEGRATION: when wired into the host app shell (beta/app/index.html), the
+  integrator does NOT load this HTML. Instead they import around-me.js as an
+  ES module and call AroundMe.mount(containerEl). See agent_reports/
+  v07_02_around_me.md for the precise integration recipe.
+
+  Markup contract: every interactive element exists at mount-time and is
+  documented in around-me.js (search for "DOM CONTRACT"). The structure here
+  is the canonical reference snapshot so a11y + design + the integrator can
+  see what gets injected without running JS.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1F3864" />
+  <title>Around Me — Walking Explorers</title>
+
+  <!-- Leaflet 1.9.4 stylesheet. In the host app this is already loaded by
+       index.html, so the integrator can DROP these two <link> tags. We keep
+       them here so the file is openable in isolation for QA. -->
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin="" />
+
+  <!-- Shared map design tokens + custom map style (palette = navy + gold + cream). -->
+  <link rel="stylesheet" href="../v2-styles/map.css" />
+
+  <!-- Screen-specific styles owned by this agent. -->
+  <link rel="stylesheet" href="./around-me.css" />
+
+  <!-- Token bridge: when this HTML is opened standalone (no app shell), the
+       app's --navy/--gold/etc. variables aren't injected by index.html, so
+       we provide a small fallback :root here. The host app already exposes
+       these so this block is harmless when mounted via AroundMe.mount(). -->
+  <style id="aroundMeStandaloneTokens">
+    :root {
+      --navy:#1F3864; --navy-2:#162B4A; --navy-3:#0E1B30;
+      --gold:#E0B341; --gold-soft:#F2D67D; --gold-dark:#B8941F;
+      --cream:#FAF7F2; --cream-2:#F4EFE5;
+      --ink:#0E1320; --ink-2:#1A2233; --mute:#6B7280;
+      --line:#E8E2D6; --bg:#FAF7F2;
+      --ease-out-soft: cubic-bezier(.22,.61,.36,1);
+      --shadow-1: 0 1px 2px rgba(14,19,32,0.06);
+      --shadow-2: 0 6px 18px rgba(14,19,32,0.10);
+      --shadow-3: 0 12px 32px rgba(14,19,32,0.15);
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                   Roboto, Helvetica, Arial, sans-serif;
+    }
+    html, body { height:100%; margin:0; background:var(--cream); font-family:var(--font-sans); color:var(--ink); }
+    /* Standalone host fills the viewport — when mounted by app shell the
+       integrator supplies the host element and this rule is overridden by
+       a more-specific declaration in around-me.css. */
+    #aroundMeRoot { position:fixed; inset:0; }
+  </style>
+</head>
+
+<body>
+  <!--
+    Single mount point.
+
+    DOM CONTRACT (canonical reference; the live tree is rendered by
+    around-me.js inside `.am-root`):
+      .am-root                  → screen container
+        .am-map                 → Leaflet map node (#aroundMeMap)
+        .am-overlay--top        → floating chips (offers toggle, status)
+          [data-action=toggle-offers]
+          [data-action=recenter]
+        .am-overlay--peek       → bottom peek card for a tapped stop
+          [data-action=add-to-walk]
+          [data-action=open-route]
+        .am-sheet               → bottom sheet (Nearby stops / Nearby routes)
+          [role=tablist]
+            [role=tab][data-tab=stops]
+            [role=tab][data-tab=routes]
+          [role=tabpanel][data-panel=stops]
+          [role=tabpanel][data-panel=routes]
+        .am-empty               → permission-denied state
+          [data-action=request-permission]
+          [data-action=fallback-soho]
+        .am-loading             → GPS-locking skeleton (shimmer)
+  -->
+  <main id="aroundMeRoot" aria-label="Around Me — live location discovery"></main>
+
+  <!-- Leaflet 1.9.4 JS. In the host app this is already loaded so the
+       integrator drops this <script> tag too. -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+          crossorigin=""></script>
+
+  <!-- Mount the module. In the host app the integrator imports this from
+       index.html / app-shell.js instead — see agent report for the call. -->
+  <script type="module">
+    import AroundMe from './around-me.js';
+    const host = document.getElementById('aroundMeRoot');
+    AroundMe.mount(host);
+    // Optional: cleanup on visibility-change for power-saving when standalone.
+    window.addEventListener('beforeunload', () => AroundMe.destroy());
+  </script>
+</body>
+</html>
