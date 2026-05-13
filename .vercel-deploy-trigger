@@ -2,7 +2,7 @@ Last touched: 2026-05-13 post-reconnect.
 
 Vercel deploy history:
 - 2026-05-08 14:16: 3 ERROR deploys (679a53b, 6521260, 3b95f5e) — invalid 'runtime: edge' in vercel.json
-- 2026-05-08 14:33: vercel.json fixed (commit beaba512) — not deployed
+- 2026-05-08 14:33: vercel.json fixed (commit beaba512) — not deployed 
 - 2026-05-13 04:51-05:17: 15 v2 commits (84 NYC photos, motion, icons, illustrations, microcopy, map, loop completion, capture v2, right now) — not deployed
 - 2026-05-13 05:25: first trigger commit (45330f74) — not deployed
 - 2026-05-13: GitHub integration reconnected by Nova
