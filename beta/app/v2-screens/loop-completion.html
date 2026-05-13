@@ -1,0 +1,183 @@
+<!--
+  Walking Explorers v2 — Loop Completion Screen
+  ----------------------------------------------
+  Owner: Loop-completion-redesign agent
+  Files in this triplet:
+    - beta/app/v2-screens/loop-completion.html  (this file)
+    - beta/app/v2-screens/loop-completion.css
+    - beta/app/v2-screens/loop-completion.js
+  Mounting:
+    Insert this <section> into the host page. Call `LoopCompletion.show(loopData)`
+    from loop-completion.js to play the full sequence. The section keeps
+    `hidden` until the host removes it (or the JS clears it).
+  Reduced motion:
+    The CSS honors prefers-reduced-motion and the JS short-circuits to the
+    final frame of every phase when that media query matches.
+-->
+<link rel="stylesheet" href="/tokens.css" />
+<link rel="stylesheet" href="/beta/app/v2-screens/loop-completion.css" />
+
+<section class="loop-screen" id="loop-v2" data-phase="idle" hidden
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="loop-v2-headline"
+         aria-describedby="loop-v2-live">
+
+  <!-- Skip-the-show link.  Receives focus the moment the screen mounts so
+       screen-reader and keyboard users can jump straight to the share card. -->
+  <a class="loop-skip" href="#loop-v2-card" data-loop-skip>
+    Skip animation, go to recap
+  </a>
+
+  <!-- ARIA live region.  The JS rewrites textContent to:
+       "Walk complete. 1.7 miles. 6 stops. 1 hour 30 minutes." -->
+  <p id="loop-v2-live" class="visually-hidden" aria-live="polite"></p>
+
+  <!-- ============================================================
+       PHASE 1 — Confetti burst + headline + count-up stats
+       ============================================================ -->
+  <div class="loop-phase loop-phase--celebrate" data-phase-id="celebrate">
+
+    <!-- Confetti canvas.  Sized in JS to devicePixelRatio.  Hidden from AT. -->
+    <canvas class="loop-confetti" aria-hidden="true"></canvas>
+
+    <!-- Backdrop gradient.  CSS handles the cream-to-navy fade. -->
+    <div class="loop-backdrop" aria-hidden="true"></div>
+
+    <header class="loop-hero">
+      <!-- Hero illustration — falls back to a CSS gold-dot if the SVG sprite
+           is not yet shipped by the design-system agent. -->
+      <svg class="loop-hero__illus" viewBox="0 0 120 120"
+           role="img" aria-label="Walking Explorers loop complete">
+        <use href="/beta/app/v2-styles/illustrations.svg#illus-loop-complete-hero"/>
+        <!-- Fallback drawn beneath the <use>.  If the sprite resolves, the
+             <use> paints on top.  If not, this circle is what the user sees. -->
+        <circle cx="60" cy="60" r="40" fill="var(--color-gold)"/>
+        <circle cx="60" cy="60" r="40" fill="none"
+                stroke="var(--color-cream)" stroke-width="3"
+                stroke-dasharray="251" stroke-dashoffset="0"
+                class="loop-hero__ring"/>
+      </svg>
+
+      <h1 class="loop-hero__title" id="loop-v2-headline">
+        <span class="loop-hero__title-word" data-word="0">That's</span>
+        <span class="loop-hero__title-word" data-word="1">a</span>
+        <span class="loop-hero__title-word loop-hero__title-word--accent" data-word="2">Loop.</span>
+      </h1>
+
+      <p class="loop-hero__sub">
+        You walked it.  Here's what you saw.
+      </p>
+
+      <!-- Three count-up stats — the JS animates each from 0 to data-target. -->
+      <dl class="loop-stats" role="list">
+        <div class="loop-stat" role="listitem">
+          <dt class="loop-stat__label">Miles</dt>
+          <dd class="loop-stat__value" data-count
+              data-count-target="0" data-count-decimals="1">0.0</dd>
+        </div>
+        <div class="loop-stat" role="listitem">
+          <dt class="loop-stat__label">Stops</dt>
+          <dd class="loop-stat__value" data-count
+              data-count-target="0" data-count-decimals="0">0</dd>
+        </div>
+        <div class="loop-stat" role="listitem">
+          <dt class="loop-stat__label">Time</dt>
+          <dd class="loop-stat__value" data-count
+              data-count-target="0" data-count-format="hm">0m</dd>
+        </div>
+      </dl>
+    </header>
+  </div>
+
+  <!-- ============================================================
+       PHASE 2 — Animated map recap with photo polaroids
+       ============================================================ -->
+  <div class="loop-phase loop-phase--recap" data-phase-id="recap" aria-hidden="true">
+
+    <h2 class="loop-recap__title">Your route</h2>
+
+    <div class="loop-map" id="loop-v2-map" data-loop-map>
+      <!-- The JS injects either a Leaflet map (when available) or a
+           lightweight SVG polyline fallback into this container. -->
+      <svg class="loop-map__fallback" viewBox="0 0 320 200"
+           preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <!-- The polyline path is set by the JS — the dasharray draws it in. -->
+        <path class="loop-map__route" d="" fill="none"
+              stroke="var(--color-gold)" stroke-width="3"
+              stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Stop markers and photo polaroids are appended by the JS. -->
+        <g class="loop-map__markers"></g>
+        <g class="loop-map__photos"></g>
+      </svg>
+    </div>
+
+    <!-- Nudge shown when the user captured zero photos. -->
+    <p class="loop-recap__nudge" data-loop-nudge hidden>
+      Next time, save a spot.  Long-press any marker to drop a photo.
+    </p>
+  </div>
+
+  <!-- ============================================================
+       PHASE 3 — Shareable recap card + CTAs + journal prompt
+       ============================================================ -->
+  <div class="loop-phase loop-phase--share" data-phase-id="share" id="loop-v2-card"
+       aria-hidden="true">
+
+    <!-- The canvas-rendered preview.  JS draws into this and also generates
+         the 1080x1350 share blob from the same drawing routine. -->
+    <figure class="loop-card">
+      <canvas class="loop-card__canvas" width="540" height="675"
+              aria-label="Your loop recap card"></canvas>
+      <figcaption class="loop-card__caption" data-loop-caption>
+        Share-ready.  1080 by 1350.
+      </figcaption>
+    </figure>
+
+    <div class="loop-actions" role="group" aria-label="Share your loop">
+      <button type="button" class="loop-btn loop-btn--primary" data-loop-action="share">
+        <svg class="loop-btn__icon" aria-hidden="true" viewBox="0 0 24 24">
+          <use href="/beta/app/v2-styles/icons.svg#icon-share"/>
+          <!-- Inline fallback path drawn beneath the <use>. -->
+          <path d="M14 9V5l7 7-7 7v-4c-5 0-8 2-10 5 1-7 5-10 10-11z"
+                fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Share</span>
+      </button>
+
+      <button type="button" class="loop-btn loop-btn--secondary" data-loop-action="invite">
+        <svg class="loop-btn__icon" aria-hidden="true" viewBox="0 0 24 24">
+          <use href="/beta/app/v2-styles/icons.svg#icon-friend"/>
+          <path d="M16 11a4 4 0 100-8 4 4 0 000 8zM8 14a4 4 0 100-8 4 4 0 000 8zm0 2c-4 0-6 2-6 5h12c0-3-2-5-6-5zm8 0c-1 0-2 0-3 1 2 1 3 2 3 4h6c0-3-2-5-6-5z"
+                fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linejoin="round"/>
+        </svg>
+        <span>Send to a friend</span>
+      </button>
+
+      <button type="button" class="loop-btn loop-btn--ghost" data-loop-action="walk-another">
+        <span>Walk another</span>
+      </button>
+    </div>
+
+    <!-- Optional journaling prompt.  Saves to /api/loops/journal via the JS. -->
+    <form class="loop-journal" data-loop-journal aria-label="How was it?">
+      <label class="loop-journal__label" for="loop-v2-journal-input">
+        How was it?
+      </label>
+      <textarea class="loop-journal__input" id="loop-v2-journal-input"
+                name="note" rows="2" maxlength="240"
+                placeholder="One thing you'll remember..."></textarea>
+      <div class="loop-journal__row">
+        <span class="loop-journal__hint" data-loop-journal-hint>
+          Saves to your private notes.
+        </span>
+        <button type="submit" class="loop-journal__save">Save</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Module is loaded last so its initial DOM query finds the section above. -->
+<script type="module" src="/beta/app/v2-screens/loop-completion.js"></script>
