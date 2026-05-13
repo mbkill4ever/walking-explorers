@@ -1,0 +1,1101 @@
+{
+  "version": 1,
+  "generated_at": "2026-05-13T00:00:00Z",
+  "voice_guide": "Editorial-NYC. Write like a New Yorker who's lived here long enough to skip the obvious. Observation over instruction, specificity over hedging, earned warmth over performative friendliness. The reader has been to Manhattan before — don't explain that the High Line is elevated. DO: name the cross street, name the time of day, name the dish. DO: trust the user with confidence ('Order the cortado.' not 'You might try the cortado.'). DO: end short — a clean period beats a cheery sign-off. DON'T: use exclamation marks (rare exceptions only), emojis as decoration, or SaaS phrases like 'Welcome to your dashboard,' 'Awesome!,' or 'Thanks for your feedback!' Voice references: New Yorker headlines, Atlas Obscura captions, Citymapper's smart-aleck moments. Lowercase 'café' when it reads better. No em-dash abuse — but use them when the sentence wants one.",
+
+  "app": {
+    "name": "Walking Explorers",
+    "tagline": "Twelve routes through the city you almost know.",
+    "subtitle_short": "NYC, on foot."
+  },
+
+  "greetings": {
+    "morning": [
+      "Good morning. The light's good before 10.",
+      "Good morning. Coffee, then the street.",
+      "Morning. Most cafés just opened.",
+      "Good morning. Cooler than it'll be all day."
+    ],
+    "afternoon": [
+      "Good afternoon. Coffee weather.",
+      "Afternoon. Half the day is still ahead.",
+      "Good afternoon. Sidewalks just hit peak.",
+      "Afternoon. The good blocks are quieter than you'd think."
+    ],
+    "evening": [
+      "Good evening. Golden hour starts in about thirty minutes.",
+      "Evening. The river light is the best light.",
+      "Good evening. Galleries close at seven.",
+      "Evening. Now's when the city softens."
+    ],
+    "night": [
+      "Quiet hours. Most of the city is asleep.",
+      "Late. The bridges are at their best now.",
+      "Past eleven. The good diners are still open.",
+      "Night shift. Walk light, walk slow."
+    ]
+  },
+
+  "greeting_eyebrows": {
+    "today": "Today in NYC",
+    "right_now": "Right now",
+    "for_you": "For you",
+    "offers": "Limited-time · NYC",
+    "feedback_help": "Help shape the product",
+    "whats_new": "What's new",
+    "promo_route": "New · Promo route"
+  },
+
+  "greeting_subs": {
+    "default": "Twelve walks, hand-built.",
+    "new_user": "Pick a route. The rest writes itself.",
+    "returning": "Back where you left off.",
+    "post_loop": "One walk down. Twelve in total."
+  },
+
+  "buttons": {
+    "start_walking": "Start the walk",
+    "start_this_walk": "Start this walk",
+    "walk_another": "Walk another route",
+    "next_stop": "Next stop",
+    "save_spot": "Save this spot",
+    "save_to_archive": "Save to my archive",
+    "share_loop": "Send this Loop",
+    "share": "Share",
+    "request_access": "Ask for an invite",
+    "sign_out": "Sign out",
+    "sign_in": "Sign in",
+    "back": "Back",
+    "back_to_explore": "Back to explore",
+    "back_to_feedback": "Back to feedback",
+    "close": "Close",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "delete_spot": "Delete this spot",
+    "submit": "Submit",
+    "submit_feedback": "Send it",
+    "vote": "Vote",
+    "add_to_route": "Add to route",
+    "generate_route": "Build the route",
+    "generate_now": "Build it now",
+    "pick_a_route": "Pick a route",
+    "exit_walk": "Exit walk",
+    "view_list": "List",
+    "view_map": "Map",
+    "tap_to_capture": "Tap to capture",
+    "tap_to_upload": "Tap to upload",
+    "see_all": "See all",
+    "more": "More",
+    "retry": "Try again",
+    "got_it": "Got it"
+  },
+
+  "tabs": {
+    "explore": "Explore",
+    "archive": "My Spots",
+    "offers": "Offers",
+    "feedback": "Feedback",
+    "changelog": "What's new"
+  },
+
+  "screen_titles": {
+    "explore": "Walking Explorers",
+    "archive": "My Spots",
+    "offers": "Promotions Near You",
+    "feedback": "Feedback",
+    "changelog": "What's new",
+    "loop": "Your Loop",
+    "detail": "Route",
+    "walk": "Walk in progress",
+    "capture": "Save this spot",
+    "spot": "Spot"
+  },
+
+  "section_headings": {
+    "nyc_routes": "NYC routes",
+    "for_you_today": "For you today",
+    "near_you": "Near you",
+    "your_spots": "Your spots",
+    "feature_requests": "Feature requests",
+    "bug_reports": "Bug reports",
+    "route_ratings": "Route ratings",
+    "neighborhood_requests": "Neighborhood requests",
+    "recent_offers": "Recent offers"
+  },
+
+  "labels": {
+    "stops": "Stops",
+    "time": "Time",
+    "distance": "Distance",
+    "miles": "mi",
+    "minutes": "min",
+    "minutes_short": "m",
+    "hours_short": "h",
+    "stop_n_of_total": "Stop {n} of {total}",
+    "n_stops": "{n} stops",
+    "n_routes": "{n} routes",
+    "n_items": "{n} items",
+    "one_item": "1 item",
+    "sponsored": "Sponsored",
+    "nyc_pick": "NYC pick",
+    "your_post": "your post",
+    "walk_complete": "Walk complete",
+    "gps_searching": "Locating you",
+    "gps_found": "Located",
+    "your_loop": "Your Loop",
+    "tags": "Tags",
+    "revisit_rating": "Revisit rating",
+    "notes": "Notes",
+    "summary": "Summary",
+    "details": "Details",
+    "why_this": "Why this for you",
+    "neighborhood": "Neighborhood",
+    "saved_on": "Saved",
+    "expires": "Until"
+  },
+
+  "placeholders": {
+    "feedback_title": "Short summary (e.g. Add Astoria)",
+    "feedback_body": "What's the use case? Skip if it's obvious.",
+    "capture_notes": "Notes. What was the vibe?",
+    "capture_notes_short": "What was the vibe?",
+    "search": "Search routes, stops, neighborhoods",
+    "email": "you@somewhere.nyc"
+  },
+
+  "right_now": {
+    "eyebrow": "Right now · For you",
+    "cta": "Start this walk",
+    "morning_weekday": "{day} morning. SoHo cafés are quiet before ten.",
+    "morning_weekend": "{day} morning. Cast-iron streets, third-wave coffee. Ninety minutes.",
+    "midday_weekday": "{day} afternoon. The High Line, then galleries until they close.",
+    "midday_weekend": "{day} afternoon. Central Park has corners most people miss.",
+    "evening_weekday": "{day} evening. West Village brownstones at golden hour.",
+    "evening_weekend": "{day} afternoon. Sunset over the East River from Williamsburg.",
+    "late": "Late in NYC. East Village vinyl and twenty-four-hour diners.",
+    "quiet": "Quiet hours. DUMBO before the crowds.",
+    "rain": "Indoor today. SoHo galleries or LES food. Take your pick.",
+    "cold": "It's cold. Short walk, warm cafés. West Village is built for this.",
+    "hot": "It's hot. Stick to shade and air conditioning. Chelsea galleries are cool inside."
+  },
+
+  "onboarding": {
+    "first_walk_nudge": "First walk? Tap any route to see what's on it.",
+    "first_spot_nudge": "Hit Save spot at any stop. It'll live in your archive forever.",
+    "first_loop_nudge": "Finish a route to log your first Loop.",
+    "tab_explore_hint": "Twelve routes, hand-picked. Start here.",
+    "tab_archive_hint": "Every spot you've saved. Your private map.",
+    "tab_offers_hint": "Local businesses, real offers. No pop-ups.",
+    "tap_a_route": "Tap a route to read what's there.",
+    "welcome_returning": "Welcome back.",
+    "welcome_first": "You're in. The first walk is the hardest."
+  },
+
+  "empty_states": {
+    "archive": {
+      "title": "Your city memory starts here.",
+      "body": "Save a spot on your next walk. It lives here forever — photo, tag, notes, GPS.",
+      "cta": "Pick a route"
+    },
+    "archive_map": {
+      "title": "Nothing on the map yet.",
+      "body": "Saved spots pin themselves automatically.",
+      "cta": "Pick a route"
+    },
+    "offers": {
+      "title": "No offers near you right now.",
+      "body": "Check back in a few hours. New ones drop daily.",
+      "cta": "Pick a route instead"
+    },
+    "feedback_feature": {
+      "title": "Nothing here yet. Be the first.",
+      "body": "Tell us what's missing. We read every one.",
+      "cta": "Write something"
+    },
+    "feedback_bug": {
+      "title": "No bugs reported. Suspicious.",
+      "body": "If something's off, say so. Detail helps.",
+      "cta": "Report it"
+    },
+    "feedback_rating": {
+      "title": "No route ratings yet.",
+      "body": "Finish a walk and tell us how it went.",
+      "cta": "Pick a route"
+    },
+    "feedback_neighborhood": {
+      "title": "No neighborhood requests yet.",
+      "body": "Where should we go next? Astoria? Greenpoint? Inwood?",
+      "cta": "Make a request"
+    },
+    "loops": {
+      "title": "No Loops yet.",
+      "body": "Finish a route — start to finish — and it becomes a Loop.",
+      "cta": "Pick a route"
+    },
+    "search": {
+      "title": "Nothing matches.",
+      "body": "Try a neighborhood or a vibe — 'sunset,' 'vinyl,' 'brownstone.'",
+      "cta": "Clear search"
+    }
+  },
+
+  "toasts": {
+    "spot_saved": "Saved. In your archive.",
+    "spot_deleted": "Spot deleted.",
+    "spot_save_failed": "Couldn't save. Try again.",
+    "spot_delete_failed": "Couldn't delete. Try again.",
+    "loop_complete": "That's a Loop. Recap incoming.",
+    "loop_saved": "Loop logged.",
+    "feedback_submitted": "Heard. We read every one.",
+    "feedback_submit_failed": "Didn't go through. Try again.",
+    "vote_counted": "Counted.",
+    "vote_failed": "Vote didn't land. Try again.",
+    "vote_already": "Already counted.",
+    "photo_added": "Photo added.",
+    "photo_removed": "Photo removed.",
+    "map_failed": "Map didn't load. Reload the page.",
+    "list_failed": "Couldn't load. Pull to refresh.",
+    "copied_link": "Link copied.",
+    "promo_adding": "Adding {business} to the route…",
+    "promo_route_built": "Route built. Two minutes to start.",
+    "promo_route_failed": "Couldn't build the route. Try again in a minute.",
+    "gps_locating": "Finding you…",
+    "gps_unavailable": "GPS off. Spot saved without location.",
+    "signed_out": "Signed out.",
+    "session_expired": "Session expired. Sign in again.",
+    "rate_limited": "Slow down — try again in a minute.",
+    "saved_offline": "Saved offline. Will sync when you reconnect.",
+    "offline_now": "You're offline.",
+    "back_online": "Back online."
+  },
+
+  "errors": {
+    "no_gps": "We can't find you. Walk a few steps and try again.",
+    "gps_denied": "Location permission off. The walk still works — spots just won't be pinned.",
+    "photo_too_large": "Photo's too big. Try a different one.",
+    "photo_invalid": "That file isn't a photo we can read.",
+    "no_photo": "Add a photo first.",
+    "no_summary": "Add a short summary.",
+    "rate_limited": "Slow down — try again in a minute.",
+    "network": "No connection. Check your service.",
+    "server": "Something broke on our side. Sorry.",
+    "not_found": "Not found.",
+    "unauthorized": "You're signed out. Redirecting…",
+    "save_failed": "Couldn't save. Try again.",
+    "load_failed": "Couldn't load. Try again.",
+    "map_failed": "Map didn't load.",
+    "generic": "Something went sideways. Try again."
+  },
+
+  "modals": {
+    "capture_title": "Save this spot",
+    "capture_at": "Capturing at {stop}",
+    "capture_generic": "Capture a moment",
+    "capture_photo_cta": "Tap to capture or upload",
+    "capture_photo_sub": "Camera or library — either works.",
+    "spot_title": "Saved spot",
+    "delete_confirm_title": "Delete this spot?",
+    "delete_confirm_body": "Photo, notes, location — all gone.",
+    "delete_confirm_cta": "Delete it",
+    "delete_confirm_cancel": "Keep it",
+    "exit_walk_title": "Leave the walk?",
+    "exit_walk_body": "Your progress stays. You can pick it back up.",
+    "exit_walk_cta": "Leave",
+    "exit_walk_cancel": "Stay"
+  },
+
+  "rating_labels": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "legendary": "Legendary",
+    "low_hint": "Fine. Probably wouldn't return.",
+    "medium_hint": "Worth a second visit.",
+    "high_hint": "Tell people about this one.",
+    "legendary_hint": "Once-in-a-year good."
+  },
+
+  "tags": {
+    "Café": "Café",
+    "Food": "Food",
+    "Hidden Gem": "Hidden",
+    "Work Spot": "Work spot",
+    "Date Spot": "Date",
+    "Viewpoint": "View",
+    "Art": "Art",
+    "Nature": "Green",
+    "Shop": "Shop",
+    "Revisit": "Revisit"
+  },
+
+  "feedback": {
+    "headline": "What should we build next?",
+    "sub": "Vote on requests, file bugs, ask for a neighborhood.",
+    "tab_feature": "Feature requests",
+    "tab_bug": "Bug reports",
+    "tab_rating": "Route ratings",
+    "tab_neighborhood": "Neighborhood requests",
+    "label_title": "Summary",
+    "label_body": "Details (optional)",
+    "send_cta": "Send it",
+    "after_send": "Heard. We read every one.",
+    "empty_board": "Nothing here yet. Be the first.",
+    "status_open": "open",
+    "status_planned": "planned",
+    "status_shipped": "shipped",
+    "status_wontfix": "won't ship"
+  },
+
+  "promotions": {
+    "section_title": "Promotions Near You",
+    "section_sub": "Local businesses. Real offers. No pop-ups.",
+    "promo_route_eyebrow": "New · Promo route",
+    "promo_route_headline": "A route built from today's offers.",
+    "promo_route_sub": "Two to four offer stops, plus a couple of aesthetic detours.",
+    "promo_route_cta": "Build it now",
+    "ad_disclosure": "Sponsored stops are paid placements. We still vouch for them."
+  },
+
+  "loop": {
+    "headline": "That's a Loop.",
+    "sub": "{route_title} · {stops} stops · {miles} mi",
+    "recap_intro": "Here's what just happened.",
+    "next_cta": "Walk another route",
+    "share_cta": "Send this Loop",
+    "rate_prompt": "How was it?",
+    "complete_eyebrow": "Walk complete"
+  },
+
+  "share_recap": {
+    "headline_templates": [
+      "I walked {miles} miles through {neighborhood} today.",
+      "Just finished a {minutes}-minute {neighborhood} Loop.",
+      "Walked {neighborhood}. {hero_stop} was the highlight.",
+      "{neighborhood}, on foot. {miles} miles, {stops} stops.",
+      "Closed a Loop in {neighborhood} — {hero_stop} earned it."
+    ],
+    "footer": "Walking Explorers · walkingexplorers.com"
+  },
+
+  "achievements": {
+    "first_loop": {
+      "title": "First Loop",
+      "body": "You walked a full route, start to finish. The rest is downhill.",
+      "icon": "loop"
+    },
+    "first_spot": {
+      "title": "First Save",
+      "body": "One spot in the archive. The city memory begins.",
+      "icon": "bookmark"
+    },
+    "five_spots": {
+      "title": "Five Saved",
+      "body": "Your archive has a shape now.",
+      "icon": "bookmarks"
+    },
+    "twenty_five_spots": {
+      "title": "Twenty-Five",
+      "body": "You're keeping track better than most New Yorkers.",
+      "icon": "archive"
+    },
+    "neighborhood_explorer": {
+      "title": "Neighborhood Explorer",
+      "body": "Three Loops in the same neighborhood. You know it now.",
+      "icon": "map-pin"
+    },
+    "five_neighborhoods": {
+      "title": "Five Neighborhoods",
+      "body": "You've walked five corners of the city. Keep going.",
+      "icon": "compass"
+    },
+    "golden_hour": {
+      "title": "Golden Hour",
+      "body": "A Loop finished within sixty minutes of sunset. The light was good.",
+      "icon": "sun"
+    },
+    "early_bird": {
+      "title": "Early Bird",
+      "body": "A walk started before eight AM. The city was yours.",
+      "icon": "sunrise"
+    },
+    "night_walker": {
+      "title": "Night Walker",
+      "body": "A Loop finished after ten PM. The lights do the work.",
+      "icon": "moon"
+    },
+    "all_twelve": {
+      "title": "All Twelve",
+      "body": "You walked every route in the catalog. We owe you the next twelve.",
+      "icon": "trophy"
+    }
+  },
+
+  "routes": {
+    "soho_aesthetic": {
+      "title_short": "SoHo Café Crawl",
+      "title_full": "SoHo Aesthetic Café Crawl",
+      "subtitle": "Cast-iron, third-wave coffee, vintage racks.",
+      "description_card": "A photo-perfect loop through the most-photographed blocks south of Houston.",
+      "description_long": "Six stops across SoHo's cast-iron grid. Coffee at Joe before the line forms, a slow lap through McNally Jackson, vintage at INA, and Mercer Street when the afternoon light hits the bricks. Ninety minutes if you don't dawdle, two hours if you do. Best on a weekday — Saturdays the sidewalks belong to the tour groups.",
+      "mood_tags": ["aesthetic", "coffee", "shopping", "photogenic"],
+      "best_time": "Tue-Thu 9-11 AM, or Sat 8-10 AM before crowds",
+      "weather": "Any. Indoor backups exist."
+    },
+    "ev_vintage": {
+      "title_short": "East Village Vintage & Vinyl",
+      "title_full": "East Village Vintage & Vinyl",
+      "subtitle": "Old New York at its weirdest.",
+      "description_card": "Diners, dust-jacket records, leather. The downtown you read about.",
+      "description_long": "Veselka still pours twenty-four hours of coffee. The vinyl shops still let you listen. Tompkins Square still has the chess tables. This is the East Village without the noise — six stops over two miles, ending with bagels at Russ & Daughters. Walk it on a weekday so the diners feel like diners again.",
+      "mood_tags": ["vintage", "music", "diner", "downtown"],
+      "best_time": "Wed-Fri 3-6 PM, or late Sunday morning",
+      "weather": "Better in cold. Diners feel right in winter."
+    },
+    "wv_books": {
+      "title_short": "West Village Books & Brownstones",
+      "title_full": "West Village Bookshops & Brownstones",
+      "subtitle": "The bookstores most visitors miss.",
+      "description_card": "Brownstones, tiny bookshops, the river at the end.",
+      "description_long": "Three Lives has been on the same corner since 1968. Caffè Reggio has been pulling shots since 1927. The Bleecker brownstones haven't moved. Seventy-five minutes, mostly flat, ending at the Hudson at sunset. Bring cash for the bookshops — they still prefer it.",
+      "mood_tags": ["bookish", "quiet", "sunset", "classic"],
+      "best_time": "Sun 3-5 PM, golden-hour finish at the river",
+      "weather": "Best in fall. The brownstones know what they're doing."
+    },
+    "highline_galleries": {
+      "title_short": "High Line + Chelsea",
+      "title_full": "High Line + Chelsea Galleries",
+      "subtitle": "Elevated walk, ground-floor art, water-edge finish.",
+      "description_card": "Walk the park, drop into the galleries, end at Little Island.",
+      "description_long": "Start at Gansevoort. The High Line carries you north over Chelsea — duck off into Pace, Gagosian, Hauser & Wirth, all free. Brunch at Cookshop if you've earned it. End at Little Island, where Heatherwick's tulip piers do most of the work. Two and a half miles, two and a half hours if you actually look at the art.",
+      "mood_tags": ["art", "elevated", "modern", "water"],
+      "best_time": "Sat 11 AM - 2 PM, galleries open by noon",
+      "weather": "Skip in rain. The park has nowhere to hide."
+    },
+    "williamsburg": {
+      "title_short": "Williamsburg Murals",
+      "title_full": "Williamsburg Street Art Walk",
+      "subtitle": "Brooklyn's mural belt, plus coffee and vinyl.",
+      "description_card": "Bedford to Domino — murals, plant walls, the skyline from across the river.",
+      "description_long": "Take the L. Bedford Avenue is still doing what it does — people-watching, oat-milk lattes, lines outside the bagel shop. Devoción's plant wall is the most-photographed café interior in Brooklyn, fairly. Bushwick Inlet's murals rotate. End at Domino Park as the sun drops behind Manhattan. Best Brooklyn sunset, full stop.",
+      "mood_tags": ["street-art", "sunset", "coffee", "brooklyn"],
+      "best_time": "Sat 3-6 PM for the Domino sunset",
+      "weather": "Outdoors all the way. Skip if it's wet."
+    },
+    "dumbo_bridge": {
+      "title_short": "DUMBO + Bridge",
+      "title_full": "DUMBO + Brooklyn Bridge Loop",
+      "subtitle": "Cross the bridge, descend into the framed shot.",
+      "description_card": "Walk the pedestrian path, end where everyone's photo ends up.",
+      "description_long": "Start at City Hall, take the pedestrian path across. About twenty-five minutes if no one's stopping to film. Empire Stores has a rooftop — take the elevator. Time Out Market for a slice from Pizza Moto. Washington Street is the shot — bridge framed by the brick, Manhattan in the gap. Worth the patience the line requires.",
+      "mood_tags": ["bridge", "iconic", "river", "brooklyn"],
+      "best_time": "Sun 7-9 AM before the photo crowd",
+      "weather": "Clear days only. Wind on the bridge is real."
+    },
+    "central_park": {
+      "title_short": "Central Park Hidden Corners",
+      "title_full": "Central Park Hidden Corners",
+      "subtitle": "Skip the tourist track. Find the formal garden.",
+      "description_card": "The Pool, Conservatory Garden, the Ramble. The quiet third of the park.",
+      "description_long": "Most of the park's seven hundred acres are empty most of the time. Conservatory Garden in the north is the only formal garden — and the most beautiful corner in spring or fall. The Pool feels like a small lake. The Ramble's path system was designed to disorient you, gently. Two and a quarter miles, mostly under trees. Bring a book to Shakespeare Garden — you'll be the only one there.",
+      "mood_tags": ["green", "quiet", "garden", "secret"],
+      "best_time": "Weekday 9-11 AM, or Sun before 10 AM",
+      "weather": "Glorious in fall. Beautiful in snow."
+    },
+    "les_food": {
+      "title_short": "LES Foodie Crawl",
+      "title_full": "Lower East Side Foodie Crawl",
+      "subtitle": "Old-immigrant New York meets new-immigrant New York.",
+      "description_card": "Pickles, lox, dumplings, candy. The block-by-block history of who fed the city.",
+      "description_long": "Pickle Guys is the last barrel-pickle counter in the city. Russ & Daughters has been slicing lox since 1914 — sit at the café counter, order the classic. The Tenement Museum tour is non-negotiable if you haven't done it. Joe's Shanghai for soup dumplings. Economy Candy for whatever you missed as a kid. End at Attaboy if you can find the door — 134 Eldridge, no menu, knock.",
+      "mood_tags": ["food", "history", "immigrant", "downtown"],
+      "best_time": "Sun 11 AM - 3 PM, full appetite required",
+      "weather": "Any. Most stops are indoor."
+    },
+    "soho_galleries": {
+      "title_short": "SoHo Hidden Galleries",
+      "title_full": "SoHo Hidden Galleries",
+      "subtitle": "Galleries, lofts, the streets that made American art.",
+      "description_card": "The Earth Room, the Drawing Center, Donald Judd's loft. Quietest art day in the city.",
+      "description_long": "The Earth Room is exactly what it sounds like — 250 cubic yards of dirt, since 1977, on the second floor of 141 Wooster. Free. The Drawing Center is the only US nonprofit devoted to drawing. Donald Judd's preserved studio at 101 Spring is $32 and worth every dollar. End at Housing Works Bookstore — the proceeds fight HIV, and the literary events are real. An hour and forty minutes if you don't linger. You will linger.",
+      "mood_tags": ["art", "quiet", "loft", "secret"],
+      "best_time": "Thu-Fri 1-4 PM, galleries fully open",
+      "weather": "Indoor-heavy. Good rainy-day route."
+    },
+    "uws_classic": {
+      "title_short": "Upper West Side Classic",
+      "title_full": "Upper West Side Classic NY",
+      "subtitle": "Lincoln Center to Zabar's. The civilized half-day.",
+      "description_card": "Bookstores, babka, Hudson sunset. The UWS in two miles.",
+      "description_long": "Lincoln Center's plaza is free during the day — the fountain still does its thing. Westsider Books has three floors and prefers cash. Zabar's is the only Upper West Side institution that matters; hot babka, always. The AMNH plaza for the Roosevelt architecture lesson. End at Riverside Park's overlook with a coffee from H&H. Ninety minutes of pure Upper West Side, no apologies.",
+      "mood_tags": ["classic", "books", "river", "civilized"],
+      "best_time": "Sat 10 AM - 1 PM",
+      "weather": "Best in fall. Coats and bagels."
+    },
+    "harlem_history": {
+      "title_short": "Harlem Renaissance",
+      "title_full": "Harlem Renaissance Walk",
+      "subtitle": "The neighborhood that invented modern American culture.",
+      "description_card": "Apollo, Strivers' Row, Schomburg. Two hours of essential history.",
+      "description_long": "The Studio Museum reopens, the Apollo still books names you know, and Strivers' Row — 138th and 139th between Adam Clayton Powell and Frederick Douglass — is the most photogenic brownstone block above 125th. The Schomburg Center is a working research library with a gorgeous reading room. Sylvia's for Sunday gospel brunch if you plan ahead. Marcus Garvey Park's bell tower has the best low-rise skyline in the city. Treat the walk with the weight it deserves.",
+      "mood_tags": ["history", "music", "architecture", "essential"],
+      "best_time": "Sun 11 AM - 2 PM for gospel brunch window",
+      "weather": "Walk in any. Indoor anchors all over."
+    },
+    "fidi_finance": {
+      "title_short": "FiDi Old Manhattan",
+      "title_full": "Financial District Old Manhattan",
+      "subtitle": "Narrow streets, Dutch grid, the harbor at the end.",
+      "description_card": "Stone Street, Trinity, Fearless Girl, the 9/11 pools. Manhattan's oldest mile.",
+      "description_long": "FiDi is empty on weekends and that's the point. Stone Street is the only cobblestone block left in the original Dutch grid — lunch crowds clear by two. Trinity Church holds Hamilton and Burr both. Charging Bull and Fearless Girl are at their best at seven AM or after seven PM, when the tour buses sleep. The 9/11 Memorial pools require time and quiet — give them both. End at Battery Park as the harbor lights come on. The Statue of Liberty is in your shot whether you want her or not.",
+      "mood_tags": ["history", "harbor", "quiet", "early"],
+      "best_time": "Sat 8-10 AM, before the financial district wakes",
+      "weather": "Bring layers. Harbor wind is no joke."
+    }
+  },
+
+  "stops": {
+    "joe_coffee_crosby": {
+      "title": "Joe Coffee — Crosby St",
+      "why_short": "Quietest of NYC's prettiest cafés.",
+      "why_long": "Reclaimed wood, no tourists, no Wi-Fi pressure. Order the cortado. Sit by the window.",
+      "tip": "Tuesday-Thursday before 11 AM.",
+      "duration_text": "10-15 min"
+    },
+    "mcnally_jackson": {
+      "title": "McNally Jackson Books",
+      "why_short": "Independent bookshop that fits your aesthetic.",
+      "why_long": "Two floors, sharp curation, a cafe that doesn't pretend to be the main event. The translated-fiction shelf is the strongest in the city.",
+      "tip": "Browse the staff picks before the front table.",
+      "duration_text": "15-20 min"
+    },
+    "lure_fishbar": {
+      "title": "Lure Fishbar",
+      "why_short": "Stylish underground room that earns it.",
+      "why_long": "Yacht-bar styling done well — wood-paneled, low-lit, oysters at the bar. Lunch is the move; dinner waits are real.",
+      "tip": "Sit at the bar. Order the spicy tuna crispy rice.",
+      "duration_text": "60-90 min"
+    },
+    "ina_soho": {
+      "title": "INA SoHo",
+      "why_short": "Where the city's resale clothing actually is.",
+      "why_long": "Consignment with a buyer's eye — Prada, Chanel, Comme. Prices are real, but so are the finds.",
+      "tip": "New arrivals hit the floor Tuesday afternoons.",
+      "duration_text": "20-30 min"
+    },
+    "donut_plant": {
+      "title": "Donut Plant",
+      "why_short": "Mid-walk sweet break, no apologies.",
+      "why_long": "Since 1994. Square donuts because the shape lets you fit more glaze. Tres leches if available.",
+      "tip": "Sell out by 2 PM on weekends.",
+      "duration_text": "5-10 min"
+    },
+    "mercer_vista": {
+      "title": "Mercer Street vista",
+      "why_short": "Cast-iron, cobblestones, golden hour. The shot.",
+      "why_long": "The most-photographed block in SoHo for a reason. Stand at Prince looking north — the fire escapes catch the late light.",
+      "tip": "An hour before sunset.",
+      "duration_text": "5-10 min"
+    },
+    "veselka": {
+      "title": "Veselka",
+      "why_short": "Twenty-four-hour Ukrainian diner. Holy ground.",
+      "why_long": "Pierogis since 1954. The borscht is the order. Late-night booths, fluorescent comfort. Cash works, cards work, no one rushes you.",
+      "tip": "After 11 PM the writers come back.",
+      "duration_text": "30-45 min"
+    },
+    "astor_place_neon": {
+      "title": "Astor Place neon",
+      "why_short": "Three floors of barber chairs, one of the city's last neon storefronts.",
+      "why_long": "Astor Hair has been clipping since the seventies. The neon sign is original. The cut is fast and good.",
+      "tip": "Best photographed at dusk.",
+      "duration_text": "5-10 min"
+    },
+    "other_music": {
+      "title": "Other Music vinyl",
+      "why_short": "Vinyl, listening booths, the downtown record-store mood.",
+      "why_long": "The original Other Music closed in 2016 — this is its spiritual successor. Deep crates, knowing staff, the kind of recommendations that change your year.",
+      "tip": "Ask. They want to talk.",
+      "duration_text": "20-40 min"
+    },
+    "tompkins_square": {
+      "title": "Tompkins Square Park",
+      "why_short": "Heart of EV culture. Elm trees, chess tables, the dog run.",
+      "why_long": "Where the East Village rests. The chess tables on the east side host games most days. The dog run is famous and earns it.",
+      "tip": "Hare Krishna tree, NE corner. Read the plaque.",
+      "duration_text": "15-25 min"
+    },
+    "limprimerie": {
+      "title": "L'imprimerie",
+      "why_short": "Brooklyn bakery transplant, croissants on a timer.",
+      "why_long": "Pull-apart croissants out of the oven at 4 PM. Get there at 3:55. Lines start ten minutes after.",
+      "tip": "Tear them open while still warm.",
+      "duration_text": "10-15 min"
+    },
+    "russ_daughters_cafe": {
+      "title": "Russ & Daughters Café",
+      "why_short": "Sit-down spinoff of the 1914 appetizing shop.",
+      "why_long": "Lox, sturgeon, the classic boards. Sit at the counter for the show. Bagels are obvious; the egg cream is what people forget to order.",
+      "tip": "Walk-in works after 2 PM weekdays.",
+      "duration_text": "45-60 min"
+    },
+    "three_lives": {
+      "title": "Three Lives & Company",
+      "why_short": "The bookshop that taught New York to buy hardcovers.",
+      "why_long": "Same corner, 10th and Waverly, since 1968. The handwritten staff notes are the whole experience. Trust them.",
+      "tip": "Saturday afternoons get busy. Go Sunday.",
+      "duration_text": "20-30 min"
+    },
+    "bleecker_brownstones": {
+      "title": "Bleecker Street walk",
+      "why_short": "Brownstone density at peak.",
+      "why_long": "Between 7th and Hudson, the block hits the highest brownstone density in the West Village. Walk it slow. The window boxes are competitive.",
+      "tip": "Late afternoon for the side-window light.",
+      "duration_text": "10-15 min"
+    },
+    "caffe_reggio": {
+      "title": "Caffè Reggio",
+      "why_short": "Greenwich Village's first cappuccino. 1927.",
+      "why_long": "The original espresso machine from 1902 still sits up front. Sit by the window. Order the cappuccino, not the cortado — they do the original better than the trend.",
+      "tip": "Old movies were filmed here. You'll feel it.",
+      "duration_text": "20-30 min"
+    },
+    "strand_annex": {
+      "title": "Strand Annex",
+      "why_short": "Eighteen miles of books, the smaller door.",
+      "why_long": "The flagship at 12th is the show. The Annex is the focused cut — newer, calmer, rare books up the stairs.",
+      "tip": "Used-fiction basement, north wall.",
+      "duration_text": "30-45 min"
+    },
+    "magnolia_bakery": {
+      "title": "Magnolia Bakery",
+      "why_short": "Banana pudding is the move.",
+      "why_long": "Forget the cupcakes — the pudding is what locals come back for. The Bleecker location is the original.",
+      "tip": "Small cup, eat it walking.",
+      "duration_text": "10-15 min"
+    },
+    "hudson_sunset": {
+      "title": "Hudson River sunset",
+      "why_short": "Best Manhattan-side sunset in the city.",
+      "why_long": "Christopher Street Pier or Pier 45. Sit on the grass, watch the sun drop behind New Jersey. Free, every night, no reservation.",
+      "tip": "Arrive 30-60 minutes before sunset.",
+      "duration_text": "30-45 min"
+    },
+    "high_line_gansevoort": {
+      "title": "High Line — Gansevoort entrance",
+      "why_short": "Start at the southern terminus.",
+      "why_long": "Gansevoort is the original 2009 entry. Stairs or elevator. The first quarter mile shows the bones of the railway better than any other stretch.",
+      "tip": "Walk north, not south.",
+      "duration_text": "10-15 min"
+    },
+    "whitney_patio": {
+      "title": "Whitney Museum patios",
+      "why_short": "Free outdoor sculpture, no ticket.",
+      "why_long": "Three outdoor terraces are open to anyone — side stairs, not the lobby. Hudson views from the top. The art changes seasonally.",
+      "tip": "Side entrance off Gansevoort.",
+      "duration_text": "20-30 min"
+    },
+    "pace_gallery": {
+      "title": "Pace Gallery",
+      "why_short": "540 W 25th flagship. Free.",
+      "why_long": "Multi-floor contemporary, current names, no ticket. The freight elevators set the tone.",
+      "tip": "Open Tue-Sat. Check the show before you go.",
+      "duration_text": "30-45 min"
+    },
+    "cookshop": {
+      "title": "Cookshop",
+      "why_short": "Chelsea staple, brunch that's worth the wait.",
+      "why_long": "Farm-to-table before the phrase was tired. The brunch is the meal; the cocktail program is sharper than it needs to be.",
+      "tip": "Sit at the bar for walk-in odds.",
+      "duration_text": "60-90 min"
+    },
+    "little_island": {
+      "title": "Little Island",
+      "why_short": "Heatherwick's tulip-pier park.",
+      "why_long": "Concrete tulips holding up two acres of garden over the Hudson. Free. The amphitheater at the south end is worth the climb — it has the best skyline angle on the West Side.",
+      "tip": "Sunset for the gold-hour skyline.",
+      "duration_text": "30-45 min"
+    },
+    "chelsea_market": {
+      "title": "Chelsea Market",
+      "why_short": "Indoor finish — vendors, lobster rolls, brick.",
+      "why_long": "Old Nabisco factory turned food hall. Lobster Place for a roll, Los Tacos No. 1 for the tacos. Crowds peak 1-3 PM.",
+      "tip": "Enter from 16th, exit on 15th.",
+      "duration_text": "30-45 min"
+    },
+    "bedford_subway": {
+      "title": "Bedford Ave subway",
+      "why_short": "Best people-watching in Brooklyn.",
+      "why_long": "Take the L from Manhattan. Bedford is the L's first Brooklyn stop and the sidewalks reflect it — coffee cups, vintage tote bags, weekend brunch lines.",
+      "tip": "Walk south on Bedford after exiting.",
+      "duration_text": "10-15 min"
+    },
+    "devocion": {
+      "title": "Devoción",
+      "why_short": "Most-photographed plant wall in Brooklyn.",
+      "why_long": "Colombian beans flown direct, roasted on-site. The plant wall is famous, fairly. The geisha pour-over is the order if it's on.",
+      "tip": "Window seats, north side, before 10 AM.",
+      "duration_text": "20-30 min"
+    },
+    "bushwick_murals": {
+      "title": "Bushwick Inlet murals",
+      "why_short": "Rotating large-format murals at the water.",
+      "why_long": "The Bushwick Collective rotates artists every few months. The big-wall pieces facing the inlet are the photogenic ones.",
+      "tip": "Afternoon light, west wall.",
+      "duration_text": "20-30 min"
+    },
+    "rough_trade": {
+      "title": "Rough Trade NYC",
+      "why_short": "Vinyl, listening booths, free in-stores.",
+      "why_long": "London record store, Brooklyn outpost. Deep vinyl, good staff picks. In-store performances most weeks — check the schedule.",
+      "tip": "Listening booths in back. Use them.",
+      "duration_text": "30-45 min"
+    },
+    "five_leaves": {
+      "title": "Five Leaves",
+      "why_short": "Ricotta pancakes, brick walls, Brooklyn brunch original.",
+      "why_long": "Heath Ledger was a backer. The room hasn't changed much — pressed tin, warm wood, the kind of brunch that runs late on purpose.",
+      "tip": "Walk in before 11 or after 2.",
+      "duration_text": "60-75 min"
+    },
+    "domino_park": {
+      "title": "Domino Park sunset",
+      "why_short": "Old sugar refinery, wide-frame Manhattan skyline.",
+      "why_long": "Built on the bones of the Domino Sugar refinery. The taco stand is real. The skyline view across the river is the best in Williamsburg, especially as the sun catches the financial-district glass.",
+      "tip": "Arrive 45 minutes before sunset for a seat.",
+      "duration_text": "30-45 min"
+    },
+    "brooklyn_bridge": {
+      "title": "Brooklyn Bridge",
+      "why_short": "Walk the pedestrian path. About 25 minutes.",
+      "why_long": "Start at City Hall, end in DUMBO. Stay in the pedestrian lane — cyclists are unforgiving and right to be. The cables frame the city as you cross.",
+      "tip": "Sunrise weekday for an empty bridge.",
+      "duration_text": "25-35 min"
+    },
+    "empire_stores": {
+      "title": "Empire Stores",
+      "why_short": "Renovated 1870s warehouse. Rooftop you don't pay for.",
+      "why_long": "Brick coffee-warehouse converted to ground-floor shops with a public rooftop. The elevator is free. The view is the same view people post.",
+      "tip": "Take the elevator, not the stairs.",
+      "duration_text": "20-30 min"
+    },
+    "time_out_market": {
+      "title": "Time Out Market",
+      "why_short": "Curated best-of-Brooklyn food, one room.",
+      "why_long": "A food hall that did the work — Pizza Moto, Burger Joint, Mao Mao Mi. The rooftop seating clears views of the bridge.",
+      "tip": "Pizza Moto's plain slice. Don't overthink it.",
+      "duration_text": "30-45 min"
+    },
+    "washington_street": {
+      "title": "Washington Street view",
+      "why_short": "Bridge framed by brick. The photo everyone takes.",
+      "why_long": "Empire State threading the Brooklyn Bridge arch, brick warehouses on either side. Yes, there will be a line. Yes, it's worth it.",
+      "tip": "Patience. Wait for a gap.",
+      "duration_text": "10-15 min"
+    },
+    "janes_carousel": {
+      "title": "Jane's Carousel",
+      "why_short": "1922 carousel under glass at the water.",
+      "why_long": "Restored, glass-enclosed, two dollars a ride. The horses are original. The light through the glass at golden hour is the actual draw.",
+      "tip": "Two dollars cash.",
+      "duration_text": "10-20 min"
+    },
+    "pebble_beach": {
+      "title": "Pebble Beach",
+      "why_short": "Water-level Manhattan view, no crowds.",
+      "why_long": "A small stone beach under the bridge. Skip stones, watch the ferries, the skyline at eye level. Most people walk past it.",
+      "tip": "Low tide is best.",
+      "duration_text": "15-25 min"
+    },
+    "conservatory_garden": {
+      "title": "Conservatory Garden",
+      "why_short": "Central Park's only formal garden.",
+      "why_long": "Six acres at 105th and Fifth. French, Italian, and English garden rooms. Tulip season is famous; the chrysanthemums in fall are quieter and better.",
+      "tip": "Enter at the Vanderbilt Gate.",
+      "duration_text": "30-45 min"
+    },
+    "the_pool": {
+      "title": "The Pool",
+      "why_short": "Quietest body of water in the park.",
+      "why_long": "Near 100th and Central Park West, surrounded by willows. Almost no one finds it. Bring a book and an hour.",
+      "tip": "Weekday mornings.",
+      "duration_text": "30-60 min"
+    },
+    "belvedere": {
+      "title": "Belvedere Castle",
+      "why_short": "Best aerial view in the park. Free.",
+      "why_long": "Mock Gothic, 1869, perched over Turtle Pond. The terraces look out at the Great Lawn, the Ramble, the skyline beyond. Walk up.",
+      "tip": "Morning light from the south terrace.",
+      "duration_text": "15-25 min"
+    },
+    "shakespeare_garden": {
+      "title": "Shakespeare Garden",
+      "why_short": "Only plants Shakespeare mentioned. You'll be alone.",
+      "why_long": "Four acres of rosemary, columbine, rue — everything Shakespeare wrote into a play. The bench under the arbor is the bench.",
+      "tip": "Bring a paperback.",
+      "duration_text": "20-30 min"
+    },
+    "loeb_boathouse": {
+      "title": "Loeb Boathouse",
+      "why_short": "Rent a boat for twenty dollars.",
+      "why_long": "Rowboat on the lake, an hour at a time. Bar service from the patio if you're not rowing. Cash for the boats.",
+      "tip": "Late afternoon, low wind.",
+      "duration_text": "60 min"
+    },
+    "strawberry_fields": {
+      "title": "Strawberry Fields",
+      "why_short": "Lennon's spot. Imagine mosaic.",
+      "why_long": "Triangular grove at 72nd and Central Park West, across from the Dakota where Lennon lived. The Imagine mosaic is small. People leave flowers.",
+      "tip": "Weekday mornings are quiet.",
+      "duration_text": "10-20 min"
+    },
+    "pickle_guys": {
+      "title": "Pickle Guys",
+      "why_short": "Last barrel-pickle counter in Manhattan.",
+      "why_long": "Sour, half-sour, full-sour. Olives, tomatoes, kraut. The smell hits you a block before. Cash works, cards work, sample before you order.",
+      "tip": "Friday afternoons before Shabbat are busy.",
+      "duration_text": "10-15 min"
+    },
+    "russ_daughters_les": {
+      "title": "Russ & Daughters Café",
+      "why_short": "Bagel and lox pilgrimage.",
+      "why_long": "1914, four generations, the original appetizing shop a few blocks away. The café here is full sit-down. The classic board for two, no substitutions.",
+      "tip": "Counter seats walk in.",
+      "duration_text": "60-75 min"
+    },
+    "tenement_museum": {
+      "title": "Tenement Museum",
+      "why_short": "Preserved 1880s tenement. Tour required.",
+      "why_long": "97 Orchard Street, restored to multiple eras. You can only enter on a guided tour, and you should. Book ahead. The Sweatshop Workers tour changes how you read the neighborhood.",
+      "tip": "Book the tour the morning of.",
+      "duration_text": "60-90 min"
+    },
+    "joes_shanghai": {
+      "title": "Joe's Shanghai",
+      "why_short": "Soup dumplings. The order is the order.",
+      "why_long": "Crab and pork xiao long bao. Bite a hole, slurp the broth, eat the dumpling. Communal tables, fast turnover, exactly what you want.",
+      "tip": "Cash discount.",
+      "duration_text": "30-45 min"
+    },
+    "economy_candy": {
+      "title": "Economy Candy",
+      "why_short": "Vintage candy store since 1937.",
+      "why_long": "Bins floor-to-ceiling of every candy that's ever been made. The Pop Rocks aisle is a museum. Bring cash, bring a list, bring restraint or don't.",
+      "tip": "Ten dollars goes a long way.",
+      "duration_text": "20-30 min"
+    },
+    "attaboy": {
+      "title": "Attaboy",
+      "why_short": "Hidden bar. No menu. Knock at 134 Eldridge.",
+      "why_long": "Unmarked door, peephole, no list, no reservations. The bartender asks two questions and makes the drink. The cocktails are right every time.",
+      "tip": "Tell them spirit and mood. Trust them.",
+      "duration_text": "60-90 min"
+    },
+    "drawing_center": {
+      "title": "The Drawing Center",
+      "why_short": "Only US nonprofit for drawing. Tiny, sharp.",
+      "why_long": "35 Wooster. Free Thursdays. The curation punches well above the gallery's size — fellowship shows are the strongest.",
+      "tip": "Check the Open Sessions wall.",
+      "duration_text": "30-45 min"
+    },
+    "judd_foundation": {
+      "title": "Donald Judd Foundation",
+      "why_short": "His preserved studio loft. $32. Worth it.",
+      "why_long": "101 Spring Street, the building Judd bought in 1968. Furniture, fabrications, the layout he kept. Guided visit only — book ahead. You leave thinking about volume differently.",
+      "tip": "Book a weekday afternoon.",
+      "duration_text": "60-75 min"
+    },
+    "earth_room": {
+      "title": "The New York Earth Room",
+      "why_short": "250 cubic yards of dirt. Since 1977. Free.",
+      "why_long": "141 Wooster, second floor, Walter De Maria. Open Wed-Sun, 12-3 and 3:30-6. You smell it before you see it. The room is the room.",
+      "tip": "Get there 12:05.",
+      "duration_text": "10-15 min"
+    },
+    "broken_kilometer": {
+      "title": "The Broken Kilometer",
+      "why_short": "Five hundred brass rods. Also De Maria.",
+      "why_long": "393 West Broadway. A floor of polished brass rods arranged with mathematical precision. Free, meditative, oddly transporting.",
+      "tip": "Pairs perfectly with the Earth Room.",
+      "duration_text": "10-15 min"
+    },
+    "housing_works_books": {
+      "title": "Housing Works Bookstore",
+      "why_short": "Charity bookshop, literary events, fights HIV.",
+      "why_long": "126 Crosby. Donated stock, sharp selection, every dollar funds housing and HIV services. The reading series is one of the strongest downtown.",
+      "tip": "Check the events calendar.",
+      "duration_text": "30-45 min"
+    },
+    "greene_cobblestones": {
+      "title": "Greene Street cobblestones",
+      "why_short": "Most-photographed block in SoHo.",
+      "why_long": "Between Houston and Prince, the Belgian-block paving and cast-iron facades have appeared in more films than anyone has counted. Walk the east side for the light.",
+      "tip": "Late afternoon, sun on the west walls.",
+      "duration_text": "10-15 min"
+    },
+    "lincoln_center": {
+      "title": "Lincoln Center plaza",
+      "why_short": "Iconic arts plaza. Free during the day.",
+      "why_long": "The Revson Fountain still does its thing. Sit on the rim. Met Opera house front-and-center, Avery Fisher to one side. At night, the fountain's lit.",
+      "tip": "Free programs on the David Rubenstein side.",
+      "duration_text": "15-25 min"
+    },
+    "westsider_books": {
+      "title": "Westsider Books",
+      "why_short": "Three floors of stacks. Cash preferred.",
+      "why_long": "80th and Broadway. Used books, rare books, the second floor is where it gets serious. Saved from closing by a GoFundMe a few years back.",
+      "tip": "Vintage map drawer, ground floor.",
+      "duration_text": "30-45 min"
+    },
+    "zabars": {
+      "title": "Zabar's",
+      "why_short": "Only UWS institution that matters.",
+      "why_long": "Broadway and 80th. Smoked fish counter on the left, cheese counter on the right, the hot babka in front. Lines move fast.",
+      "tip": "Chocolate babka, always hot, never cold.",
+      "duration_text": "20-30 min"
+    },
+    "cafe_lalo": {
+      "title": "Cafe Lalo",
+      "why_short": "You've Got Mail café. Linzer torte holds up.",
+      "why_long": "83rd, between Amsterdam and Broadway. The interior is unchanged since the movie. The desserts are the move — coffee at the window seat.",
+      "tip": "Afternoon, not morning.",
+      "duration_text": "30-45 min"
+    },
+    "amnh_plaza": {
+      "title": "AMNH plaza",
+      "why_short": "Roosevelt columns, ground-floor architecture lesson.",
+      "why_long": "The Theodore Roosevelt Memorial entrance — Roman temple, granite, the new Gilder Center next door is a separate study. Skip the museum if you don't have hours.",
+      "tip": "Sit on the steps.",
+      "duration_text": "15-20 min"
+    },
+    "riverside_overlook": {
+      "title": "Riverside Park overlook",
+      "why_short": "Hudson sunset, civilized version.",
+      "why_long": "The 91st Street overlook, just above the boat basin. Quieter than the Pier 45 crowd. The community garden behind you is open during the day.",
+      "tip": "Bring a coffee, bring a layer.",
+      "duration_text": "30-45 min"
+    },
+    "studio_museum": {
+      "title": "Studio Museum in Harlem",
+      "why_short": "Premier museum of art by artists of African descent.",
+      "why_long": "144 W 125th. Currently rebuilding — check the satellite programming. The museum has shaped careers from Kehinde Wiley on. Free Sundays when open.",
+      "tip": "Pair with the Schomburg.",
+      "duration_text": "45-60 min"
+    },
+    "apollo_theater": {
+      "title": "Apollo Theater",
+      "why_short": "Music history under one marquee.",
+      "why_long": "125th and Frederick Douglass. Amateur Night since 1934, the names that came through include everyone you'd guess. Take the photo. Tours weekday afternoons.",
+      "tip": "Marquee shot from the south side of 125th.",
+      "duration_text": "10-15 min"
+    },
+    "sylvias": {
+      "title": "Sylvia's",
+      "why_short": "Soul food since 1962. Sunday gospel brunch.",
+      "why_long": "Lenox Avenue and 126th. The fried chicken is the order. Sunday gospel brunch is the experience — reserve.",
+      "tip": "Reserve a week ahead for gospel Sunday.",
+      "duration_text": "75-90 min"
+    },
+    "strivers_row": {
+      "title": "Strivers' Row",
+      "why_short": "Most photogenic brownstone block above 125th.",
+      "why_long": "138th and 139th between Adam Clayton Powell and Frederick Douglass. Designed in the 1890s as architecturally cohesive blocks — McKim Mead & White did the south side. Still residential, still beautiful.",
+      "tip": "Walk both blocks. The light differs.",
+      "duration_text": "15-25 min"
+    },
+    "schomburg": {
+      "title": "Schomburg Center",
+      "why_short": "Research library, gorgeous reading room.",
+      "why_long": "515 Lenox. NYPL branch devoted to Black history and culture. The Langston Hughes Auditorium and the reading rooms are open to anyone with a library card. Free.",
+      "tip": "Get a library card on arrival.",
+      "duration_text": "30-45 min"
+    },
+    "marcus_garvey": {
+      "title": "Marcus Garvey Park",
+      "why_short": "Bell tower for skyline. Free climb.",
+      "why_long": "120th to 124th, between Mt Morris and Madison. The 1856 cast-iron fire watchtower at the summit is the only one of its kind left. Low-rise skyline views across all of central Harlem.",
+      "tip": "Mid-afternoon for clearest light.",
+      "duration_text": "20-30 min"
+    },
+    "stone_street": {
+      "title": "Stone Street",
+      "why_short": "Cobblestone block, outdoor dining, original Dutch grid.",
+      "why_long": "The only cobblestone block left in lower Manhattan's original Dutch grid. Restaurants set tables in the street May through October. Lunch crowds clear by two.",
+      "tip": "Weekend morning is empty.",
+      "duration_text": "15-25 min"
+    },
+    "trinity_church": {
+      "title": "Trinity Church",
+      "why_short": "Hamilton and Burr both buried here. Quiet.",
+      "why_long": "Wall Street and Broadway. The current church is the third on the site, 1846. Hamilton's grave is at the south side of the churchyard, marked. Burr's is up at St. James in the Bronx — but Trinity has Hamilton, Astor, Gallatin. Free, often empty mid-day.",
+      "tip": "Pop in at lunch hour. Free organ recitals some Thursdays.",
+      "duration_text": "20-30 min"
+    },
+    "charging_bull": {
+      "title": "Charging Bull / Fearless Girl",
+      "why_short": "Most-photographed sculptures in FiDi.",
+      "why_long": "The Bull is at the north end of Bowling Green. Fearless Girl now faces the NYSE on Broad Street. The pairing was relocated; the message stayed.",
+      "tip": "7 AM or after 7 PM. Otherwise: lines.",
+      "duration_text": "10-15 min"
+    },
+    "fraunces_tavern": {
+      "title": "Fraunces Tavern",
+      "why_short": "Where Washington said goodbye to his officers.",
+      "why_long": "54 Pearl. Tavern downstairs, small museum upstairs. December 4, 1783 — the farewell speech. The bar still serves; the museum is small and excellent.",
+      "tip": "Combine museum entry with lunch.",
+      "duration_text": "45-60 min"
+    },
+    "memorial_pools": {
+      "title": "9/11 Memorial pools",
+      "why_short": "Treat with care. Allow time.",
+      "why_long": "Twin reflecting pools where the towers stood. The names are arranged by adjacency — who worked together, who knew each other. Free, open dawn to dusk. The museum below is separately ticketed.",
+      "tip": "Quietest at dawn. Bring nothing loud.",
+      "duration_text": "30-45 min"
+    },
+    "battery_park": {
+      "title": "Battery Park sunset",
+      "why_short": "Statue of Liberty plus harbor.",
+      "why_long": "Manhattan's southern tip. The harbor lights come on as the sun drops behind New Jersey. The Statue of Liberty is in your shot whether you want her or not. The Castle Clinton remains in the foreground.",
+      "tip": "Stay through blue hour.",
+      "duration_text": "30-45 min"
+    }
+  },
+
+  "changelog_eyebrow": "What's new",
+  "changelog_intro": "Updates, ordered newest first. Every shipped feature came from a feedback post — keep them coming.",
+
+  "share_loop_message": "Just walked a Loop through {neighborhood} with Walking Explorers — {miles} mi, {stops} stops, {minutes} min. {hero_stop} was the highlight.",
+
+  "explore_meta": {
+    "route_count": "{n} routes",
+    "stop_count_pill": "{n} stops",
+    "mins_pill": "{n} min",
+    "miles_pill": "{n} mi",
+    "neighborhood_pill": "{nbhd}"
+  },
+
+  "auth": {
+    "signed_out_redirect": "Redirecting…",
+    "invite_only": "Beta access is invite-only for now.",
+    "request_invite_cta": "Ask for an invite",
+    "request_sent": "Request sent. We read every one.",
+    "signed_in_as": "Signed in as {email}"
+  },
+
+  "misc": {
+    "and": "and",
+    "or": "or",
+    "loading": "Loading",
+    "saving": "Saving",
+    "saved": "Saved",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "this_week": "This week",
+    "this_weekend": "This weekend",
+    "ongoing": "Ongoing",
+    "expired": "Expired",
+    "free": "Free",
+    "no_results": "Nothing matches.",
+    "see_more": "See more",
+    "see_less": "See less"
+  }
+}
