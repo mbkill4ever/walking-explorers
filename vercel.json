@@ -3,7 +3,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/",         "destination": "/Walking_Explorers_Landing.html" },
+    { "source": "/",         "destination": "/index.html" },
     { "source": "/beta",     "destination": "/beta/index.html" },
     { "source": "/loop/:id", "destination": "/loop.html?id=:id" },
     { "source": "/privacy",  "destination": "/privacy.html" },
