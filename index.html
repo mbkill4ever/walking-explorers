@@ -156,6 +156,17 @@
   .nbhd .name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
   .nbhd .meta { font-size: 12px; opacity: 0.85; }
 
+  /* Free sample walks */
+  .walks-bg { background: white; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .walkcards { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top: 36px; }
+  .walkcard { display: flex; flex-direction: column; background: var(--cream); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; transition: 200ms; color: var(--ink); }
+  .walkcard:hover { transform: translateY(-3px); box-shadow: 0 16px 32px rgba(31,56,100,0.10); color: var(--ink); }
+  .walkcard-top { height: 110px; display: flex; align-items: flex-end; padding: 18px; color: white; font-weight: 700; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .walkcard-body { padding: 20px 22px 24px; }
+  .walkcard-body h3 { font-size: 17px; color: var(--navy); margin-bottom: 6px; line-height: 1.3; }
+  .walkcard-body p { font-size: 13px; color: var(--mute); line-height: 1.5; margin-bottom: 12px; }
+  .walkcard-body .go { font-size: 13px; font-weight: 700; color: var(--gold-dark); }
+
   /* Trust band (replaces removed fake press strip) */
   .trust { padding: 50px 32px; background: white; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .trust-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
@@ -208,6 +219,7 @@
     <div class="brand">walking<span>.</span>explorers</div>
     <div class="nav-links">
       <a href="#how">How it works</a>
+      <a href="#walks">Free walks</a>
       <a href="#cities">Cities</a>
       <a href="#about">About</a>
       <a href="#waitlist" class="nav-cta">Join the waitlist</a>
@@ -224,8 +236,8 @@
       <div class="hero-ctas">
         <!-- TODO: swap mailto for real Tally/Typeform once form is provisioned -->
         <a href="mailto:waitlist@walkingexplorers.com?subject=Walking%20Explorers%20waitlist" class="btn btn-accent" id="hero-cta-waitlist">Join the waitlist &rarr;</a>
-        <!-- TODO: swap href for the Loom URL when the demo agent ships it -->
-        <a href="#demo" class="btn btn-ghost">Watch 60-sec demo</a>
+        <!-- Points to real sample walks. TODO: swap href back to demo video when the Loom ships -->
+        <a href="#walks" class="btn btn-ghost">Try a free walk</a>
       </div>
       <!-- TODO: wire to KV `waitlist:count` once /api/waitlist exists. Currently hardcoded. -->
       <div class="waitlist-counter" id="waitlist-counter">
@@ -284,6 +296,49 @@
   <div class="trust-inner">
     <p class="trust-line">Built privately. No ads, no tracking, no data sold.</p>
     <p class="trust-sub">Aesthetic-first &middot; Privacy-first &middot; Local-first &middot; NYC-first</p>
+  </div>
+</section>
+
+<!-- FREE SAMPLE WALKS (real, published routes — proof the product exists) -->
+<section class="walks-bg" id="walks">
+  <div class="container">
+    <span class="eyebrow">Free sample walks</span>
+    <h2>Try a walk right now. No app, no waitlist.</h2>
+    <p class="lead">Four fully written routes from our NYC collection, free to read and walk today. This is the level of curation every route in the app gets.</p>
+    <div class="walkcards">
+      <a class="walkcard" href="/walks/soho-aesthetic-cafe-crawl.html">
+        <div class="walkcard-top" style="background: linear-gradient(160deg, #2E75B6, #1F3864);">SoHo</div>
+        <div class="walkcard-body">
+          <h3>SoHo Aesthetic Café Crawl</h3>
+          <p>Third-wave coffee, indie bookshops, and cast-iron streets — the daytime Manhattan classic.</p>
+          <span class="go">Read the walk &rarr;</span>
+        </div>
+      </a>
+      <a class="walkcard" href="/walks/williamsburg-street-art.html">
+        <div class="walkcard-top" style="background: linear-gradient(160deg, #E0B341, #8C5B00);">Williamsburg</div>
+        <div class="walkcard-body">
+          <h3>Williamsburg Street Art Walk</h3>
+          <p>The mural circuit — a 1.9-mile loop through Brooklyn's open-air gallery.</p>
+          <span class="go">Read the walk &rarr;</span>
+        </div>
+      </a>
+      <a class="walkcard" href="/walks/williamsburg-fireworks-nightlife.html">
+        <div class="walkcard-top" style="background: linear-gradient(160deg, #6D2E46, #2D0F1B);">Williamsburg &middot; night</div>
+        <div class="walkcard-body">
+          <h3>Fireworks &amp; Nightlife Walk</h3>
+          <p>Golden hour to last call — rooftop, waterfront fireworks, and two 4 AM dance floors.</p>
+          <span class="go">Read the walk &rarr;</span>
+        </div>
+      </a>
+      <a class="walkcard" href="/walks/dumbo-brooklyn-heights-golden-hour.html">
+        <div class="walkcard-top" style="background: linear-gradient(160deg, #028090, #024758);">DUMBO</div>
+        <div class="walkcard-body">
+          <h3>DUMBO Golden Hour Walk</h3>
+          <p>Six stops, three bridges, one sunset — cobblestones to the Brooklyn Heights Promenade.</p>
+          <span class="go">Read the walk &rarr;</span>
+        </div>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -503,6 +558,7 @@
       <h4>Product</h4>
       <ul>
         <li><a href="#how">How it works</a></li>
+        <li><a href="#walks">Free sample walks</a></li>
         <li><a href="#screenshots">Screenshots</a></li>
         <li><a href="#cities">Cities</a></li>
         <li><a href="#waitlist">Waitlist</a></li>
@@ -534,10 +590,14 @@ function signup(ev) {
     msg.style.color = '#FF8C8C';
     return false;
   }
-  msg.innerHTML = "&check; <b>You're in.</b> We'll be in touch when your neighborhood unlocks. (For now, email Nova at mbkill4ever@gmail.com to skip the line.)";
+  // No backend yet, so hand off to email instead of silently dropping the signup.
+  // TODO: POST to /api/waitlist when endpoint exists; bump KV waitlist:count and restore inline success message.
+  var mailto = 'mailto:mbkill4ever@gmail.com'
+    + '?subject=' + encodeURIComponent('Walking Explorers waitlist')
+    + '&body=' + encodeURIComponent('Please add me to the waitlist: ' + email);
+  msg.innerHTML = 'One more tap &mdash; <b>your email app is opening</b> to send us your signup. (Nothing sends until you hit send.)';
   msg.style.color = '#E0B341';
-  document.getElementById('signup-email').value = '';
-  // TODO: POST to /api/waitlist when endpoint exists; bump KV waitlist:count
+  window.location.href = mailto;
   return false;
 }
 </script>
